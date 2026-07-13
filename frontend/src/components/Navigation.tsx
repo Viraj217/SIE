@@ -1,0 +1,93 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
+export default function Navigation() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > window.innerHeight * 0.75);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { label: 'Products', href: '#products' },
+    { label: 'Sectors', href: '#industries' },
+    { label: 'Legacy', href: '#milestones' },
+  ];
+
+  return (
+    <header
+      className={`fixed top-0 left-0 w-full h-[72px] z-50 transition-all duration-500 ease-out ${
+        isScrolled
+          ? "bg-paper/90 backdrop-blur-xl border-b border-steel/10 shadow-[0_1px_20px_rgba(22,35,43,0.05)]"
+          : "bg-transparent border-b border-white/[0.04]"
+      }`}
+    >
+      <nav className="max-w-[1300px] mx-auto h-full flex justify-between items-center px-8 md:px-12">
+        <a href="#" className="flex flex-col gap-0.5 group">
+          <span className={`font-display font-bold text-[1.05rem] tracking-[0.08em] transition-colors duration-500 ${isScrolled ? 'text-slate' : 'text-white'}`}>
+            SHAH INDUSTRIAL
+          </span>
+          <span className={`font-mono text-[0.55rem] tracking-[0.3em] uppercase transition-colors duration-500 ${isScrolled ? 'text-steel/50' : 'text-white/40'}`}>
+            Est. 1989 · Mazgaon, Mumbai
+          </span>
+        </a>
+
+        {/* Desktop Nav */}
+        <ul className="hidden md:flex items-center gap-8">
+          {navLinks.map((item) => (
+            <li key={item.label}>
+              <a
+                href={item.href}
+                className={`font-mono text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 hover:opacity-100 ${
+                  isScrolled ? 'text-steel/70 hover:text-slate' : 'text-white/60 hover:text-white'
+                }`}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a
+              href="#contact"
+              className={`font-mono text-[0.75rem] tracking-[0.1em] uppercase px-5 py-2 rounded-sm transition-all duration-300 ${
+                isScrolled
+                  ? "bg-slate text-white hover:bg-steel"
+                  : "bg-dawn-coral/90 text-white hover:bg-dawn-coral"
+              }`}
+            >
+              Get Quote
+            </a>
+          </li>
+        </ul>
+
+        {/* Mobile Toggle */}
+        <button
+          className="md:hidden flex flex-col items-end gap-1.5 w-7"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span className={`block h-[1.5px] transition-all duration-300 ${isScrolled ? 'bg-slate' : 'bg-white'} ${isMenuOpen ? 'w-7 rotate-45 translate-y-[5px]' : 'w-7'}`} />
+          <span className={`block h-[1.5px] transition-all duration-300 ${isScrolled ? 'bg-slate' : 'bg-white'} ${isMenuOpen ? 'w-7 -rotate-45 -translate-y-[2px]' : 'w-5'}`} />
+        </button>
+
+        {/* Mobile Overlay */}
+        <div className={`fixed inset-0 bg-slate/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-10 transition-all duration-500 md:hidden ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+          {navLinks.map((item) => (
+            <a key={item.label} href={item.href} onClick={() => setIsMenuOpen(false)} className="font-display text-white text-2xl tracking-wider">
+              {item.label}
+            </a>
+          ))}
+          <a href="#contact" onClick={() => setIsMenuOpen(false)} className="mt-4 px-8 py-3 bg-dawn-coral text-white font-mono text-sm tracking-wider uppercase">
+            Get Quote
+          </a>
+        </div>
+      </nav>
+    </header>
+  );
+}

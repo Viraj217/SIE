@@ -1,0 +1,97 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+/// Admin users (the Shah family) who manage inventory and quote inquiries
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         Role      @default(OWNER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+enum Role {
+  ADMIN
+  OWNER
+}
+
+/// Customer inquiry/quote submission
+model Inquiry {
+  id           String        @id @default(uuid())
+  createdAt    DateTime      @default(now())
+  name         String
+  company      String
+  contactInfo  String
+  requirements String
+  status       InquiryStatus @default(PENDING)
+  notes        String?
+  updatedAt    DateTime      @updatedAt
+}
+
+enum InquiryStatus {
+  PENDING
+  REVIEWED
+  CONTACTED
+  QUOTED
+  ARCHIVED
+}
+
+/// Steel/iron product types in the catalog
+model Product {
+  id           String        @id @default(uuid())
+  slug         String        @unique
+  title        String
+  tagline      String
+  category     Category      @default(RAW_MATERIAL)
+  isFeatured   Boolean       @default(false)
+  isActive     Boolean       @default(true)
+  displayOrder Int           @default(0)
+  specs        ProductSpec[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+enum Category {
+  RAW_MATERIAL
+  ALLOY
+  SERVICE
+}
+
+/// Technical specifications for products (one-to-many)
+model ProductSpec {
+  id           String  @id @default(uuid())
+  productId    String
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label        String
+  value        String
+  displayOrder Int     @default(0)
+}
+
+/// Company historical timeline milestones
+model TimelineMilestone {
+  id           String   @id @default(uuid())
+  year         String
+  title        String
+  description  String
+  imagePath    String?
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+}
+
+/// Industry sectors served
+model IndustrySector {
+  id           String @id @default(uuid())
+  name         String
+  slug         String @unique
+  description  String
+  iconName     String
+  displayOrder Int    @default(0)
+}
