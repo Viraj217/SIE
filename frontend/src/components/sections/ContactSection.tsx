@@ -26,7 +26,12 @@ export default function ContactSection() {
     setErrorMessage('');
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      // Clean trailing slash if present
+      if (apiUrl.endsWith('/')) {
+        apiUrl = apiUrl.slice(0, -1);
+      }
+      
       const res = await fetch(`${apiUrl}/api/inquiries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
