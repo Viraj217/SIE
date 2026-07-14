@@ -1,9 +1,30 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Seeding database...');
+
+  // ── Admin User ────────────────────────────────────────────────────────
+  const existingAdmin = await prisma.user.findUnique({
+    where: { email: 'admin@shahindustrial.com' },
+  });
+
+  if (!existingAdmin) {
+    const passwordHash = await bcrypt.hash('shah2025', 12);
+    await prisma.user.create({
+      data: {
+        email: 'admin@shahindustrial.com',
+        passwordHash,
+        name: 'Shah Admin',
+        role: 'OWNER',
+      },
+    });
+    console.log('  ✓ Created admin user: admin@shahindustrial.com / shah2025');
+  } else {
+    console.log('  ⊘ Admin user already exists, skipping');
+  }
 
   // ── Products ──────────────────────────────────────────────────────────
   const cuttingService = await prisma.product.create({

@@ -1,6 +1,31 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+
+interface Sector {
+  name: string;
+  description: string;
+}
+
+const STATIC_SECTORS: Sector[] = [
+  {
+    name: "Sugar Mills & Processing",
+    description: "High-load bearing shafts and crushing rollers that withstand immense rotational torque through continuous seasonal operation cycles."
+  },
+  {
+    name: "Marine & Offshore",
+    description: "Propeller shafts, winch components, and heavy-duty structural steel resistant to saline corrosion and extreme fatigue from ocean conditions."
+  },
+  {
+    name: "Earthmoving & Construction",
+    description: "Hydraulic cylinder rods, bucket pins, and heavy-wear components engineered to survive the most abrasive and high-impact environments."
+  },
+  {
+    name: "General Engineering",
+    description: "Precision-cut raw stock for lathes, CNC machining centers, and bespoke fabrication workshops across the subcontinent."
+  }
+];
 
 function IndustryRow({ number, title, desc, isLast }: { number: string, title: string, desc: string, isLast?: boolean }) {
   return (
@@ -23,6 +48,24 @@ function IndustryRow({ number, title, desc, isLast }: { number: string, title: s
 }
 
 export default function IndustriesSection() {
+  const [sectors, setSectors] = useState<Sector[]>(STATIC_SECTORS);
+
+  useEffect(() => {
+    const fetchSectors = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiUrl}/api/industries`);
+        const result = await res.json();
+        if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+          setSectors(result.data);
+        }
+      } catch (err) {
+        console.warn('Could not load sectors from API, using static fallbacks', err);
+      }
+    };
+    fetchSectors();
+  }, []);
+
   return (
     <section id="industries" className="py-28 lg:py-36 relative bg-paper z-20">
       {/* Subtle top separator */}
@@ -42,27 +85,15 @@ export default function IndustriesSection() {
         </motion.div>
 
         <div>
-          <IndustryRow
-            number="01"
-            title="Sugar Mills & Processing"
-            desc="High-load bearing shafts and crushing rollers that withstand immense rotational torque through continuous seasonal operation cycles."
-          />
-          <IndustryRow
-            number="02"
-            title="Marine & Offshore"
-            desc="Propeller shafts, winch components, and heavy-duty structural steel resistant to saline corrosion and extreme fatigue from ocean conditions."
-          />
-          <IndustryRow
-            number="03"
-            title="Earthmoving & Construction"
-            desc="Hydraulic cylinder rods, bucket pins, and heavy-wear components engineered to survive the most abrasive and high-impact environments."
-          />
-          <IndustryRow
-            number="04"
-            title="General Engineering"
-            desc="Precision-cut raw stock for lathes, CNC machining centers, and bespoke fabrication workshops across the subcontinent."
-            isLast={true}
-          />
+          {sectors.map((sector, i) => (
+            <IndustryRow
+              key={sector.name}
+              number={(i + 1).toString().padStart(2, '0')}
+              title={sector.name}
+              desc={sector.description}
+              isLast={i === sectors.length - 1}
+            />
+          ))}
         </div>
       </div>
     </section>

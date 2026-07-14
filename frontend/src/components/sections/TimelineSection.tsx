@@ -1,12 +1,19 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const milestones = [
-  { year: '1989', title: 'The Foundation', desc: 'Shah Industrial Enterprise opens its doors in Darukhana, Mazgaon — supplying raw mild steel to local fabrication units across Mumbai.', side: 'left' as const },
-  { year: '2002', title: 'Heavy Machinery Expansion', desc: 'Expanded inventory to include specialized carbon steel and alloy rods for the booming sugar mill and marine sectors, reaching 8 states.', side: 'right' as const },
-  { year: '2015', title: 'Precision Processing', desc: 'Introduced automated, high-tolerance hacksaw cutting — allowing clients to receive exact-dimension stock ready for CNC machining.', side: 'left' as const },
-  { year: 'TODAY', title: 'Trusted Backbone', desc: 'A second-generation legacy, recognized across 18 states for uncompromising material quality and delivery reliability.', side: 'right' as const },
+interface Milestone {
+  year: string;
+  title: string;
+  description: string;
+}
+
+const STATIC_MILESTONES: Milestone[] = [
+  { year: '1989', title: 'The Foundation', description: 'Shah Industrial Enterprise opens its doors in Darukhana, Mazgaon — supplying raw mild steel to local fabrication units across Mumbai.' },
+  { year: '2002', title: 'Heavy Machinery Expansion', description: 'Expanded inventory to include specialized carbon steel and alloy rods for the booming sugar mill and marine sectors, reaching 8 states.' },
+  { year: '2015', title: 'Precision Processing', description: 'Introduced automated, high-tolerance hacksaw cutting — allowing clients to receive exact-dimension stock ready for CNC machining.' },
+  { year: 'TODAY', title: 'Trusted Backbone', description: 'A second-generation legacy, recognized across 18 states for uncompromising material quality and delivery reliability.' },
 ];
 
 function TimelineNode({ year, title, desc, side, index }: { year: string; title: string; desc: string; side: 'left' | 'right'; index: number }) {
@@ -48,6 +55,24 @@ function TimelineNode({ year, title, desc, side, index }: { year: string; title:
 }
 
 export default function TimelineSection() {
+  const [milestones, setMilestones] = useState<Milestone[]>(STATIC_MILESTONES);
+
+  useEffect(() => {
+    const fetchTimeline = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiUrl}/api/timeline`);
+        const result = await res.json();
+        if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+          setMilestones(result.data);
+        }
+      } catch (err) {
+        console.warn('Could not load timeline from API, using static fallbacks', err);
+      }
+    };
+    fetchTimeline();
+  }, []);
+
   return (
     <section id="milestones" className="py-28 lg:py-36 relative bg-slate z-20 noise-overlay overflow-hidden">
       {/* Decorative gradient blobs */}
@@ -76,7 +101,14 @@ export default function TimelineSection() {
           </div>
 
           {milestones.map((m, i) => (
-            <TimelineNode key={m.year} {...m} index={i} />
+            <TimelineNode
+              key={m.year}
+              year={m.year}
+              title={m.title}
+              desc={m.description}
+              side={i % 2 === 0 ? 'left' : 'right'}
+              index={i}
+            />
           ))}
         </div>
       </div>
