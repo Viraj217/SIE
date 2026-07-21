@@ -31,7 +31,7 @@ export default function OperatingPromise() {
         <div className="grid divide-y divide-steel/10 border-y border-steel/10">
           {steps.map((step) => (
             <div key={step.number} className="group grid gap-4 py-7 sm:grid-cols-[70px_1fr] sm:gap-7">
-              <span className="font-mono text-[0.7rem] tracking-[0.2em] text-dawn-coral">{step.number}</span>
+              <span className="font-mono text-[0.7rem] tracking-[0.2em] text-[#c2410c]">{step.number}</span>
               <div>
                 <h3 className="mb-2 font-display text-2xl text-slate transition-colors duration-300 group-hover:text-steel">{step.title}</h3>
                 <p className="max-w-[480px] text-[0.92rem] leading-relaxed text-slate/70">{step.description}</p>

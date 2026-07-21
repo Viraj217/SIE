@@ -31,9 +31,9 @@ ${businessInfo.contacts.map((contact) => `- ${contact.name}: ${contact.phone}`).
 
 ## Important pages
 
-- Homepage: ${SITE_URL}/
-- Product catalog: ${SITE_URL}/catalog
-- Sitemap: ${SITE_URL}/sitemap.xml
+- [Homepage](${SITE_URL}/)
+- [Product catalog](${SITE_URL}/catalog)
+- [Sitemap](${SITE_URL}/sitemap.xml)
 
 ## FAQs
 

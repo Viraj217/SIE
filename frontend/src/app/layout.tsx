@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Fraunces, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
+
 import FloatingActions from "@/components/FloatingActions";
 import { SITE_URL, businessInfo } from "@/lib/seo";
 
@@ -95,9 +95,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${fraunces.variable} ${ibmPlexMono.variable} antialiased`}
       >
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        {children}
         <FloatingActions />
       </body>
     </html>

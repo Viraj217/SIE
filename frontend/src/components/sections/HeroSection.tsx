@@ -54,7 +54,7 @@ export default function HeroSection() {
           </div>
 
           <h1 className="hero-heading mb-6 max-w-[650px] font-display text-[clamp(2.9rem,12vw,6.8rem)] font-semibold leading-[0.91] tracking-[-0.045em] sm:mb-7 sm:text-[clamp(3.5rem,7vw,6.8rem)]">
-            Heavy steamer shafts, forged rounds, <span className="hero-heading-accent">ready to work.</span>
+            Forged for strength, <span className="hero-heading-accent">cut to precision.</span>
           </h1>
 
           <p className="mb-8 max-w-[520px] text-[0.98rem] leading-[1.75] text-white/65 sm:mb-9 sm:text-[1.05rem] md:text-[1.12rem]">
@@ -62,7 +62,7 @@ export default function HeroSection() {
           </p>
 
           <div className="mb-12 flex flex-wrap gap-4">
-            <a href="#contact" className="hero-primary-cta group inline-flex w-full items-center justify-center gap-3 bg-dawn-coral px-6 py-4 font-mono text-[0.72rem] tracking-[0.16em] uppercase transition-all duration-300 hover:bg-[#f09770] hover:shadow-[0_12px_40px_rgba(232,132,92,0.22)] sm:w-auto">
+            <a href="#contact" className="hero-primary-cta group inline-flex w-full items-center justify-center gap-3 bg-dawn-coral px-6 py-4 font-mono text-[0.72rem] tracking-[0.16em] text-slate-900 font-bold uppercase transition-all duration-300 hover:bg-[#f09770] hover:shadow-[0_12px_40px_rgba(232,132,92,0.22)] sm:w-auto">
               Request a quote
               <span className="text-lg leading-none transition-transform duration-300 group-hover:translate-x-1">→</span>
             </a>

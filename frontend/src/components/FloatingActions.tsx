@@ -85,7 +85,7 @@ export default function FloatingActions() {
         </button>
         <button
           onClick={handleScrollToContact}
-          className="flex h-11 flex-1 items-center justify-center rounded-full bg-dawn-coral px-5 font-mono text-sm uppercase tracking-wider text-white transition-colors hover:bg-dawn-coral/80 sm:flex-none"
+          className="flex h-11 flex-1 items-center justify-center rounded-full bg-dawn-coral px-5 font-mono text-sm uppercase tracking-wider text-slate-900 font-bold transition-colors hover:bg-dawn-coral/80 sm:flex-none"
         >
           Get a Quote
         </button>
