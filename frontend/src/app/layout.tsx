@@ -24,13 +24,18 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Shah Industrial Enterprise | Steel & Iron Merchants in Mumbai",
+    default: "Shah Industrial Enterprise | Steamer Shafts, Forged Rounds & Iron Steel Merchants",
     template: "%s | Shah Industrial Enterprise",
   },
-  description: "Steel and iron merchants in Mazgaon, Mumbai supplying custom-cut shafts, rods, alloy bars, and industrial raw materials since 1989.",
+  description: "Iron and steel merchants in Mazgaon, Mumbai supplying heavy steamer shafts, carbon steel, alloy steel round bars, forged rounds, MS rounds, seamless pipes, and hacksaw cutting since 1989.",
   keywords: [
     "steel supplier Mumbai",
     "iron merchant Mumbai",
+    "iron and steel merchants Mumbai",
+    "heavy steamer shafts",
+    "steamer shaft supplier",
+    "forged rounds Mumbai",
+    "hacksaw cutting specialist",
     "steel merchant Darukhana",
     "steel supplier Mazgaon",
     "MS shafts",

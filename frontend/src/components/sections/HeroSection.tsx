@@ -49,16 +49,16 @@ export default function HeroSection() {
           <div className="mb-7 flex items-center gap-3 text-cyan-glow">
             <span className="h-px w-10 bg-cyan-glow/70" />
             <p className="font-mono text-[0.68rem] tracking-[0.28em] uppercase">
-              Steel merchants · Cut to size
+              Iron and Steel Merchants · Hacksaw Cutting Specialist
             </p>
           </div>
 
           <h1 className="hero-heading mb-6 max-w-[650px] font-display text-[clamp(2.9rem,12vw,6.8rem)] font-semibold leading-[0.91] tracking-[-0.045em] sm:mb-7 sm:text-[clamp(3.5rem,7vw,6.8rem)]">
-            Steel that arrives <span className="hero-heading-accent">ready to work.</span>
+            Heavy steamer shafts, forged rounds, <span className="hero-heading-accent">ready to work.</span>
           </h1>
 
           <p className="mb-8 max-w-[520px] text-[0.98rem] leading-[1.75] text-white/65 sm:mb-9 sm:text-[1.05rem] md:text-[1.12rem]">
-            Dependable shafts, rods, and cut-to-size steel for the machines that keep India moving. Sourced, measured, and dispatched from Darukhana since 1989.
+            Heavy steamer shafts, carbon steel, alloy steel round bars, M.S. rounds, EN8, EN9, EN19, EN24, EN31 and C45 materials supplied cut-to-size from Darukhana, Mazgaon since 1989.
           </p>
 
           <div className="mb-12 flex flex-wrap gap-4">

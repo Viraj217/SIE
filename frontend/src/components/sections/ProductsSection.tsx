@@ -158,7 +158,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     slug: 'mild-steel-shafts',
-    title: 'Mild Steel Shafts',
+    title: 'M.S. & Carbon Steel Rounds',
     category: 'RAW_MATERIAL',
     tagline: 'Bright and black finish steel shafting, available in standard and custom lengths for industrial applications.',
     isFeatured: false,
@@ -224,13 +224,13 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     slug: 'alloy-steel-round-bars',
-    title: 'Alloy Steel Round Bars',
+    title: 'N.S. & Alloy Steel Round Bars',
     category: 'ALLOY',
     tagline: 'High-strength alloy bars tailored for heavy-duty automotive and industrial machinery components.',
     isFeatured: false,
     specs: [
         { label: 'Grades', value: 'EN19, EN24, EN353' },
-        { label: 'Diameter', value: 'Ø 20 – 300mm' },
+        { label: 'Diameter', value: '100 mm dia to 1000 mm dia' },
         { label: 'Finish', value: 'Black, Peeled, Ground' }
     ],
     icon: (
@@ -257,7 +257,7 @@ const STATIC_PRODUCTS: Product[] = [
     isFeatured: true,
     specs: [
         { label: 'Grades', value: 'Class 4, EN8, EN9' },
-        { label: 'Diameter', value: 'Ø 150 – 600mm' },
+        { label: 'Diameter', value: '200 mm dia to 600 mm dia' },
         { label: 'Condition', value: 'Normalized, UT Tested' }
     ],
     icon: (
@@ -359,7 +359,7 @@ const STATIC_PRODUCTS: Product[] = [
   },
   {
     slug: 'iron-steel-pipes-tubes',
-    title: 'Iron & Steel Pipes & Tubes',
+    title: 'Heavy Seamless Pipes',
     category: 'RAW_MATERIAL',
     tagline: 'Seamless and ERW pipes offering excellent burst strength for industrial pipelines and structural supports.',
     isFeatured: false,
