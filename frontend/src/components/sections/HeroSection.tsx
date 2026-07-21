@@ -211,12 +211,6 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
-
-      <div className="absolute bottom-0 left-0 right-0 z-10 h-32 bg-gradient-to-t from-paper to-transparent" aria-hidden="true" />
-      <div className="absolute bottom-7 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-3 text-white/35 md:flex">
-        <span className="h-8 w-px bg-gradient-to-b from-transparent via-cyan-glow/60 to-transparent" />
-        <span className="font-mono text-[0.58rem] tracking-[0.22em] uppercase">Scroll to inspect</span>
-      </div>
     </section>
   );
 }

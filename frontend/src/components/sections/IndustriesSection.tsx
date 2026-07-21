@@ -41,7 +41,7 @@ function IndustryRow({ number, title, desc, isLast }: { number: string, title: s
       </span>
       <div>
         <h3 className="font-display text-[1.5rem] mb-3 group-hover:text-dawn-coral transition-colors duration-300">{title}</h3>
-        <p className="text-steel/70 max-w-[550px] leading-[1.8] text-[0.95rem]">{desc}</p>
+        <p className="text-slate/70 max-w-[550px] leading-[1.8] text-[0.95rem]">{desc}</p>
       </div>
     </motion.div>
   );
@@ -67,7 +67,7 @@ export default function IndustriesSection() {
   }, []);
 
   return (
-    <section id="industries" className="relative z-20 bg-paper py-20 sm:py-28 lg:py-36">
+    <section id="industries" className="relative z-20 bg-paper py-12 sm:py-16 lg:py-20">
       {/* Subtle top separator */}
       <div className="glow-line mb-0" />
 

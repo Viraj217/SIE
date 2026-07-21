@@ -74,7 +74,7 @@ export default function TimelineSection() {
   }, []);
 
   return (
-    <section id="milestones" className="relative z-20 overflow-hidden bg-slate py-20 noise-overlay sm:py-28 lg:py-36">
+    <section id="milestones" className="relative z-20 overflow-hidden bg-slate py-12 noise-overlay sm:py-16 lg:py-20">
       {/* Decorative gradient blobs */}
       <div className="absolute top-20 left-[-200px] w-[500px] h-[500px] rounded-full bg-cyan-glow/[0.03] blur-[120px] pointer-events-none" />
       <div className="absolute bottom-20 right-[-200px] w-[400px] h-[400px] rounded-full bg-dawn-coral/[0.03] blur-[120px] pointer-events-none" />

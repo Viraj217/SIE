@@ -1,23 +1,67 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
+type PreferredContact = 'Call' | 'WhatsApp' | 'Email';
+type Urgency = 'Standard' | 'This week' | 'Urgent';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: '',
     company: '',
     contactInfo: '',
+    material: '',
+    dimensions: '',
+    quantity: '',
+    deliveryLocation: '',
+    urgency: 'Standard' as Urgency,
+    preferredContact: 'Call' as PreferredContact,
     requirements: '',
+  });
+  const [touched, setTouched] = useState({
+    name: false,
+    company: false,
+    contactInfo: false,
+    material: false,
+    dimensions: false,
+    quantity: false,
+    deliveryLocation: false,
+    urgency: false,
+    preferredContact: false,
+    requirements: false,
   });
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [receiptId, setReceiptId] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  useEffect(() => {
+    const handlePopulate = (e: CustomEvent) => {
+      setFormData((prev) => ({
+        ...prev,
+        material: e.detail,
+        requirements: prev.requirements || `I would like to request a quote for ${e.detail}.`,
+      }));
+    };
+    window.addEventListener('populateRequirements', handlePopulate as EventListener);
+    return () => window.removeEventListener('populateRequirements', handlePopulate as EventListener);
+  }, []);
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setTouched((prev) => ({ ...prev, [e.target.name]: true }));
+  };
+
+  const getInputStyle = (name: keyof typeof formData, isValid: boolean) => {
+    const baseStyle = "w-full bg-white/[0.04] rounded-md px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:bg-white/[0.06] transition-all duration-300";
+    if (!touched[name]) return `${baseStyle} border border-white/[0.08] focus:border-cyan-glow/40`;
+    return isValid
+      ? `${baseStyle} border border-cyan-glow/50`
+      : `${baseStyle} border border-dawn-coral/70`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,10 +76,29 @@ export default function ContactSection() {
         apiUrl = apiUrl.slice(0, -1);
       }
       
+      const quoteSummary = [
+        `Material / service: ${formData.material || 'Not specified'}`,
+        `Dimensions / grade: ${formData.dimensions || 'Not specified'}`,
+        `Quantity: ${formData.quantity || 'Not specified'}`,
+        `Delivery location: ${formData.deliveryLocation || 'Not specified'}`,
+        `Urgency: ${formData.urgency}`,
+        `Preferred contact: ${formData.preferredContact}`,
+        '',
+        'Additional requirements:',
+        formData.requirements,
+      ].join('\n');
+
+      const payload = {
+        name: formData.name,
+        company: formData.company,
+        contactInfo: formData.contactInfo,
+        requirements: quoteSummary,
+      };
+
       const res = await fetch(`${apiUrl}/api/inquiries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -49,7 +112,18 @@ export default function ContactSection() {
 
       setReceiptId(data.inquiry?.id?.slice(0, 8).toUpperCase() || 'N/A');
       setStatus('success');
-      setFormData({ name: '', company: '', contactInfo: '', requirements: '' });
+      setFormData({
+        name: '',
+        company: '',
+        contactInfo: '',
+        material: '',
+        dimensions: '',
+        quantity: '',
+        deliveryLocation: '',
+        urgency: 'Standard',
+        preferredContact: 'Call',
+        requirements: '',
+      });
     } catch (err) {
       setErrorMessage(err instanceof Error ? err.message : 'Something went wrong');
       setStatus('error');
@@ -57,7 +131,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative z-20 bg-paper py-20 noise-overlay sm:py-28 lg:py-36">
+    <section id="contact" className="relative z-20 bg-paper py-12 noise-overlay sm:py-16 lg:py-20">
       <div className="relative z-10 mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12">
         
         <motion.div
@@ -118,61 +192,166 @@ export default function ContactSection() {
                 /* ── Form ── */
                 <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                   <h3 className="font-display text-2xl md:text-3xl mb-2 relative z-10">Request a Quote</h3>
-                  <p className="text-white/40 mb-10 text-[0.9rem] relative z-10">
+                  <p className="text-white/40 mb-2 text-[0.9rem] relative z-10">
                     Tell us about your material requirements, grades, and cutting specifications.
+                  </p>
+                  <p className="text-dawn-coral/90 font-mono text-xs uppercase tracking-widest mb-10 relative z-10 flex items-center gap-2">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Expected Response: Under 2 hours
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div className="space-y-2">
-                        <label className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Name</label>
+                        <label htmlFor="quote-name" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Name</label>
                         <input
+                          id="quote-name"
                           type="text"
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
+                          onBlur={handleBlur}
                           required
-                          className="w-full bg-white/[0.04] border border-white/[0.08] rounded-md px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-cyan-glow/40 focus:bg-white/[0.06] transition-all duration-300"
+                          className={getInputStyle('name', formData.name.length > 0)}
                           placeholder="Your name"
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Company</label>
+                        <label htmlFor="quote-company" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Company</label>
                         <input
+                          id="quote-company"
                           type="text"
                           name="company"
                           value={formData.company}
                           onChange={handleChange}
+                          onBlur={handleBlur}
                           required
-                          className="w-full bg-white/[0.04] border border-white/[0.08] rounded-md px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-cyan-glow/40 focus:bg-white/[0.06] transition-all duration-300"
+                          className={getInputStyle('company', formData.company.length > 0)}
                           placeholder="Company name"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Email or Phone</label>
+                      <label htmlFor="quote-contact" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Email or Phone</label>
                       <input
+                        id="quote-contact"
                         type="text"
                         name="contactInfo"
                         value={formData.contactInfo}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         required
-                        className="w-full bg-white/[0.04] border border-white/[0.08] rounded-md px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-cyan-glow/40 focus:bg-white/[0.06] transition-all duration-300"
+                        className={getInputStyle('contactInfo', formData.contactInfo.length > 3)}
                         placeholder="How can we reach you?"
                       />
                     </div>
 
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <label htmlFor="quote-material" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Material / Service</label>
+                        <input
+                          id="quote-material"
+                          type="text"
+                          name="material"
+                          value={formData.material}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          required
+                          className={getInputStyle('material', formData.material.length > 1)}
+                          placeholder="MS shaft, EN8 rod, cutting"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="quote-dimensions" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Size / Grade</label>
+                        <input
+                          id="quote-dimensions"
+                          type="text"
+                          name="dimensions"
+                          value={formData.dimensions}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={getInputStyle('dimensions', formData.dimensions.length > 1)}
+                          placeholder="Ø 100mm x 500mm, EN24"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <label htmlFor="quote-quantity" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Quantity</label>
+                        <input
+                          id="quote-quantity"
+                          type="text"
+                          name="quantity"
+                          value={formData.quantity}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          required
+                          className={getInputStyle('quantity', formData.quantity.length > 0)}
+                          placeholder="Pieces, kg, or tonnage"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="quote-delivery" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Delivery Location</label>
+                        <input
+                          id="quote-delivery"
+                          type="text"
+                          name="deliveryLocation"
+                          value={formData.deliveryLocation}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={getInputStyle('deliveryLocation', formData.deliveryLocation.length > 1)}
+                          placeholder="Mumbai, Pune, Gujarat..."
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <label htmlFor="quote-urgency" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Urgency</label>
+                        <select
+                          id="quote-urgency"
+                          name="urgency"
+                          value={formData.urgency}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={getInputStyle('urgency', true)}
+                        >
+                          <option className="bg-slate" value="Standard">Standard</option>
+                          <option className="bg-slate" value="This week">This week</option>
+                          <option className="bg-slate" value="Urgent">Urgent</option>
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="quote-preferred-contact" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Preferred Contact</label>
+                        <select
+                          id="quote-preferred-contact"
+                          name="preferredContact"
+                          value={formData.preferredContact}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={getInputStyle('preferredContact', true)}
+                        >
+                          <option className="bg-slate" value="Call">Call</option>
+                          <option className="bg-slate" value="WhatsApp">WhatsApp</option>
+                          <option className="bg-slate" value="Email">Email</option>
+                        </select>
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
-                      <label className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Requirements</label>
+                      <label htmlFor="quote-requirements" className="text-[0.7rem] font-mono uppercase tracking-[0.2em] text-cyan-glow/70">Requirements</label>
                       <textarea
+                        id="quote-requirements"
                         rows={4}
                         name="requirements"
                         value={formData.requirements}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         required
                         minLength={10}
-                        className="w-full bg-white/[0.04] border border-white/[0.08] rounded-md px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-cyan-glow/40 focus:bg-white/[0.06] transition-all duration-300 resize-none"
+                        className={`${getInputStyle('requirements', formData.requirements.length >= 10)} resize-none`}
                         placeholder="E.g., 50 pieces of EN8 shafting, Ø 100mm × 500mm long"
                       />
                     </div>
@@ -223,7 +402,7 @@ export default function ContactSection() {
             className="flex flex-col justify-center"
           >
             <h3 className="font-display text-2xl mb-3">The Shah Family</h3>
-            <p className="text-steel/60 mb-12 text-[0.95rem] leading-relaxed">
+            <p className="text-slate/70 mb-12 text-[0.95rem] leading-relaxed">
               Prefer speaking directly to the owners? We&apos;re available during business hours — no switchboard, no waiting.
             </p>
 
@@ -231,13 +410,13 @@ export default function ContactSection() {
               {[
                 { icon: (
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                ), name: 'Owner Name', detail: '+91 98XXX XXXXX' },
+                ), name: 'Ritesh Shah', detail: '+91 9324797660', link: 'tel:+919324797660' },
                 { icon: (
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
-                ), name: 'Second Contact', detail: '+91 98XXX XXXXX' },
+                ), name: 'Kalpesh Shah', detail: '+91 9820023666', link: 'tel:+919820023666' },
                 { icon: (
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
-                ), name: 'Yard Location', detail: 'Darukhana, Mazgaon\nMumbai 400010' },
+                ), name: 'Yard Location', detail: 'Darukhana, Mazgaon\nMumbai 400010', link: 'https://maps.google.com/?q=Darukhana,Mazgaon,Mumbai' },
               ].map((item, i) => (
                 <motion.div
                   key={i}
@@ -245,14 +424,20 @@ export default function ContactSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.3 + i * 0.1 }}
-                  className="flex gap-5 items-start group cursor-default"
+                  className="flex gap-5 items-start group"
                 >
                   <div className="w-11 h-11 rounded-lg bg-steel/[0.06] flex items-center justify-center shrink-0 text-steel group-hover:bg-dawn-coral/10 group-hover:text-dawn-coral transition-all duration-300">
                     {item.icon}
                   </div>
                   <div>
                     <h4 className="font-display text-lg mb-0.5">{item.name}</h4>
-                    <p className="font-mono text-[0.85rem] text-steel/60 whitespace-pre-line">{item.detail}</p>
+                    {item.link ? (
+                      <a href={item.link} className="font-mono text-[0.85rem] text-slate/60 hover:text-dawn-coral transition-colors whitespace-pre-line block">
+                        {item.detail}
+                      </a>
+                    ) : (
+                      <p className="font-mono text-[0.85rem] text-slate/60 whitespace-pre-line">{item.detail}</p>
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -260,8 +445,8 @@ export default function ContactSection() {
 
             {/* Business hours */}
             <div className="mt-12 pt-8 border-t border-steel/10">
-              <p className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-steel/40 mb-2">Business Hours</p>
-              <p className="font-mono text-[0.85rem] text-steel/70">Mon – Sat: 9:00 AM — 7:00 PM IST</p>
+              <p className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-slate/50 mb-2">Business Hours</p>
+              <p className="font-mono text-[0.85rem] text-slate/70">Mon – Sat: 9:00 AM — 7:00 PM IST</p>
             </div>
           </motion.div>
         </div>

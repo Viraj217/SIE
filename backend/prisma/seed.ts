@@ -68,6 +68,98 @@ async function main() {
         { label: 'Hardness', value: 'Normalized', displayOrder: 2 },
       ],
     },
+
+    {
+      slug: 'alloy-steel-round-bars',
+      title: 'Alloy Steel Round Bars',
+      tagline: 'High-strength alloy bars tailored for heavy-duty automotive and industrial machinery components.',
+      category: 'ALLOY' as const,
+      isFeatured: false,
+      displayOrder: 3,
+      specs: [
+        { label: 'Grades', value: 'EN19, EN24, EN353', displayOrder: 0 },
+        { label: 'Diameter', value: 'Ø 20 – 300mm', displayOrder: 1 },
+        { label: 'Finish', value: 'Black, Peeled, Ground', displayOrder: 2 }
+      ],
+    },
+    {
+      slug: 'forged-steel-round-bars',
+      title: 'Forged Steel Round Bars',
+      tagline: 'Superior grain structure forged bars for maximum structural integrity and impact resistance.',
+      category: 'RAW_MATERIAL' as const,
+      isFeatured: true,
+      displayOrder: 4,
+      specs: [
+        { label: 'Grades', value: 'Class 4, EN8, EN9', displayOrder: 0 },
+        { label: 'Diameter', value: 'Ø 150 – 600mm', displayOrder: 1 },
+        { label: 'Condition', value: 'Normalized, UT Tested', displayOrder: 2 }
+      ],
+    },
+    {
+      slug: 'roller-shafts',
+      title: 'Roller Shafts',
+      tagline: 'Precision-machined shafts optimized for extreme torque in sugar mills and heavy crushing equipment.',
+      category: 'RAW_MATERIAL' as const,
+      isFeatured: false,
+      displayOrder: 5,
+      specs: [
+        { label: 'Material', value: 'EN8, EN9', displayOrder: 0 },
+        { label: 'Application', value: 'Crushing & Milling', displayOrder: 1 },
+        { label: 'Tolerance', value: 'High Precision', displayOrder: 2 }
+      ],
+    },
+    {
+      slug: 'hydraulic-shafts',
+      title: 'Hydraulic Shafts',
+      tagline: 'Hard chrome plated and induction hardened shafts for earthmoving and fluid power systems.',
+      category: 'ALLOY' as const,
+      isFeatured: false,
+      displayOrder: 6,
+      specs: [
+        { label: 'Surface', value: 'Hard Chrome', displayOrder: 0 },
+        { label: 'Hardness', value: 'Induction Hardened', displayOrder: 1 },
+        { label: 'Usage', value: 'Cylinders & Pumps', displayOrder: 2 }
+      ],
+    },
+    {
+      slug: 'iron-steel-plates',
+      title: 'Iron & Steel Plates',
+      tagline: 'Structural and boiler quality plates for heavy fabrication, marine, and pressure vessel applications.',
+      category: 'RAW_MATERIAL' as const,
+      isFeatured: false,
+      displayOrder: 7,
+      specs: [
+        { label: 'Grades', value: 'IS 2062, ASTM A36', displayOrder: 0 },
+        { label: 'Thickness', value: '5mm – 150mm', displayOrder: 1 },
+        { label: 'Profile Cutting', value: 'Available', displayOrder: 2 }
+      ],
+    },
+    {
+      slug: 'iron-steel-pipes-tubes',
+      title: 'Iron & Steel Pipes & Tubes',
+      tagline: 'Seamless and ERW pipes offering excellent burst strength for industrial pipelines and structural supports.',
+      category: 'RAW_MATERIAL' as const,
+      isFeatured: false,
+      displayOrder: 8,
+      specs: [
+        { label: 'Types', value: 'Seamless, ERW', displayOrder: 0 },
+        { label: 'Schedule', value: 'Sch 40, Sch 80', displayOrder: 1 },
+        { label: 'Standard', value: 'API, ASTM, IS', displayOrder: 2 }
+      ],
+    },
+    {
+      slug: 'iron-steel-bars',
+      title: 'Iron & Steel Bars',
+      tagline: 'Versatile flat, square, and hexagonal profiles for general engineering and construction purposes.',
+      category: 'RAW_MATERIAL' as const,
+      isFeatured: false,
+      displayOrder: 9,
+      specs: [
+        { label: 'Profiles', value: 'Flat, Square, Hex', displayOrder: 0 },
+        { label: 'Grades', value: 'MS, EN8', displayOrder: 1 },
+        { label: 'Lengths', value: 'Custom Cut', displayOrder: 2 }
+      ],
+    },
   ];
 
   for (const prod of productsToSeed) {

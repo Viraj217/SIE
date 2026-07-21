@@ -1,9 +1,37 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-function ProductCard({ title, tagline, specs, isFeatured = false, icon, children }: any) {
+type ProductCategory = 'RAW_MATERIAL' | 'ALLOY' | 'SERVICE';
+
+interface ProductSpec {
+  label: string;
+  value: string;
+}
+
+interface Product {
+  slug: string;
+  title: string;
+  tagline: string;
+  category: ProductCategory;
+  isFeatured?: boolean;
+  specs: ProductSpec[];
+  icon?: ReactNode;
+  illustration?: ReactNode;
+}
+
+interface ProductCardProps {
+  title: string;
+  tagline: string;
+  specs: ProductSpec[];
+  isFeatured?: boolean;
+  icon?: ReactNode;
+  children?: ReactNode;
+}
+
+function ProductCard({ title, tagline, specs, isFeatured = false, icon, children }: ProductCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -20,6 +48,11 @@ function ProductCard({ title, tagline, specs, isFeatured = false, icon, children
     y.set((e.clientY - rect.top) / rect.height - 0.5);
   };
   const handleMouseLeave = () => { x.set(0); y.set(0); };
+
+  const handleRequest = () => {
+    window.dispatchEvent(new CustomEvent('populateRequirements', { detail: title }));
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <motion.div
@@ -72,9 +105,9 @@ function ProductCard({ title, tagline, specs, isFeatured = false, icon, children
 
       <div className="mt-auto" style={{ transform: "translateZ(20px)" }}>
         <ul className="flex flex-col gap-0 mb-6">
-          {specs.map((spec: any, i: number) => (
+          {specs.map((spec, i) => (
             <li key={i} className={`flex justify-between gap-4 py-3 text-[0.8rem] border-b last:border-b-0 sm:text-[0.85rem] ${isFeatured ? 'border-white/8' : 'border-steel/8'}`}>
-              <span className={`${isFeatured ? 'text-white/40' : 'text-steel/60'} font-mono`}>{spec.label}</span>
+              <span className={`${isFeatured ? 'text-white/40' : 'text-slate/60'} font-mono`}>{spec.label}</span>
               <span className="text-right font-mono font-medium tracking-tight">{spec.value}</span>
             </li>
           ))}
@@ -84,17 +117,26 @@ function ProductCard({ title, tagline, specs, isFeatured = false, icon, children
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
           </span>
-          <span className={isFeatured ? 'text-white/50' : 'text-steel/60'}>Ready for Dispatch</span>
+          <span className={isFeatured ? 'text-white/50' : 'text-slate/60'}>Ready for Dispatch</span>
         </div>
+        <button
+          onClick={handleRequest}
+          className={`mt-6 w-full rounded py-2.5 font-mono text-[0.75rem] tracking-[0.1em] uppercase transition-colors ${
+            isFeatured ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-slate/5 hover:bg-slate/10 text-slate'
+          }`}
+        >
+          Request this material
+        </button>
       </div>
     </motion.div>
   );
 }
 
-const STATIC_PRODUCTS = [
+const STATIC_PRODUCTS: Product[] = [
   {
     slug: 'custom-hacksaw-cutting',
     title: 'Custom Hacksaw Cutting',
+    category: 'SERVICE',
     tagline: 'Precision-cut to exact dimensions. No waste. Ready for your lathe or CNC machining center.',
     isFeatured: true,
     specs: [
@@ -117,6 +159,7 @@ const STATIC_PRODUCTS = [
   {
     slug: 'mild-steel-shafts',
     title: 'Mild Steel Shafts',
+    category: 'RAW_MATERIAL',
     tagline: 'Bright and black finish steel shafting, available in standard and custom lengths for industrial applications.',
     isFeatured: false,
     icon: (
@@ -145,6 +188,7 @@ const STATIC_PRODUCTS = [
   {
     slug: 'carbon-steel-rods',
     title: 'Carbon Steel Rods',
+    category: 'ALLOY',
     tagline: 'High-tensile forged bars in EN8, EN9, EN19, and EN24 grades. Normalized for consistent machinability.',
     isFeatured: false,
     icon: (
@@ -177,11 +221,220 @@ const STATIC_PRODUCTS = [
         <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">EN8 / EN24</text>
       </svg>
     )
-  }
+  },
+  {
+    slug: 'alloy-steel-round-bars',
+    title: 'Alloy Steel Round Bars',
+    category: 'ALLOY',
+    tagline: 'High-strength alloy bars tailored for heavy-duty automotive and industrial machinery components.',
+    isFeatured: false,
+    specs: [
+        { label: 'Grades', value: 'EN19, EN24, EN353' },
+        { label: 'Diameter', value: 'Ø 20 – 300mm' },
+        { label: 'Finish', value: 'Black, Peeled, Ground' }
+    ],
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+    ),
+    illustration: (
+      <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">ALLOY STEEL ROUND BARS</text>
+      </svg>
+    )
+  },
+  {
+    slug: 'forged-steel-round-bars',
+    title: 'Forged Steel Round Bars',
+    category: 'ALLOY',
+    tagline: 'Superior grain structure forged bars for maximum structural integrity and impact resistance.',
+    isFeatured: true,
+    specs: [
+        { label: 'Grades', value: 'Class 4, EN8, EN9' },
+        { label: 'Diameter', value: 'Ø 150 – 600mm' },
+        { label: 'Condition', value: 'Normalized, UT Tested' }
+    ],
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+    ),
+    illustration: (
+      <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">FORGED STEEL ROUND BARS</text>
+      </svg>
+    )
+  },
+  {
+    slug: 'roller-shafts',
+    title: 'Roller Shafts',
+    category: 'RAW_MATERIAL',
+    tagline: 'Precision-machined shafts optimized for extreme torque in sugar mills and heavy crushing equipment.',
+    isFeatured: false,
+    specs: [
+        { label: 'Material', value: 'EN8, EN9' },
+        { label: 'Application', value: 'Crushing & Milling' },
+        { label: 'Tolerance', value: 'High Precision' }
+    ],
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+    ),
+    illustration: (
+      <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">ROLLER SHAFTS</text>
+      </svg>
+    )
+  },
+  {
+    slug: 'hydraulic-shafts',
+    title: 'Hydraulic Shafts',
+    category: 'RAW_MATERIAL',
+    tagline: 'Hard chrome plated and induction hardened shafts for earthmoving and fluid power systems.',
+    isFeatured: false,
+    specs: [
+        { label: 'Surface', value: 'Hard Chrome' },
+        { label: 'Hardness', value: 'Induction Hardened' },
+        { label: 'Usage', value: 'Cylinders & Pumps' }
+    ],
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+    ),
+    illustration: (
+      <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">HYDRAULIC SHAFTS</text>
+      </svg>
+    )
+  },
+  {
+    slug: 'iron-steel-plates',
+    title: 'Iron & Steel Plates',
+    category: 'RAW_MATERIAL',
+    tagline: 'Structural and boiler quality plates for heavy fabrication, marine, and pressure vessel applications.',
+    isFeatured: false,
+    specs: [
+        { label: 'Grades', value: 'IS 2062, ASTM A36' },
+        { label: 'Thickness', value: '5mm – 150mm' },
+        { label: 'Profile Cutting', value: 'Available' }
+    ],
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+    ),
+    illustration: (
+      <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">IRON & STEEL PLATES</text>
+      </svg>
+    )
+  },
+  {
+    slug: 'iron-steel-pipes-tubes',
+    title: 'Iron & Steel Pipes & Tubes',
+    category: 'RAW_MATERIAL',
+    tagline: 'Seamless and ERW pipes offering excellent burst strength for industrial pipelines and structural supports.',
+    isFeatured: false,
+    specs: [
+        { label: 'Types', value: 'Seamless, ERW' },
+        { label: 'Schedule', value: 'Sch 40, Sch 80' },
+        { label: 'Standard', value: 'API, ASTM, IS' }
+    ],
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+    ),
+    illustration: (
+      <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">IRON & STEEL PIPES & TUBES</text>
+      </svg>
+    )
+  },
+  {
+    slug: 'iron-steel-bars',
+    title: 'Iron & Steel Bars',
+    category: 'RAW_MATERIAL',
+    tagline: 'Versatile flat, square, and hexagonal profiles for general engineering and construction purposes.',
+    isFeatured: false,
+    specs: [
+        { label: 'Profiles', value: 'Flat, Square, Hex' },
+        { label: 'Grades', value: 'MS, EN8' },
+        { label: 'Lengths', value: 'Custom Cut' }
+    ],
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="16" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+      </svg>
+    ),
+    illustration: (
+      <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">IRON & STEEL BARS</text>
+      </svg>
+    )
+  },
+];
+
+const FILTERS: Array<{ label: string; value: 'ALL' | ProductCategory }> = [
+  { label: 'All', value: 'ALL' },
+  { label: 'Services', value: 'SERVICE' },
+  { label: 'MS Stock', value: 'RAW_MATERIAL' },
+  { label: 'Alloy Grades', value: 'ALLOY' },
 ];
 
 export default function ProductsSection() {
-  const [products, setProducts] = useState<any[]>(STATIC_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(STATIC_PRODUCTS);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState<'ALL' | ProductCategory>('ALL');
+
+  const filteredProducts = products.filter((product) => {
+    const query = searchQuery.trim().toLowerCase();
+    const matchesFilter = activeFilter === 'ALL' || product.category === activeFilter;
+    const matchesSearch = !query ||
+      product.title.toLowerCase().includes(query) ||
+      product.tagline.toLowerCase().includes(query) ||
+      product.specs.some((spec) => `${spec.label} ${spec.value}`.toLowerCase().includes(query));
+
+    return matchesFilter && matchesSearch;
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -191,11 +444,19 @@ export default function ProductsSection() {
         const result = await res.json();
         
         if (result.success && Array.isArray(result.data) && result.data.length > 0) {
-          const merged = result.data.map((dbProd: any) => {
+          const merged = result.data.map((dbProd: {
+            slug: string;
+            title: string;
+            tagline: string;
+            category?: ProductCategory;
+            isFeatured?: boolean;
+            specs?: ProductSpec[];
+          }) => {
             const match = STATIC_PRODUCTS.find((p) => p.slug === dbProd.slug);
             return {
               ...dbProd,
-              specs: dbProd.specs.map((s: any) => ({ label: s.label, value: s.value })),
+              category: dbProd.category || match?.category || 'RAW_MATERIAL',
+              specs: dbProd.specs?.map((s) => ({ label: s.label, value: s.value })) || match?.specs || [],
               illustration: match?.illustration || STATIC_PRODUCTS[1].illustration,
               icon: match?.icon || STATIC_PRODUCTS[1].icon,
             };
@@ -210,19 +471,58 @@ export default function ProductsSection() {
   }, []);
 
   return (
-    <section id="products" className="relative z-20 bg-paper py-20 noise-overlay sm:py-28 lg:py-36" style={{ perspective: "1200px" }}>
+    <section id="products" className="relative z-20 bg-paper py-12 noise-overlay sm:py-16 lg:py-20" style={{ perspective: "1200px" }}>
       <div className="relative z-10 mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="max-w-[650px] mb-16 lg:mb-24"
+          className="mb-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between lg:mb-16"
         >
-          <span className="section-tag">CATALOG</span>
-          <h2 className="section-title">Quality on Demand</h2>
-          <p className="section-desc">Raw materials processed to absolute specifications. Ready for dispatch or custom cut to minimize your shop-floor setup time.</p>
-        </motion.div>
+          <div className="max-w-[650px]">
+              <span className="section-tag">CATALOG</span>
+              <h2 className="section-title">Quality on Demand</h2>
+              <p className="section-desc">Raw materials processed to absolute specifications. Ready for dispatch or custom cut to minimize your shop-floor setup time.</p>
+            </div>
+
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <div className="relative">
+                <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-steel/50" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input
+                  type="text"
+                  placeholder="Search grade, diam..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full rounded-md border border-steel/20 bg-white/50 py-2.5 pl-10 pr-4 text-sm font-mono text-slate placeholder:text-steel/50 focus:border-cyan-glow focus:outline-none focus:ring-1 focus:ring-cyan-glow sm:w-56"
+                />
+              </div>
+              <a
+                href="/catalog"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-slate px-5 py-2.5 font-mono text-xs tracking-wider text-white transition-colors hover:bg-slate-light uppercase whitespace-nowrap"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                View Catalog
+              </a>
+            </div>
+          </motion.div>
+
+        <div className="mb-8 flex flex-wrap gap-2">
+          {FILTERS.map((filter) => (
+            <button
+              key={filter.value}
+              type="button"
+              onClick={() => setActiveFilter(filter.value)}
+              className={`rounded-full border px-4 py-2 font-mono text-[0.72rem] uppercase tracking-[0.12em] transition-colors ${
+                activeFilter === filter.value
+                  ? 'border-slate bg-slate text-white'
+                  : 'border-steel/15 bg-white/45 text-slate/65 hover:border-steel/30 hover:text-slate'
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
 
         <motion.div
           initial="hidden"
@@ -231,7 +531,7 @@ export default function ProductsSection() {
           variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
           className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8"
         >
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <ProductCard
               key={product.slug}
               title={product.title}
@@ -243,6 +543,19 @@ export default function ProductsSection() {
               {product.illustration}
             </ProductCard>
           ))}
+          {filteredProducts.length === 0 && (
+            <div className="col-span-full rounded-lg border border-steel/10 bg-white/45 p-8 text-center">
+              <p className="font-display text-2xl text-slate">No matching material found</p>
+              <p className="mt-2 text-sm text-steel">Try another grade or send the requirement directly. We can confirm availability quickly.</p>
+              <button
+                type="button"
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="mt-6 rounded-md bg-dawn-coral px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-white"
+              >
+                Send Requirement
+              </button>
+            </div>
+          )}
         </motion.div>
       </div>
     </section>

@@ -18,7 +18,7 @@ const steps = [
 
 export default function OperatingPromise() {
   return (
-    <section id="process" className="relative overflow-hidden border-y border-steel/10 bg-paper-warm py-20 sm:py-24 lg:py-32">
+    <section id="process" className="relative overflow-hidden border-y border-steel/10 bg-paper-warm py-12 sm:py-16 lg:py-20">
       <div className="mx-auto grid max-w-[1200px] gap-12 px-5 sm:gap-14 sm:px-8 md:px-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
         <div>
           <span className="section-tag">THE SHAH METHOD</span>
@@ -34,7 +34,7 @@ export default function OperatingPromise() {
               <span className="font-mono text-[0.7rem] tracking-[0.2em] text-dawn-coral">{step.number}</span>
               <div>
                 <h3 className="mb-2 font-display text-2xl text-slate transition-colors duration-300 group-hover:text-steel">{step.title}</h3>
-                <p className="max-w-[480px] text-[0.92rem] leading-relaxed text-steel/70">{step.description}</p>
+                <p className="max-w-[480px] text-[0.92rem] leading-relaxed text-slate/70">{step.description}</p>
               </div>
             </div>
           ))}

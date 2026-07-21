@@ -5,10 +5,21 @@ import { useEffect, useState } from 'react';
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > window.innerHeight * 0.75);
+
+      const sections = ['process', 'products', 'industries', 'trust', 'milestones', 'faq'];
+      let current = '';
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element && window.scrollY >= element.offsetTop - 200) {
+          current = section;
+        }
+      }
+      setActiveSection(current);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -31,7 +42,9 @@ export default function Navigation() {
     { label: 'Process', href: '#process' },
     { label: 'Products', href: '#products' },
     { label: 'Sectors', href: '#industries' },
+    { label: 'Trust', href: '#trust' },
     { label: 'Legacy', href: '#milestones' },
+    { label: 'FAQ', href: '#faq' },
   ];
 
   return (
@@ -47,7 +60,7 @@ export default function Navigation() {
           <span className={`font-display font-bold text-[1.05rem] tracking-[0.08em] transition-colors duration-500 ${isScrolled ? 'text-slate' : 'text-white'}`}>
             SHAH INDUSTRIAL
           </span>
-          <span className={`font-mono text-[0.55rem] tracking-[0.3em] uppercase transition-colors duration-500 ${isScrolled ? 'text-steel/50' : 'text-white/40'}`}>
+          <span className={`font-mono text-[0.55rem] tracking-[0.3em] uppercase transition-colors duration-500 ${isScrolled ? 'text-slate/60' : 'text-white/40'}`}>
             Est. 1989 · Mazgaon, Mumbai
           </span>
         </a>
@@ -59,7 +72,11 @@ export default function Navigation() {
               <a
                 href={item.href}
                 className={`font-mono text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 hover:opacity-100 ${
-                  isScrolled ? 'text-steel/70 hover:text-slate' : 'text-white/60 hover:text-white'
+                  activeSection === item.href.slice(1)
+                    ? 'text-dawn-coral'
+                    : isScrolled
+                    ? 'text-slate/70 hover:text-slate'
+                    : 'text-white/60 hover:text-white'
                 }`}
               >
                 {item.label}
