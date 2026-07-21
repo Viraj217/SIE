@@ -27,17 +27,59 @@ const PRODUCTS = [
     quote: "Share diameter, length, grade, quantity, and tolerance requirement.",
   },
   {
-    title: "Mild Steel Shafts",
+    title: "M.S. & Carbon Steel Rounds",
     category: "Raw Material",
-    details: ["Ø 12mm to 250mm", "Bright and black finish options", "Standard lengths from 3m to 6m"],
+    details: ["Ø 12 – 250mm", "3m to 6m std.", "IS 2062 A/B Standard"],
     quote: "Share diameter, length, quantity, finish, and delivery destination.",
   },
   {
     title: "Carbon Steel Rods",
     category: "Alloy Grades",
-    details: ["EN8, EN9, EN19, EN24", "Forged and peeled options", "Normalized stock for machinability"],
+    details: ["Grades EN8/9/19/24", "Forged, Peeled Finish", "Normalized Hardness"],
     quote: "Share grade, diameter, cut length, heat treatment need, and quantity.",
   },
+  {
+    title: "N.S. & Alloy Steel Round Bars",
+    category: "Alloy Grades",
+    details: ["Grades EN19, EN24, EN353", "100 mm dia to 1000 mm dia", "Black, Peeled, Ground Finish"],
+    quote: "Share grade, diameter, cut length, heat treatment need, and quantity.",
+  },
+  {
+    title: "Forged Steel Round Bars",
+    category: "Alloy Grades",
+    details: ["Class 4, EN8, EN9 Grades", "200 mm dia to 600 mm dia", "Ultrasonic Tested"],
+    quote: "Share grade, diameter, cut length, and specific testing requirements.",
+  },
+  {
+    title: "Roller Shafts",
+    category: "Raw Material",
+    details: ["High Torque Resistance", "Precision Machined", "Sugar mill and heavy equipment"],
+    quote: "Share required dimensions, application, and tolerance limits.",
+  },
+  {
+    title: "Hydraulic Shafts",
+    category: "Raw Material",
+    details: ["Hard Chrome Plated", "Induction Hardened", "Earthmoving applications"],
+    quote: "Share diameter, length, plating thickness, and base material preference.",
+  },
+  {
+    title: "Iron & Steel Plates",
+    category: "Raw Material",
+    details: ["Structural Quality", "Boiler Quality", "Heavy fabrication"],
+    quote: "Share thickness, width, length, grade, and required quantity.",
+  },
+  {
+    title: "Heavy Seamless Pipes",
+    category: "Raw Material",
+    details: ["Seamless and ERW", "High burst strength", "Industrial pipelines"],
+    quote: "Share schedule, nominal bore, grade, and required length.",
+  },
+  {
+    title: "Iron & Steel Bars",
+    category: "Raw Material",
+    details: ["Flat profiles", "Square profiles", "Hexagonal profiles"],
+    quote: "Share profile type, dimensions, grade, and quantity.",
+  }
 ];
 
 const BUYER_NOTES = [

@@ -57,10 +57,10 @@ export default function Navigation() {
     >
       <nav className="max-w-[1300px] mx-auto h-full flex justify-between items-center px-8 md:px-12">
         <a href="#" className="relative z-50 flex min-w-0 flex-col gap-0.5 group">
-          <span className={`font-display font-bold text-[1.05rem] tracking-[0.08em] transition-colors duration-500 ${isScrolled ? 'text-slate' : 'text-white'}`}>
-            SHAH INDUSTRIAL
+          <span className={`font-display font-bold text-[1.25rem] tracking-[0.08em] transition-colors duration-500 ${isScrolled ? 'text-slate' : 'text-white'}`}>
+            SHAH INDUSTRIAL ENTERPRISE
           </span>
-          <span className={`font-mono text-[0.55rem] tracking-[0.3em] uppercase transition-colors duration-500 ${isScrolled ? 'text-slate/60' : 'text-white/40'}`}>
+          <span className={`font-mono text-[0.6rem] tracking-[0.3em] uppercase transition-colors duration-500 ${isScrolled ? 'text-slate/60' : 'text-white/40'}`}>
             Est. 1989 · Mazgaon, Mumbai
           </span>
         </a>
@@ -89,7 +89,7 @@ export default function Navigation() {
               className={`font-mono text-[0.75rem] tracking-[0.1em] uppercase px-5 py-2 rounded-sm transition-all duration-300 ${
                 isScrolled
                   ? "bg-slate text-white hover:bg-steel"
-                  : "bg-dawn-coral/90 text-white hover:bg-dawn-coral"
+                  : "bg-dawn-coral/90 text-slate-900 font-bold hover:bg-dawn-coral"
               }`}
             >
               Get Quote
@@ -116,7 +116,7 @@ export default function Navigation() {
               {item.label}
             </a>
           ))}
-          <a href="#contact" onClick={() => setIsMenuOpen(false)} className="mt-4 px-8 py-3 text-center bg-dawn-coral text-white font-mono text-sm tracking-wider uppercase">
+          <a href="#contact" onClick={() => setIsMenuOpen(false)} className="mt-4 px-8 py-3 text-center bg-dawn-coral text-slate-900 font-bold font-mono text-sm tracking-wider uppercase">
             Get Quote
           </a>
         </div>

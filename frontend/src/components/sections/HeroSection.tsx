@@ -203,11 +203,6 @@ export default function HeroSection() {
                 <text x="380" y="107" textAnchor="middle" fill="#E8845C" fontSize="9" fontFamily="monospace" letterSpacing="2">MEASURE → CUT → DISPATCH</text>
               </g>
             </svg>
-
-            <div className="flex items-center justify-between border-t border-white/10 px-5 py-4 sm:px-7">
-              <span className="truncate font-mono text-[0.55rem] tracking-[0.12em] text-white/35 uppercase sm:text-[0.58rem] sm:tracking-[0.15em]">Machined to your drawing</span>
-              <span className="shrink-0 font-mono text-[0.55rem] tracking-[0.12em] text-cyan-glow/80 uppercase sm:text-[0.58rem] sm:tracking-[0.15em]">Status: ready</span>
-            </div>
           </div>
         </div>
       </div>
