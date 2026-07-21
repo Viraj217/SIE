@@ -57,15 +57,15 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-28 lg:py-36 relative bg-paper z-20 noise-overlay">
-      <div className="max-w-[1200px] mx-auto px-8 md:px-12 relative z-10">
+    <section id="contact" className="relative z-20 bg-paper py-20 noise-overlay sm:py-28 lg:py-36">
+      <div className="relative z-10 mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12">
         
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16 md:mb-24"
+          className="mb-12 text-center sm:mb-16 md:mb-24"
         >
           <span className="section-tag justify-center">GET IN TOUCH</span>
           <h2 className="section-title">Let&apos;s Build Something</h2>
@@ -79,7 +79,7 @@ export default function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-slate p-8 md:p-12 rounded-xl text-white ring-1 ring-white/5 relative overflow-hidden"
+            className="relative overflow-hidden rounded-xl bg-slate p-6 text-white ring-1 ring-white/5 sm:p-8 md:p-12"
           >
             {/* Corner accent */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-cyan-glow/5 to-transparent pointer-events-none" />

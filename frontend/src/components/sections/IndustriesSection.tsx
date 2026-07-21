@@ -67,11 +67,11 @@ export default function IndustriesSection() {
   }, []);
 
   return (
-    <section id="industries" className="py-28 lg:py-36 relative bg-paper z-20">
+    <section id="industries" className="relative z-20 bg-paper py-20 sm:py-28 lg:py-36">
       {/* Subtle top separator */}
       <div className="glow-line mb-0" />
 
-      <div className="max-w-[1000px] mx-auto px-8 md:px-12 pt-20">
+      <div className="mx-auto max-w-[1000px] px-5 pt-14 sm:px-8 sm:pt-20 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

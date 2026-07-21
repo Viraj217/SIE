@@ -31,7 +31,7 @@ function ProductCard({ title, tagline, specs, isFeatured = false, icon, children
         hidden: { opacity: 0, y: 60, scale: 0.95 },
         visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } }
       }}
-      className={`relative p-8 lg:p-10 rounded-lg flex flex-col cursor-default overflow-hidden group ${
+    className={`relative flex flex-col cursor-default overflow-hidden rounded-lg p-6 group sm:p-8 lg:p-10 ${
         isFeatured
           ? "bg-slate text-white ring-1 ring-cyan-glow/20"
           : "bg-white text-slate ring-1 ring-steel/10 shadow-[0_4px_40px_rgba(22,35,43,0.06)]"
@@ -73,9 +73,9 @@ function ProductCard({ title, tagline, specs, isFeatured = false, icon, children
       <div className="mt-auto" style={{ transform: "translateZ(20px)" }}>
         <ul className="flex flex-col gap-0 mb-6">
           {specs.map((spec: any, i: number) => (
-            <li key={i} className={`flex justify-between text-[0.85rem] py-3 border-b last:border-b-0 ${isFeatured ? 'border-white/8' : 'border-steel/8'}`}>
+            <li key={i} className={`flex justify-between gap-4 py-3 text-[0.8rem] border-b last:border-b-0 sm:text-[0.85rem] ${isFeatured ? 'border-white/8' : 'border-steel/8'}`}>
               <span className={`${isFeatured ? 'text-white/40' : 'text-steel/60'} font-mono`}>{spec.label}</span>
-              <span className="font-mono font-medium tracking-tight">{spec.value}</span>
+              <span className="text-right font-mono font-medium tracking-tight">{spec.value}</span>
             </li>
           ))}
         </ul>
@@ -210,8 +210,8 @@ export default function ProductsSection() {
   }, []);
 
   return (
-    <section id="products" className="py-28 lg:py-36 relative bg-paper z-20 noise-overlay" style={{ perspective: "1200px" }}>
-      <div className="max-w-[1200px] mx-auto px-8 md:px-12 relative z-10">
+    <section id="products" className="relative z-20 bg-paper py-20 noise-overlay sm:py-28 lg:py-36" style={{ perspective: "1200px" }}>
+      <div className="relative z-10 mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

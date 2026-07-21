@@ -74,18 +74,18 @@ export default function TimelineSection() {
   }, []);
 
   return (
-    <section id="milestones" className="py-28 lg:py-36 relative bg-slate z-20 noise-overlay overflow-hidden">
+    <section id="milestones" className="relative z-20 overflow-hidden bg-slate py-20 noise-overlay sm:py-28 lg:py-36">
       {/* Decorative gradient blobs */}
       <div className="absolute top-20 left-[-200px] w-[500px] h-[500px] rounded-full bg-cyan-glow/[0.03] blur-[120px] pointer-events-none" />
       <div className="absolute bottom-20 right-[-200px] w-[400px] h-[400px] rounded-full bg-dawn-coral/[0.03] blur-[120px] pointer-events-none" />
 
-      <div className="max-w-[1000px] mx-auto px-8 md:px-12 relative z-10">
+      <div className="relative z-10 mx-auto max-w-[1000px] px-5 sm:px-8 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16 md:mb-24"
+          className="mb-12 text-center sm:mb-16 md:mb-24"
         >
           <span className="section-tag justify-center !text-cyan-glow/60">
             LEGACY

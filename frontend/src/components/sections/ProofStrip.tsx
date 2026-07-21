@@ -24,7 +24,7 @@ function Counter({ value, unit, label, delay }: { value: number; unit: string; l
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: delay / 1000 }}
-      className="flex flex-col items-center text-center py-8 relative group"
+      className="relative flex flex-col items-center py-6 text-center group sm:py-8"
     >
       {/* Decorative top line */}
       <div className="w-8 h-[2px] bg-gradient-to-r from-transparent via-dawn-coral to-transparent mb-6 opacity-40 group-hover:opacity-100 group-hover:w-12 transition-all duration-500" />
@@ -47,7 +47,7 @@ export default function ProofStrip() {
       {/* Top glow line */}
       <div className="glow-line" />
       
-      <div className="max-w-[1100px] mx-auto px-8 py-6">
+      <div className="mx-auto max-w-[1100px] px-5 py-4 sm:px-8 sm:py-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-steel/10">
           <Counter value={35} unit="+" label="Years of Presence" delay={0} />
           <Counter value={500} unit="T/yr" label="Steel Handled" delay={150} />
