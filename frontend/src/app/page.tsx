@@ -97,10 +97,10 @@ export default function Home() {
       <OperatingPromise />
       <ProductsSection />
       <IndustriesSection />
-      <TrustSection />
+      {/* <TrustSection /> */}
       <TimelineSection />
-      <FaqSection />
       <ContactSection />
+      <FaqSection />
 
       <footer className="relative z-20 border-t border-white/[0.04] bg-slate py-8 sm:py-10">
         <div className="mx-auto flex max-w-[1300px] flex-col items-center justify-between gap-3 px-5 sm:gap-4 sm:px-8 md:flex-row md:px-12">

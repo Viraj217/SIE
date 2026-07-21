@@ -1,4 +1,4 @@
-export const SITE_URL = "https://shahindustrial.com";
+export const SITE_URL = "https://shahindustrialenterprise.com";
 
 export const businessInfo = {
   name: "Shah Industrial Enterprise",
