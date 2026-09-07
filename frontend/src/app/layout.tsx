@@ -8,6 +8,7 @@ import Analytics from "@/components/Analytics";
 import ActionAnalytics from "@/components/ActionAnalytics";
 import { SITE_URL, businessInfo } from "@/lib/seo";
 import { CANONICAL_PRODUCTS } from "@/lib/config";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -131,6 +132,7 @@ export default function RootLayout({
         <MobileStickyBar />
         <Analytics />
         <ActionAnalytics />
+        <SpeedInsights />
       </body>
     </html>
   );
