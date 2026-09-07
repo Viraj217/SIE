@@ -1,0 +1,31 @@
+# Task: RFQ Flow Overhaul Implementation
+
+- [x] 1. Baseline Current Database Schema <!-- id: 1 -->
+  - [x] Save snapshot of current schema as baseline reference (`prisma/schema.baseline.prisma`)
+  - [x] Generate baseline migration (`0_init/migration.sql`) using `prisma migrate diff`
+- [x] 2. Update Prisma Schema & Generate RFQ Migration <!-- id: 2 -->
+  - [x] Update `backend/prisma/schema.prisma` with evolved `Inquiry`, `InquiryItem`, `RfqCounter`, and enums
+  - [x] Generate `20260907000000_add_structured_rfq/migration.sql` diff without modifying live DB
+  - [x] Run `npx prisma generate` in backend to update Prisma client types
+- [x] 3. Implement Date Helpers & Sequence Generator <!-- id: 3 -->
+  - [x] Create `backend/src/lib/dateUtils.ts` with explicit `parseDateOnly` and `serializeDateOnly`
+  - [x] Create `backend/src/lib/rfqNumber.ts` with `generateRfqNumber(tx: Prisma.TransactionClient)` and `getBusinessYear()`
+- [x] 4. Update Backend Schemas & Dual-Path Route <!-- id: 4 -->
+  - [x] Update `backend/src/schemas/validation.ts` with `createRfqSchema` and `inquiryItemSchema`
+  - [x] Update `backend/src/routes/inquiries.ts` with strict routing (`'items' in req.body`), honeypot check, atomic interactive `$transaction`, and populated legacy compatibility fields
+  - [x] Update `GET /api/inquiries` and `PATCH /api/inquiries/:id` to include line items and handle new statuses
+- [x] 5. Frontend Next.js Proxy & Types <!-- id: 5 -->
+  - [x] Update `frontend/src/app/api/rfq/route.ts` to validate and forward structured RFQ payloads with honeypot protection
+  - [x] Ensure backward compatibility for legacy simple contact requests
+- [x] 6. Frontend Components <!-- id: 6 -->
+  - [x] Create `frontend/src/components/sections/RfqForm.tsx` with multi-line items (dimensions, quantity, unit, grade), buyer details, date picker, and validation
+  - [x] Refactor `frontend/src/components/sections/ContactSection.tsx` to mount `RfqForm`
+  - [x] Update `frontend/src/app/admin/inquiries/page.tsx` with new statuses, status colors, RFQ number, and items display
+- [x] 7. Verification & Testing <!-- id: 7 -->
+  - [x] Add unit/integration tests for date helpers, sequence generation, and strict routing
+  - [x] Build backend (`npm run build`) — exit code 0
+  - [x] Build frontend (`npm run build`) — exit code 0
+- [x] 8. Final Report <!-- id: 8 -->
+  - [x] Document generated migration SQL
+  - [x] Document test and build results
+  - [x] Detail manual production deployment steps for user review

@@ -23,25 +23,88 @@ enum Role {
   OWNER
 }
 
-/// Customer inquiry/quote submission
+/// Evolved customer inquiry/quote submission (handles both legacy and structured RFQ)
 model Inquiry {
-  id           String        @id @default(uuid())
-  createdAt    DateTime      @default(now())
-  name         String
-  company      String
-  contactInfo  String
-  requirements String
-  status       InquiryStatus @default(PENDING)
-  notes        String?
-  updatedAt    DateTime      @updatedAt
+  id                   String         @id @default(uuid())
+  rfqNumber            String?        @unique     // null for legacy rows
+
+  // ── Legacy fields (kept for backward compatibility with existing views) ──
+  name                 String                     // legacy: buyer name / compatibility
+  company              String                     // legacy: company name / compatibility
+  contactInfo          String                     // legacy: combined contact string / compatibility
+  requirements         String?                    // legacy: text blob; optional for structured RFQ
+
+  // ── New structured fields (nullable — legacy rows don't have them) ──
+  contactPerson        String?
+  email                String?
+  phone                String?
+  city                 String?
+  gstNumber            String?
+  deliveryLocation     String?
+  requiredDeliveryDate DateTime?      @db.Date    // Date-only, no timezone shifting
+  message              String?
+
+  // ── Pipeline fields ──
+  source               InquirySource  @default(LEGACY)
+  status               InquiryStatus  @default(PENDING)
+  notes                String?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  // ── Relations ──
+  items                InquiryItem[]
+}
+
+/// Structured line items for RFQ
+model InquiryItem {
+  id            String   @id @default(uuid())
+  inquiryId     String
+  inquiry       Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  materialGrade String
+  productType   String
+  od            Decimal? @db.Decimal(12, 2)   // millimetres
+  idDimension   Decimal? @db.Decimal(12, 2)   // millimetres
+  length        Decimal? @db.Decimal(12, 2)   // millimetres
+  quantity      Decimal  @db.Decimal(12, 4)   // supports fractional metric units (e.g. 2.5 MT)
+  quantityUnit  String                        // NOS, KG, METER, MT
+  process       String?
+  remarks       String?
+  createdAt     DateTime @default(now())
+}
+
+/// Concurrency-safe atomic RFQ counter
+model RfqCounter {
+  year       Int @id           // Business year in Asia/Kolkata
+  lastNumber Int @default(0)   // atomically incremented
+}
+
+enum InquirySource {
+  WEBSITE
+  EMAIL
+  WHATSAPP
+  MANUAL
+  LEGACY
 }
 
 enum InquiryStatus {
+  // === Legacy values (kept for existing rows) ===
   PENDING
   REVIEWED
   CONTACTED
-  QUOTED
   ARCHIVED
+
+  // === Shared value ===
+  QUOTED
+
+  // === New CRM pipeline values ===
+  NEW
+  REVIEWING
+  CLARIFICATION_REQUIRED
+  QUOTE_PREPARING
+  NEGOTIATION
+  WON
+  LOST
+  DORMANT
 }
 
 /// Steel/iron product types in the catalog

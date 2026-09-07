@@ -14,9 +14,12 @@ const PORT = process.env.PORT || 5000;
 // ── Middleware ───────────────────────────────────────────────────────────
 app.use(helmet());
 
-// Set up allowed origins for CORS validation
 const frontendUrl = process.env.FRONTEND_URL;
-const allowedOrigins = ['http://localhost:3000', 'https://shah-industrial-frontend.vercel.app'];
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://shah-industrial-frontend.vercel.app',
+  'https://shahindustrialenterprise.vercel.app',
+];
 
 if (frontendUrl) {
   const normalized = frontendUrl.replace(/\/$/, '');

@@ -1,36 +1,70 @@
 import { z } from "zod";
 
 /**
- * Server-side RFQ intake.
+ * Server-side RFQ intake proxy.
  *
- * The contact form previously POSTed straight from the browser to
- * NEXT_PUBLIC_API_URL. That URL is baked into the client bundle at build time,
- * and it is currently http://localhost:5000 — meaning every enquiry submitted
- * from the deployed site fails. Routing through this handler means:
- *
- *   1. the browser always talks to a same-origin URL (no CORS, no localhost),
- *   2. the backend address is a server-only env var that can change per
- *      environment without rebuilding the client,
- *   3. a failure to reach the backend is reported honestly to the buyer so the
- *      enquiry can be re-sent over WhatsApp or phone instead of being lost.
+ * Routes requests to the internal Express backend `POST /api/inquiries`.
+ * Supports both structured RFQ payloads (with `items`) and legacy payloads,
+ * applies honeypot filtering, and protects internal secrets.
  */
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-const rfqSchema = z.object({
-  name: z.string().trim().min(1).max(120),
-  company: z.string().trim().min(1).max(200),
-  contactInfo: z.string().trim().min(1).max(200),
-  requirements: z.string().trim().min(10).max(5000),
-  // Honeypot — real buyers never see or fill this field. Deliberately NOT
-  // constrained: a validation error would tell a bot to retry. Anything
-  // non-empty here is dropped silently below with a 202.
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+
+const optionalPositiveNumber = z.preprocess(
+  (v) => (v === '' || v === null || v === undefined ? null : Number(v)),
+  z.number().positive('Value must be positive').nullable().optional()
+);
+
+const itemSchema = z.object({
+  materialGrade: z.string().trim().min(1, 'Material grade is required').max(100),
+  productType: z.string().trim().min(1, 'Product category is required').max(120),
+  od: optionalPositiveNumber,
+  idDimension: optionalPositiveNumber,
+  length: optionalPositiveNumber,
+  quantity: z.preprocess(
+    (v) => (v === '' || v === null || v === undefined ? undefined : Number(v)),
+    z.number().positive('Quantity must be greater than 0')
+  ),
+  quantityUnit: z.string().trim().min(1, 'Quantity unit is required').max(20),
+  process: z.string().trim().max(100).optional().nullable(),
+  remarks: z.string().trim().max(500).optional().nullable(),
+});
+
+const structuredRfqSchema = z.object({
+  contactPerson: z.string().trim().min(1, 'Contact person name is required').max(120),
+  companyName: z.string().trim().min(1, 'Company name is required').max(200),
+  email: z.string().trim().email('Invalid email address').max(200),
+  phone: z.string().trim().min(5, 'Phone number must be at least 5 digits').max(30),
+  city: z.string().trim().max(100).optional().nullable(),
+  gstNumber: z.string().trim().max(20).optional().nullable(),
+  deliveryLocation: z.string().trim().max(200).optional().nullable(),
+  requiredDeliveryDate: z
+    .string()
+    .trim()
+    .refine((v) => !v || DATE_REGEX.test(v), {
+      message: 'Date must be in YYYY-MM-DD format',
+    })
+    .optional()
+    .nullable(),
+  message: z.string().trim().max(5000).optional().nullable(),
+  items: z.array(itemSchema).min(1, 'At least one line item is required').max(50),
+  website: z.string().max(200).optional(),
+});
+
+const legacyRfqSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(120),
+  company: z.string().trim().min(1, 'Company name is required').max(200),
+  contactInfo: z.string().trim().min(1, 'Contact info is required').max(200),
+  requirements: z.string().trim().min(10, 'Requirements must be at least 10 characters').max(5000),
   website: z.string().max(200).optional(),
 });
 
 function backendBaseUrl(): string | null {
-  const raw = process.env.BACKEND_API_URL ||
+  const raw =
+    process.env.BACKEND_API_URL ||
     (process.env.NODE_ENV !== "production" ? "http://localhost:5000" : "");
 
   if (!raw) return null;
@@ -38,7 +72,10 @@ function backendBaseUrl(): string | null {
   try {
     const url = new URL(raw);
     if (!['http:', 'https:'].includes(url.protocol)) return null;
-    if (process.env.NODE_ENV === 'production' && ['localhost', '127.0.0.1', '::1'].includes(url.hostname)) {
+    if (
+      process.env.NODE_ENV === 'production' &&
+      ['localhost', '127.0.0.1', '::1'].includes(url.hostname)
+    ) {
       return null;
     }
     return url.toString().replace(/\/+$/, "");
@@ -54,32 +91,67 @@ export async function POST(request: Request) {
     body = await request.json();
   } catch {
     return Response.json(
-      { success: false, message: "Malformed request." },
+      { success: false, message: "Malformed request body." },
       { status: 400 }
     );
   }
 
-  const parsed = rfqSchema.safeParse(body);
-
-  if (!parsed.success) {
+  if (!body || typeof body !== 'object') {
     return Response.json(
-      {
-        success: false,
-        message: "Validation failed",
-        errors: parsed.error.issues.map((issue) => ({
-          field: issue.path.join("."),
-          message: issue.message,
-        })),
-      },
+      { success: false, message: "Request body must be an object." },
       { status: 400 }
     );
   }
 
-  const { website, ...inquiry } = parsed.data;
+  const hasItems = Object.prototype.hasOwnProperty.call(body, 'items');
 
-  // Honeypot tripped: acknowledge without storing, so the bot does not retry.
-  if (website) {
-    return Response.json({ success: true, inquiry: { id: "filtered" } }, { status: 202 });
+  let payloadToSend: Record<string, unknown>;
+  let trippedHoneypot = false;
+
+  if (hasItems) {
+    const parsed = structuredRfqSchema.safeParse(body);
+    if (!parsed.success) {
+      return Response.json(
+        {
+          success: false,
+          message: "Validation failed",
+          errors: parsed.error.issues.map((issue) => ({
+            field: issue.path.join("."),
+            message: issue.message,
+          })),
+        },
+        { status: 400 }
+      );
+    }
+    const { website, ...rest } = parsed.data;
+    if (website) trippedHoneypot = true;
+    payloadToSend = rest;
+  } else {
+    const parsed = legacyRfqSchema.safeParse(body);
+    if (!parsed.success) {
+      return Response.json(
+        {
+          success: false,
+          message: "Validation failed",
+          errors: parsed.error.issues.map((issue) => ({
+            field: issue.path.join("."),
+            message: issue.message,
+          })),
+        },
+        { status: 400 }
+      );
+    }
+    const { website, ...rest } = parsed.data;
+    if (website) trippedHoneypot = true;
+    payloadToSend = rest;
+  }
+
+  // Honeypot tripped: acknowledge without forwarding to protect database & relay
+  if (trippedHoneypot) {
+    return Response.json(
+      { success: true, inquiry: { id: "filtered" } },
+      { status: 202 }
+    );
   }
 
   const backendUrl = backendBaseUrl();
@@ -107,7 +179,7 @@ export async function POST(request: Request) {
         "Content-Type": "application/json",
         ...(relaySecret ? { "x-rfq-relay-secret": relaySecret } : {}),
       },
-      body: JSON.stringify(inquiry),
+      body: JSON.stringify(payloadToSend),
       signal: controller.signal,
       cache: "no-store",
     });
@@ -118,7 +190,6 @@ export async function POST(request: Request) {
       return Response.json(
         {
           success: false,
-          // Surface upstream validation messages; hide anything else.
           message:
             upstream.status === 400 && data?.message
               ? data.message
@@ -130,7 +201,14 @@ export async function POST(request: Request) {
       );
     }
 
-    return Response.json({ success: true, inquiry: data.inquiry }, { status: 201 });
+    return Response.json(
+      {
+        success: true,
+        message: data.message,
+        inquiry: data.inquiry,
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("RFQ forwarding failed:", error);
     return Response.json(
