@@ -6,6 +6,7 @@ import FloatingActions from "@/components/FloatingActions";
 import MobileStickyBar from "@/components/MobileStickyBar";
 import Analytics from "@/components/Analytics";
 import ActionAnalytics from "@/components/ActionAnalytics";
+import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 import { SITE_URL, businessInfo } from "@/lib/seo";
 import { CANONICAL_PRODUCTS } from "@/lib/config";
 
@@ -131,6 +132,7 @@ export default function RootLayout({
         <MobileStickyBar />
         <Analytics />
         <ActionAnalytics />
+        <VercelAnalytics />
       </body>
     </html>
   );
