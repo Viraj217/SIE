@@ -46,7 +46,7 @@ export default function TrustSection() {
 
           <div className="mt-10 grid grid-cols-2 gap-3">
             {[
-              ['35+', 'Years in trade'],
+              ['65+', 'Years in trade'],
               ['2 hr', 'Expected response'],
               ['4', 'Core sectors'],
               ['2', 'Owner contacts'],

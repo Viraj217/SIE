@@ -1,7 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.ADMIN_JWT_SECRET || 'fallback-secret-change-me';
+const configuredJwtSecret = process.env.ADMIN_JWT_SECRET;
+
+if (process.env.NODE_ENV === 'production' && !configuredJwtSecret) {
+  throw new Error('ADMIN_JWT_SECRET is required in production.');
+}
+
+const JWT_SECRET = configuredJwtSecret || 'local-development-only-secret';
 
 export interface AuthPayload {
   userId: string;

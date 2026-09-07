@@ -1,105 +1,257 @@
+import { businessConfig, CANONICAL_PRODUCTS, SEO_FAQS, CatalogProduct } from "./config";
+import type { SteelGrade } from "./grades";
+
 export const SITE_URL = "https://shahindustrialenterprise.com";
 
+// Backward-compatible businessInfo mapping
 export const businessInfo = {
-  name: "Shah Industrial Enterprise",
-  legalName: "Shah Industrial Enterprise",
-  founded: "1989",
-  description:
-    "Iron and steel merchants in Darukhana, Mazgaon, Mumbai supplying heavy steamer shafts, carbon steel, alloy steel round bars, forged rounds, MS rounds, heavy seamless pipes, and hacksaw cutting.",
+  name: businessConfig.name,
+  legalName: businessConfig.legalName,
+  founded: businessConfig.founded,
+  description: businessConfig.description,
   address: {
-    street: "Plot No. 156, 4th Lane, Darukhana, Mazgaon",
-    locality: "Mumbai",
-    region: "Maharashtra",
-    postalCode: "400010",
-    country: "IN",
+    street: businessConfig.address.street,
+    locality: businessConfig.address.locality,
+    region: businessConfig.address.region,
+    postalCode: businessConfig.address.postalCode,
+    country: businessConfig.address.countryCode,
   },
-  phones: ["+912223713133", "+912223723152", "+919820094222", "+919324797660", "+919820023666"],
-  contacts: [
-    { name: "Bhupendra Shah", phone: "+919820094222" },
-    { name: "Ritesh Shah", phone: "+919324797660" },
-    { name: "Kalpesh Shah", phone: "+919820023666" },
-  ],
-  email: "shahindenterprise@rediffmail.com",
-  hours: "Monday to Saturday, 9:00 AM to 7:00 PM IST",
-  coordinates: {
-    latitude: 18.968,
-    longitude: 72.845,
-  },
-  serviceAreas: [
-    "Darukhana",
-    "Mazgaon",
-    "Mumbai",
-    "Navi Mumbai",
-    "Thane",
-    "Maharashtra",
-    "Gujarat",
-    "India",
-  ],
-  products: [
-    "Heavy steamer shafts",
-    "Steamer shafts 100 mm dia to 1000 mm dia",
-    "N.S. and alloy steel round bars",
-    "Custom hacksaw cutting",
-    "Mild steel shafts",
-    "M.S. rounds 30 mm dia to 1000 mm dia",
-    "Carbon steel rods",
-    "Carbon steel rounds",
-    "Alloy steel round bars",
-    "Forged rounds 200 mm dia to 600 mm dia",
-    "Heavy seamless pipes",
-    "EN8 bars",
-    "EN9 bars",
-    "EN19 bars",
-    "EN24 bars",
-    "EN31 bars",
-    "C45 steel rounds",
-    "Industrial steel raw material",
-    "Iron and steel merchants",
-  ],
-  industries: [
-    "Hydraulic press manufacturers",
-    "Textile machinery manufacturers",
-    "Plastic dies and moulds manufacturers",
-    "Paper machinery industries",
-    "Forging plants",
-    "Gear blank industries",
-    "Rubber industries",
-    "Plate bending machines",
-    "Sugar factory machinery",
-    "Sugar mill shafts",
-    "Casting foundry industries",
-    "Sugar mills and processing",
-    "Marine and offshore",
-    "Earthmoving and construction",
-    "General engineering",
-    "CNC machining and fabrication",
-  ],
+  phones: businessConfig.contacts.map((c) => c.phone),
+  contacts: businessConfig.contacts,
+  email: businessConfig.email,
+  hours: businessConfig.hours,
+  coordinates: businessConfig.coordinates,
+  serviceAreas: businessConfig.serviceAreas,
+  products: CANONICAL_PRODUCTS.map((p) => p.title),
+  industries: businessConfig.industries,
 };
 
-export const seoFaqs = [
-  {
-    question: "Where is Shah Industrial Enterprise located?",
-    answer:
-      "Shah Industrial Enterprise is located in Darukhana, Mazgaon, Mumbai 400010, a major industrial steel and metal market area.",
-  },
-  {
-    question: "What materials does Shah Industrial Enterprise supply?",
-    answer:
-      "The business supplies heavy steamer shafts, M.S. rounds, carbon steel rounds, N.S. and alloy steel round bars, forged rounds, heavy seamless pipes, and grades including EN8, EN9, EN19, EN24, EN31 and C45.",
-  },
-  {
-    question: "Does Shah Industrial Enterprise provide cut-to-size steel?",
-    answer:
-      "Yes. Shah Industrial Enterprise provides custom hacksaw cutting for shafts, rods, and bars so buyers can request exact lengths for machining or fabrication.",
-  },
-  {
-    question: "How can buyers request a quote?",
-    answer:
-      "Buyers can request a quote by sharing the material, grade, dimensions, quantity, delivery location, urgency, and preferred contact method through the website form, phone, or WhatsApp.",
-  },
-  {
-    question: "Which industries does Shah Industrial Enterprise serve?",
-    answer:
-      "The business serves engineering workshops, sugar mills, marine and offshore suppliers, earthmoving and construction companies, CNC machinists, and fabricators.",
-  },
-];
+export const seoFaqs = SEO_FAQS;
+
+/**
+ * Generate LocalBusiness and Store structured data graph for Schema.org.
+ */
+export function generateLocalBusinessSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["LocalBusiness", "Store"],
+        "@id": `${SITE_URL}/#business`,
+        name: businessConfig.name,
+        legalName: businessConfig.legalName,
+        url: SITE_URL,
+        description: businessConfig.description,
+        telephone: businessConfig.contacts[0].phone,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: businessConfig.address.street,
+          addressLocality: businessConfig.address.locality,
+          addressRegion: businessConfig.address.region,
+          postalCode: businessConfig.address.postalCode,
+          addressCountry: businessConfig.address.countryCode,
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: businessConfig.coordinates.latitude,
+          longitude: businessConfig.coordinates.longitude,
+        },
+        knowsAbout: [
+          ...CANONICAL_PRODUCTS.map((p) => p.title),
+          ...businessConfig.industries,
+        ],
+        makesOffer: CANONICAL_PRODUCTS.map((product) => ({
+          "@type": "Offer",
+          itemOffered: {
+            "@type": product.category === "SERVICE" ? "Service" : "Product",
+            name: product.title,
+            description: product.tagline,
+            url: `${SITE_URL}/products/${product.slug}`,
+          },
+        })),
+        contactPoint: businessConfig.contacts.map((contact) => ({
+          "@type": "ContactPoint",
+          name: contact.name,
+          telephone: contact.phone,
+          contactType: "sales",
+        })),
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            opens: "09:00",
+            closes: "19:00",
+          },
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        name: businessConfig.name,
+        url: SITE_URL,
+        publisher: { "@id": `${SITE_URL}/#business` },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${SITE_URL}/#faqs`,
+        mainEntity: SEO_FAQS.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.answer,
+          },
+        })),
+      },
+    ],
+  };
+}
+
+/**
+ * Generate Product and Offer Schema.org JSON-LD.
+ */
+export function generateProductJsonLd(product: CatalogProduct) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": product.category === "SERVICE" ? "Service" : "Product",
+        "@id": `${SITE_URL}/products/${product.slug}#product`,
+        name: product.title,
+        description: product.fullDescription || product.tagline,
+        url: `${SITE_URL}/products/${product.slug}`,
+        category: product.categoryLabel,
+        provider: {
+          "@type": "LocalBusiness",
+          name: businessConfig.name,
+          telephone: businessConfig.contacts[0].phone,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: businessConfig.address.street,
+            addressLocality: businessConfig.address.locality,
+            addressRegion: businessConfig.address.region,
+            postalCode: businessConfig.address.postalCode,
+            addressCountry: businessConfig.address.countryCode,
+          },
+        },
+        offers: {
+          "@type": "Offer",
+          priceCurrency: "INR",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            priceType: "Price on Enquiry",
+            description: "Custom cut lengths and bulk tonnage rates quoted on requirement.",
+          },
+          seller: {
+            "@type": "Organization",
+            name: businessConfig.name,
+          },
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Products",
+            item: `${SITE_URL}/products`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: product.title,
+            item: `${SITE_URL}/products/${product.slug}`,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+/**
+ * Generate Breadcrumb Schema.org JSON-LD.
+ */
+export function generateBreadcrumbJsonLd(crumbs: Array<{ name: string; url: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: crumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: crumb.url.startsWith("http") ? crumb.url : `${SITE_URL}${crumb.url}`,
+    })),
+  };
+}
+
+/**
+ * Generate Product + BreadcrumbList JSON-LD for a steel grade landing page.
+ *
+ * Deliberately does NOT assert price, stock quantity or certification — only the
+ * published standard designations the grade is identified by, and that quotations
+ * are given on enquiry.
+ */
+export function generateGradeJsonLd(grade: SteelGrade) {
+  const url = `${SITE_URL}/steel-grades/${grade.slug}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        "@id": `${url}#grade`,
+        name: `${grade.code} Steel (${grade.bsDesignation})`,
+        alternateName: grade.equivalents.map((e) => e.designation),
+        description: grade.summary,
+        url,
+        category: grade.family,
+        material: grade.code,
+        seller: { "@id": `${SITE_URL}/#business` },
+        additionalProperty: [
+          ...grade.equivalents.map((eq) => ({
+            "@type": "PropertyValue",
+            name: `${eq.standard} designation`,
+            value: eq.designation,
+          })),
+          ...grade.chemistry.map((row) => ({
+            "@type": "PropertyValue",
+            name: row.element,
+            value: row.range,
+          })),
+          ...grade.mechanical.map((row) => ({
+            "@type": "PropertyValue",
+            name: row.property,
+            value: row.value,
+          })),
+        ],
+        offers: {
+          "@type": "Offer",
+          url,
+          priceCurrency: "INR",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            priceType: "Price on Enquiry",
+            description: "Quoted per requirement — grade, diameter, cut length and quantity.",
+          },
+          seller: { "@id": `${SITE_URL}/#business` },
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Steel Grades", item: `${SITE_URL}/steel-grades` },
+          { "@type": "ListItem", position: 3, name: `${grade.code} Steel`, item: url },
+        ],
+      },
+    ],
+  };
+}

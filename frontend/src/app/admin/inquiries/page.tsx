@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../layout';
 
 type InquiryStatus = 'PENDING' | 'REVIEWED' | 'CONTACTED' | 'QUOTED' | 'ARCHIVED';
@@ -25,7 +25,7 @@ export default function InquiriesPage() {
   const [notesText, setNotesText] = useState('');
   const [statusVal, setStatusVal] = useState<InquiryStatus>('PENDING');
 
-  const fetchInquiries = async () => {
+  const fetchInquiries = useCallback(async () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       const res = await fetch(`${apiUrl}/api/inquiries`, {
@@ -48,13 +48,48 @@ export default function InquiriesPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, logout]);
 
   useEffect(() => {
-    if (token) {
-      fetchInquiries();
+    let ignore = false;
+
+    async function loadData() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiUrl}/api/inquiries`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (res.status === 401) {
+          logout();
+          return;
+        }
+
+        const result = await res.json();
+        if (!ignore && result.success) {
+          setInquiries(result.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch inquiries:', err);
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
     }
-  }, [token]);
+
+    if (token) {
+      void loadData();
+    } else {
+      setLoading(false);
+    }
+
+    return () => {
+      ignore = true;
+    };
+  }, [token, logout]);
 
   const handleSelectInquiry = (inquiry: Inquiry) => {
     setSelectedInquiry(inquiry);
@@ -87,7 +122,6 @@ export default function InquiriesPage() {
 
       const result = await res.json();
       if (result.success) {
-        // Refresh inquiry details locally
         setInquiries((prev) =>
           prev.map((item) => (item.id === selectedInquiry.id ? result.data : item))
         );

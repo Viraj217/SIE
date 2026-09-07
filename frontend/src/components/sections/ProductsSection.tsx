@@ -2,7 +2,10 @@
 
 import type { ReactNode } from 'react';
 import { useRef, useState, useEffect } from 'react';
+import Link from 'next/link';
+import { CANONICAL_PRODUCTS } from '@/lib/config';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { trackEvent } from '@/lib/analytics';
 
 type ProductCategory = 'RAW_MATERIAL' | 'ALLOY' | 'SERVICE';
 
@@ -23,6 +26,7 @@ interface Product {
 }
 
 interface ProductCardProps {
+  slug: string;
   title: string;
   tagline: string;
   specs: ProductSpec[];
@@ -31,7 +35,10 @@ interface ProductCardProps {
   children?: ReactNode;
 }
 
-function ProductCard({ title, tagline, specs, isFeatured = false, icon, children }: ProductCardProps) {
+function ProductCard({ slug, title, tagline, specs, isFeatured = false, icon, children }: ProductCardProps) {
+  // STATIC_PRODUCTS is maintained separately from the catalogue, so a slug here
+  // can drift. Only link out when the detail page actually exists.
+  const hasDetailPage = CANONICAL_PRODUCTS.some((p) => p.slug === slug);
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -50,6 +57,7 @@ function ProductCard({ title, tagline, specs, isFeatured = false, icon, children
   const handleMouseLeave = () => { x.set(0); y.set(0); };
 
   const handleRequest = () => {
+    trackEvent('rfq_start', { source_page: 'homepage_product_card', product_title: title });
     window.dispatchEvent(new CustomEvent('populateRequirements', { detail: title }));
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -92,7 +100,18 @@ function ProductCard({ title, tagline, specs, isFeatured = false, icon, children
             {icon}
           </div>
         )}
-        <h3 className="text-[1.4rem] font-display font-semibold mb-2">{title}</h3>
+        <h3 className="text-[1.4rem] font-display font-semibold mb-2">
+          {hasDetailPage ? (
+            <Link
+              href={`/products/${slug}`}
+              className={`transition-colors ${isFeatured ? 'hover:text-cyan-glow' : 'hover:text-dawn-coral'}`}
+            >
+              {title}
+            </Link>
+          ) : (
+            title
+          )}
+        </h3>
         <p className={`text-[0.9rem] mb-6 leading-relaxed ${isFeatured ? 'text-white/50' : 'text-steel'}`}>
           {tagline}
         </p>
@@ -117,22 +136,59 @@ function ProductCard({ title, tagline, specs, isFeatured = false, icon, children
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
           </span>
-          <span className={isFeatured ? 'text-white/50' : 'text-slate/60'}>Ready for Dispatch</span>
+          <span className={isFeatured ? 'text-white/50' : 'text-slate/60'}>Availability on enquiry</span>
         </div>
-        <button
-          onClick={handleRequest}
-          className={`mt-6 w-full rounded py-2.5 font-mono text-[0.75rem] tracking-[0.1em] uppercase transition-colors ${
-            isFeatured ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-slate/5 hover:bg-slate/10 text-slate'
-          }`}
-        >
-          Request this material
-        </button>
+        <div className={`mt-6 grid grid-cols-1 gap-2 ${hasDetailPage ? 'sm:grid-cols-2' : ''}`}>
+          <button
+            onClick={handleRequest}
+            className={`w-full rounded py-2.5 font-mono text-[0.75rem] tracking-[0.1em] uppercase transition-colors ${
+              isFeatured ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-slate/5 hover:bg-slate/10 text-slate'
+            }`}
+          >
+            Request this material
+          </button>
+          {hasDetailPage && (
+            <Link
+              href={`/products/${slug}`}
+              className={`w-full rounded py-2.5 text-center font-mono text-[0.75rem] uppercase tracking-[0.1em] transition-colors ${
+                isFeatured
+                  ? 'border border-cyan-glow/30 text-cyan-glow hover:bg-cyan-glow/10'
+                  : 'border border-steel/20 text-slate/70 hover:border-steel/40 hover:text-slate'
+              }`}
+            >
+              View specifications
+            </Link>
+          )}
+        </div>
       </div>
     </motion.div>
   );
 }
 
 const STATIC_PRODUCTS: Product[] = [
+  {
+    slug: 'heavy-steamer-shafts',
+    title: 'Heavy Steamer Shafts & Marine Shafts',
+    category: 'RAW_MATERIAL',
+    tagline: 'Large-diameter forged and turned shaft material for heavy industrial and marine requirements.',
+    isFeatured: true,
+    specs: [
+      { label: 'Grades', value: 'EN8, EN9, EN19, EN24' },
+      { label: 'Condition', value: 'Forged / Rough Turned' },
+      { label: 'Cut lengths', value: 'On enquiry' },
+    ],
+    illustration: (
+      <svg viewBox="0 0 240 100" width="100%" height="80" aria-hidden="true">
+        <rect x="28" y="38" width="184" height="24" rx="12" fill="none" stroke="#3C5C6B" strokeWidth="1.5" />
+        <ellipse cx="42" cy="50" rx="14" ry="12" fill="none" stroke="#8FD8D4" strokeWidth="1.5" />
+        <ellipse cx="198" cy="50" rx="14" ry="12" fill="none" stroke="#3C5C6B" strokeWidth="1" />
+        <line x1="68" y1="34" x2="68" y2="66" stroke="#E8845C" strokeWidth="1" strokeDasharray="3 3" />
+        <line x1="172" y1="34" x2="172" y2="66" stroke="#E8845C" strokeWidth="1" strokeDasharray="3 3" />
+        <line x1="42" y1="76" x2="198" y2="76" stroke="rgba(60,92,107,0.35)" strokeWidth="0.75" />
+        <text x="120" y="88" textAnchor="middle" fill="rgba(60,92,107,0.5)" fontSize="8" fontFamily="monospace">SHAFT MATERIAL</text>
+      </svg>
+    ),
+  },
   {
     slug: 'custom-hacksaw-cutting',
     title: 'Custom Hacksaw Cutting',
@@ -358,7 +414,7 @@ const STATIC_PRODUCTS: Product[] = [
     )
   },
   {
-    slug: 'iron-steel-pipes-tubes',
+    slug: 'heavy-seamless-pipes',
     title: 'Heavy Seamless Pipes',
     category: 'RAW_MATERIAL',
     tagline: 'Seamless and ERW pipes offering excellent burst strength for industrial pipelines and structural supports.',
@@ -444,21 +500,29 @@ export default function ProductsSection() {
         const result = await res.json();
         
         if (result.success && Array.isArray(result.data) && result.data.length > 0) {
-          const merged = result.data.map((dbProd: {
+          const databaseProducts = result.data as Array<{
             slug: string;
             title: string;
             tagline: string;
             category?: ProductCategory;
             isFeatured?: boolean;
             specs?: ProductSpec[];
-          }) => {
-            const match = STATIC_PRODUCTS.find((p) => p.slug === dbProd.slug);
+          }>;
+
+          // Keep the canonical homepage set intact. The database may contain an
+          // older or partial seed, so replacing the full set would make major
+          // products (including steamer shafts) disappear in production.
+          const merged = STATIC_PRODUCTS.map((staticProduct) => {
+            const dbProd = databaseProducts.find((item) => item.slug === staticProduct.slug);
+            if (!dbProd) return staticProduct;
+
             return {
+              ...staticProduct,
               ...dbProd,
-              category: dbProd.category || match?.category || 'RAW_MATERIAL',
-              specs: dbProd.specs?.map((s) => ({ label: s.label, value: s.value })) || match?.specs || [],
-              illustration: match?.illustration || STATIC_PRODUCTS[1].illustration,
-              icon: match?.icon || STATIC_PRODUCTS[1].icon,
+              category: dbProd.category || staticProduct.category,
+              specs: dbProd.specs?.map((s) => ({ label: s.label, value: s.value })) || staticProduct.specs,
+              illustration: staticProduct.illustration,
+              icon: staticProduct.icon,
             };
           });
           setProducts(merged);
@@ -497,13 +561,13 @@ export default function ProductsSection() {
                   className="w-full rounded-md border border-steel/20 bg-white/50 py-2.5 pl-10 pr-4 text-sm font-mono text-slate placeholder:text-steel/50 focus:border-cyan-glow focus:outline-none focus:ring-1 focus:ring-cyan-glow sm:w-56"
                 />
               </div>
-              <a
-                href="/catalog"
+              <Link
+                href="/products"
                 className="inline-flex items-center justify-center gap-2 rounded-md bg-slate px-5 py-2.5 font-mono text-xs tracking-wider text-white transition-colors hover:bg-slate-light uppercase whitespace-nowrap"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                View Catalog
-              </a>
+                View Catalogue
+              </Link>
             </div>
           </motion.div>
 
@@ -534,6 +598,7 @@ export default function ProductsSection() {
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.slug}
+              slug={product.slug}
               title={product.title}
               tagline={product.tagline}
               isFeatured={product.isFeatured}

@@ -27,34 +27,61 @@ export default function TimelinePage() {
   const [description, setDescription] = useState('');
   const [displayOrder, setDisplayOrder] = useState(0);
 
-  const fetchMilestones = async () => {
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchMilestones = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiUrl}/api/timeline`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+
+        if (res.status === 401) {
+          logout();
+          return;
+        }
+
+        const result = await res.json();
+        if (result.success && isMounted) {
+          setMilestones(result.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch milestones:', err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    if (token) {
+      fetchMilestones();
+    } else {
+      setLoading(false);
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [token, logout]);
+
+  const refreshMilestones = async () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       const res = await fetch(`${apiUrl}/api/timeline`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
-
       if (res.status === 401) {
         logout();
         return;
       }
-
       const result = await res.json();
       if (result.success) {
         setMilestones(result.data);
       }
     } catch (err) {
-      console.error('Failed to fetch milestones:', err);
-    } finally {
-      setLoading(false);
+      console.error('Failed to refresh milestones:', err);
     }
   };
-
-  useEffect(() => {
-    if (token) {
-      fetchMilestones();
-    }
-  }, [token]);
 
   const openAddModal = () => {
     setEditingMilestone(null);
@@ -114,7 +141,7 @@ export default function TimelinePage() {
 
       const result = await res.json();
       if (result.success) {
-        fetchMilestones();
+        refreshMilestones();
         setIsModalOpen(false);
       } else {
         alert(result.message || 'Error saving milestone');

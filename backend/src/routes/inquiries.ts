@@ -3,14 +3,44 @@ import { prisma } from '../lib/prisma';
 import { createInquirySchema } from '../schemas/validation';
 import { ZodError } from 'zod';
 import { requireAuth } from '../middleware/auth';
+import { timingSafeEqual } from 'node:crypto';
 
 const router = Router();
+
+function validateRelaySecret(req: Request, res: Response): boolean {
+  const configured = process.env.RFQ_RELAY_SECRET;
+
+  if (!configured) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('RFQ_RELAY_SECRET is required in production.');
+      res.status(503).json({ success: false, message: 'Inquiry service is not configured.' });
+      return false;
+    }
+    return true;
+  }
+
+  const supplied = req.header('x-rfq-relay-secret') || '';
+  const expectedBuffer = Buffer.from(configured);
+  const suppliedBuffer = Buffer.from(supplied);
+  const matches =
+    expectedBuffer.length === suppliedBuffer.length &&
+    timingSafeEqual(expectedBuffer, suppliedBuffer);
+
+  if (!matches) {
+    res.status(401).json({ success: false, message: 'Unauthorized inquiry source.' });
+    return false;
+  }
+
+  return true;
+}
 
 /**
  * POST /api/inquiries
  * Submit a new customer inquiry / quote request (public).
  */
 router.post('/', async (req: Request, res: Response) => {
+  if (!validateRelaySecret(req, res)) return;
+
   try {
     const data = createInquirySchema.parse(req.body);
 

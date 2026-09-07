@@ -28,34 +28,61 @@ export default function IndustriesPage() {
   const [iconName, setIconName] = useState('Factory');
   const [displayOrder, setDisplayOrder] = useState(0);
 
-  const fetchSectors = async () => {
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadData() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiUrl}/api/industries`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+
+        if (res.status === 401) {
+          logout();
+          return;
+        }
+
+        const result = await res.json();
+        if (!ignore && result.success) {
+          setSectors(result.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch sectors:', err);
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+
+    if (token) {
+      void loadData();
+    } else {
+      setLoading(false);
+    }
+
+    return () => {
+      ignore = true;
+    };
+  }, [token, logout]);
+
+  const refreshSectors = async () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       const res = await fetch(`${apiUrl}/api/industries`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
-
       if (res.status === 401) {
         logout();
         return;
       }
-
       const result = await res.json();
       if (result.success) {
         setSectors(result.data);
       }
     } catch (err) {
-      console.error('Failed to fetch sectors:', err);
-    } finally {
-      setLoading(false);
+      console.error('Failed to refresh sectors:', err);
     }
   };
-
-  useEffect(() => {
-    if (token) {
-      fetchSectors();
-    }
-  }, [token]);
 
   const openAddModal = () => {
     setEditingSector(null);
@@ -118,7 +145,7 @@ export default function IndustriesPage() {
 
       const result = await res.json();
       if (result.success) {
-        fetchSectors();
+        refreshSectors();
         setIsModalOpen(false);
       } else {
         alert(result.message || 'Error saving sector');

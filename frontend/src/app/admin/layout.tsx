@@ -21,20 +21,31 @@ const NAV_ITEMS = [
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<{ name: string; email: string; role: string } | null>(null);
+  const [token, setToken] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('admin_token');
+    }
+    return null;
+  });
+  const [user, setUser] = useState<{ name: string; email: string; role: string } | null>(() => {
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('admin_user');
+      if (storedUser) {
+        try {
+          return JSON.parse(storedUser);
+        } catch {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    const stored = localStorage.getItem('admin_token');
-    const storedUser = localStorage.getItem('admin_user');
-
-    if (stored && storedUser) {
-      setToken(stored);
-      setUser(JSON.parse(storedUser));
-    }
+    // Sync loading state once mounted
     setLoading(false);
   }, []);
 

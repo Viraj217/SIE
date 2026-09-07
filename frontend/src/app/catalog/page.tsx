@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PrintCatalogButton from "@/components/PrintCatalogButton";
+import Navigation from "@/components/Navigation";
+import SiteFooter from "@/components/SiteFooter";
 import { SITE_URL, businessInfo } from "@/lib/seo";
+import { CANONICAL_PRODUCTS } from "@/lib/config";
+import { buildProductWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Steel Product Catalog | Shah Industrial Enterprise",
+  title: "Printable Steel Product Catalogue & Specifications",
   description:
-    "Browse Shah Industrial Enterprise steel materials and custom cutting services for shafts, rods, alloy bars, and machining stock from Mazgaon, Mumbai.",
+    "Browse Shah Industrial Enterprise steel materials and custom cutting services for heavy steamer shafts, forged rounds, EN series alloy rods, and seamless pipes in Mazgaon, Mumbai.",
   alternates: {
     canonical: "/catalog",
   },
@@ -19,73 +23,10 @@ export const metadata: Metadata = {
   },
 };
 
-const PRODUCTS = [
-  {
-    title: "Custom Hacksaw Cutting",
-    category: "Service",
-    details: ["Up to Ø 300mm", "Same-day cutting where stock permits", "MS, carbon, and alloy materials"],
-    quote: "Share diameter, length, grade, quantity, and tolerance requirement.",
-  },
-  {
-    title: "M.S. & Carbon Steel Rounds",
-    category: "Raw Material",
-    details: ["Ø 12 – 250mm", "3m to 6m std.", "IS 2062 A/B Standard"],
-    quote: "Share diameter, length, quantity, finish, and delivery destination.",
-  },
-  {
-    title: "Carbon Steel Rods",
-    category: "Alloy Grades",
-    details: ["Grades EN8/9/19/24", "Forged, Peeled Finish", "Normalized Hardness"],
-    quote: "Share grade, diameter, cut length, heat treatment need, and quantity.",
-  },
-  {
-    title: "N.S. & Alloy Steel Round Bars",
-    category: "Alloy Grades",
-    details: ["Grades EN19, EN24, EN353", "100 mm dia to 1000 mm dia", "Black, Peeled, Ground Finish"],
-    quote: "Share grade, diameter, cut length, heat treatment need, and quantity.",
-  },
-  {
-    title: "Forged Steel Round Bars",
-    category: "Alloy Grades",
-    details: ["Class 4, EN8, EN9 Grades", "200 mm dia to 600 mm dia", "Ultrasonic Tested"],
-    quote: "Share grade, diameter, cut length, and specific testing requirements.",
-  },
-  {
-    title: "Roller Shafts",
-    category: "Raw Material",
-    details: ["High Torque Resistance", "Precision Machined", "Sugar mill and heavy equipment"],
-    quote: "Share required dimensions, application, and tolerance limits.",
-  },
-  {
-    title: "Hydraulic Shafts",
-    category: "Raw Material",
-    details: ["Hard Chrome Plated", "Induction Hardened", "Earthmoving applications"],
-    quote: "Share diameter, length, plating thickness, and base material preference.",
-  },
-  {
-    title: "Iron & Steel Plates",
-    category: "Raw Material",
-    details: ["Structural Quality", "Boiler Quality", "Heavy fabrication"],
-    quote: "Share thickness, width, length, grade, and required quantity.",
-  },
-  {
-    title: "Heavy Seamless Pipes",
-    category: "Raw Material",
-    details: ["Seamless and ERW", "High burst strength", "Industrial pipelines"],
-    quote: "Share schedule, nominal bore, grade, and required length.",
-  },
-  {
-    title: "Iron & Steel Bars",
-    category: "Raw Material",
-    details: ["Flat profiles", "Square profiles", "Hexagonal profiles"],
-    quote: "Share profile type, dimensions, grade, and quantity.",
-  }
-];
-
 const BUYER_NOTES = [
-  "Mention whether the stock is for machining, fabrication, repair, or resale.",
-  "Add urgency if the material is needed for same-day dispatch or breakdown work.",
-  "Include delivery location so availability and transport can be checked together.",
+  "Specify whether your material is intended for heavy machining, forging, marine repair, or general fabrication.",
+  "Mention any urgency level if the requirement is for immediate breakdown or emergency replacement.",
+  "Include your exact delivery destination to receive ex-yard Mazgaon or delivered transport estimates.",
 ];
 
 export default function CatalogPage() {
@@ -100,20 +41,21 @@ export default function CatalogPage() {
         description:
           "Steel materials and custom cutting services available from Shah Industrial Enterprise in Mazgaon, Mumbai.",
         isPartOf: { "@id": `${SITE_URL}/#website` },
-        about: PRODUCTS.map((product) => product.title),
+        about: CANONICAL_PRODUCTS.map((product) => product.title),
       },
       {
         "@type": "ItemList",
         "@id": `${SITE_URL}/catalog#products`,
         name: "Steel products and services",
-        itemListElement: PRODUCTS.map((product, index) => ({
+        itemListElement: CANONICAL_PRODUCTS.map((product, index) => ({
           "@type": "ListItem",
           position: index + 1,
           item: {
-            "@type": product.category === "Service" ? "Service" : "Product",
+            "@type": product.category === "SERVICE" ? "Service" : "Product",
             name: product.title,
-            category: product.category,
-            description: [...product.details, product.quote].join(" "),
+            category: product.categoryLabel,
+            description: product.fullDescription,
+            url: `${SITE_URL}/products/${product.slug}`,
             provider: {
               "@type": "LocalBusiness",
               name: businessInfo.name,
@@ -139,65 +81,117 @@ export default function CatalogPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(catalogSchema) }}
       />
-      <section className="bg-slate px-5 pb-16 pt-28 text-white sm:px-8 md:px-12">
-        <div className="mx-auto max-w-[1100px]">
-          <Link href="/#products" className="font-mono text-xs uppercase tracking-[0.16em] text-cyan-glow/75 hover:text-cyan-glow">
-            Back to products
-          </Link>
-          <p className="mt-10 font-mono text-xs uppercase tracking-[0.22em] text-dawn-coral">Catalog</p>
-          <h1 className="mt-4 max-w-[760px] font-display text-[clamp(2.5rem,7vw,5rem)] font-bold leading-[1.02]">
-            Shah Industrial product catalog
+
+      <Navigation />
+
+      <section className="bg-slate px-5 pb-16 pt-32 text-white noise-overlay sm:px-8 md:px-12 sm:pt-36">
+        <div className="mx-auto max-w-[1200px]">
+          <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-white/50">
+            <Link href="/" className="hover:text-cyan-glow transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-cyan-glow">Printable Catalog</span>
+          </nav>
+
+          <p className="font-mono text-xs uppercase tracking-[0.22em] text-dawn-coral">Commercial Directory</p>
+          <h1 className="mt-4 max-w-[850px] font-display text-[clamp(2.4rem,6vw,4.5rem)] font-bold leading-[1.04]">
+            Shah Industrial Product Catalog & Specification Guide
           </h1>
-          <p className="mt-6 max-w-[640px] text-[1rem] leading-relaxed text-white/58">
-            A quick buyer reference for steel stock, alloy grades, and cut-to-size requirements. Use it to prepare a quote request with fewer follow-up calls.
+          <p className="mt-6 max-w-[680px] text-[1.05rem] leading-relaxed text-white/60">
+            A comprehensive procurement reference for steel stock, alloy grades, shaft tolerances, and cut-to-size processing from our Mazgaon yard.
           </p>
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/#contact"
-              className="inline-flex items-center justify-center rounded-md bg-dawn-coral px-6 py-3 font-mono text-xs uppercase tracking-[0.14em] text-white hover:bg-ember"
+              className="inline-flex items-center justify-center rounded-md bg-dawn-coral px-6 py-3.5 font-mono text-xs uppercase tracking-[0.14em] text-slate-900 font-bold hover:bg-[#f09770] transition-colors"
             >
-              Request Quote
+              Request Quotation
             </Link>
             <PrintCatalogButton />
           </div>
         </div>
       </section>
 
-      <section className="px-5 py-14 sm:px-8 md:px-12">
-        <div className="mx-auto grid max-w-[1100px] gap-6 lg:grid-cols-3">
-          {PRODUCTS.map((product) => (
-            <article key={product.title} className="rounded-lg border border-steel/10 bg-white p-6 shadow-[0_4px_30px_rgba(22,35,43,0.05)]">
-              <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dawn-coral">{product.category}</p>
-              <h2 className="mt-3 font-display text-2xl">{product.title}</h2>
-              <ul className="mt-6 space-y-3">
-                {product.details.map((detail) => (
-                  <li key={detail} className="flex gap-3 text-sm leading-relaxed text-slate/68">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-glow" />
-                    <span>{detail}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 rounded-md bg-paper-warm p-4">
-                <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-steel">For quoting</p>
-                <p className="mt-2 text-sm leading-relaxed text-slate/70">{product.quote}</p>
-              </div>
-            </article>
-          ))}
+      <section className="px-5 py-16 sm:px-8 md:px-12">
+        <div className="mx-auto grid max-w-[1200px] gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {CANONICAL_PRODUCTS.map((product) => {
+            const whatsAppUrl = buildProductWhatsAppUrl({
+              productTitle: product.title,
+            });
+
+            return (
+              <article key={product.slug} className="flex flex-col justify-between rounded-xl border border-steel/15 bg-white p-6 sm:p-7 shadow-[0_4px_30px_rgba(22,35,43,0.05)]">
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dawn-coral font-semibold">
+                      {product.categoryLabel}
+                    </span>
+                    {product.isFeatured && (
+                      <span className="font-mono text-[0.62rem] uppercase tracking-wider text-cyan-glow bg-slate px-2 py-0.5 rounded">
+                        Priority
+                      </span>
+                    )}
+                  </div>
+
+                  <h2 className="font-display text-2xl font-bold mb-3 text-slate">
+                    <Link href={`/products/${product.slug}`} className="hover:text-dawn-coral transition-colors">
+                      {product.title}
+                    </Link>
+                  </h2>
+
+                  <p className="text-xs sm:text-sm text-slate/70 leading-relaxed mb-6">
+                    {product.tagline}
+                  </p>
+
+                  <ul className="space-y-2 font-mono text-xs mb-6 border-t border-steel/10 pt-4">
+                    {product.specs.map((spec, i) => (
+                      <li key={i} className="flex justify-between gap-2 text-slate/75">
+                        <span className="text-slate/45">{spec.label}:</span>
+                        <span className="font-medium text-slate text-right">{spec.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="pt-4 border-t border-steel/10 flex items-center justify-between gap-3">
+                  <Link
+                    href={`/products/${product.slug}`}
+                    className="font-mono text-xs font-semibold uppercase tracking-wider text-slate hover:text-dawn-coral transition-colors"
+                  >
+                    View Specs →
+                  </Link>
+
+                  <a
+                    href={whatsAppUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded bg-[#25D366]/10 px-3 py-1.5 font-mono text-[0.7rem] uppercase tracking-wider text-[#128C7E] hover:bg-[#25D366] hover:text-white transition-colors"
+                  >
+                    WhatsApp Quote
+                  </a>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
-      <section className="px-5 pb-16 sm:px-8 md:px-12">
-        <div className="mx-auto max-w-[1100px] rounded-lg bg-slate p-6 text-white sm:p-8">
-          <h2 className="font-display text-3xl">Before you enquire</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {BUYER_NOTES.map((note) => (
-              <p key={note} className="rounded-md border border-white/8 bg-white/[0.04] p-4 text-sm leading-relaxed text-white/62">
-                {note}
-              </p>
+      <section className="px-5 pb-20 sm:px-8 md:px-12">
+        <div className="mx-auto max-w-[1200px] rounded-2xl bg-slate p-8 sm:p-12 text-white noise-overlay">
+          <span className="section-tag !text-cyan-glow mb-2">BUYER CHECKLIST</span>
+          <h2 className="font-display text-3xl font-bold mb-6">Before You Request a Quote</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            {BUYER_NOTES.map((note, idx) => (
+              <div key={idx} className="rounded-xl border border-white/10 bg-white/[0.04] p-5">
+                <p className="font-mono text-xs text-dawn-coral font-bold mb-2">0{idx + 1}</p>
+                <p className="text-sm leading-relaxed text-white/70">{note}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

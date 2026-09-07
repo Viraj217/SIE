@@ -7,21 +7,27 @@ async function main() {
   console.log('🌱 Seeding database...');
 
   // ── Admin User ────────────────────────────────────────────────────────
+  const adminEmail = process.env.ADMIN_SEED_EMAIL || 'admin@shahindustrial.com';
+  const adminPassword = process.env.ADMIN_SEED_PASSWORD;
   const existingAdmin = await prisma.user.findUnique({
-    where: { email: 'admin@shahindustrial.com' },
+    where: { email: adminEmail },
   });
 
   if (!existingAdmin) {
-    const passwordHash = await bcrypt.hash('shah2025', 12);
+    if (!adminPassword || adminPassword.length < 12) {
+      throw new Error('Set ADMIN_SEED_PASSWORD to a unique value of at least 12 characters before seeding.');
+    }
+
+    const passwordHash = await bcrypt.hash(adminPassword, 12);
     await prisma.user.create({
       data: {
-        email: 'admin@shahindustrial.com',
+        email: adminEmail,
         passwordHash,
         name: 'Shah Admin',
         role: 'OWNER',
       },
     });
-    console.log('  ✓ Created admin user: admin@shahindustrial.com / shah2025');
+    console.log(`  ✓ Created admin user: ${adminEmail}`);
   } else {
     console.log('  ⊘ Admin user already exists, skipping');
   }

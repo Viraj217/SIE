@@ -1,41 +1,81 @@
-import { SITE_URL, businessInfo, seoFaqs } from "@/lib/seo";
+import { SITE_URL, seoFaqs } from "@/lib/seo";
+import { businessConfig, CANONICAL_PRODUCTS } from "@/lib/config";
+import { STEEL_GRADES } from "@/lib/grades";
+
+export const dynamic = "force-static";
 
 export function GET() {
-  const content = `# ${businessInfo.name}
+  const content = `# ${businessConfig.name}
 
-> ${businessInfo.description}
+> ${businessConfig.description}
 
-${businessInfo.name} is a steel and iron merchant based in ${businessInfo.address.street}, ${businessInfo.address.locality}, ${businessInfo.address.region} ${businessInfo.address.postalCode}. The business was established in ${businessInfo.founded}.
+${businessConfig.name} is an iron and steel merchant established in ${businessConfig.founded} in ${businessConfig.address.fullFormatted}.
+Operating in the Darukhana steel market in Mazgaon, Mumbai, the firm supplies heavy shafting, forged rounds, alloy bars, and in-house hacksaw cut-to-size material across ${businessConfig.statesSuppliedClaim} states in India.
 
-## Core offerings
+## Core Offerings & Materials
 
-${businessInfo.products.map((product) => `- ${product}`).join("\n")}
+${CANONICAL_PRODUCTS.map(
+  (product) => `### [${product.title}](${SITE_URL}/products/${product.slug})
+- Category: ${product.categoryLabel}
+- Diameter range: ${product.diameterRange || 'As specified'}
+- Available grades: ${product.availableGrades?.join(', ') || 'Mild steel, Carbon, Alloy'}
+- Summary: ${product.tagline}
+- Cutting tolerance: ±1.0 mm straight cuts
+- URL: ${SITE_URL}/products/${product.slug}
+`
+).join("\n")}
 
-## Industries served
+## Steel Grades Supplied
 
-${businessInfo.industries.map((industry) => `- ${industry}`).join("\n")}
+${STEEL_GRADES.map(
+  (grade) => `### [${grade.code} — ${grade.name}](${SITE_URL}/steel-grades/${grade.slug})
+- Standard designation: ${grade.bsDesignation}
+- Equivalents: ${grade.equivalents.map((eq) => `${eq.standard} ${eq.designation}`).join('; ')}
+- Family: ${grade.family}
+- Summary: ${grade.summary}
+- Typical applications: ${grade.applications.join('; ')}
+- URL: ${SITE_URL}/steel-grades/${grade.slug}
+`
+).join("\n")}
 
-## Service area
+Note: grade designations above are published standard references (BS 970, IS 1570, AISI/SAE, DIN/EN) for identification. Chemistry and mechanical properties of supplied material are governed by the Mill Test Certificate for that heat.
 
-${businessInfo.serviceAreas.join(", ")}
+## Engineering Tools
 
-## Quote requirements
+- [Steel Weight Calculator](${SITE_URL}/tools/weight-calculator): Calculate theoretical weights in kg and Metric Tons for round bars, shafts, seamless pipes, and rectangular profiles.
 
-For accurate quoting, buyers should share material/service, grade, dimensions, quantity, delivery location, urgency, and preferred contact method.
+## Industries Served
 
-## Contact
+${businessConfig.industries.map((industry) => `- ${industry}`).join("\n")}
 
-${businessInfo.contacts.map((contact) => `- ${contact.name}: ${contact.phone}`).join("\n")}
-- Hours: ${businessInfo.hours}
-- Location: ${businessInfo.address.street}, ${businessInfo.address.locality}, ${businessInfo.address.region} ${businessInfo.address.postalCode}, India
+## Service Area & Reach
 
-## Important pages
+- Operating Base: Darukhana, Mazgaon, Mumbai, Maharashtra 400010
+- Coverage: Pan-India across ${businessConfig.statesSuppliedClaim} states (Maharashtra, Gujarat, Goa, Karnataka, Tamil Nadu, Punjab, Rajasthan, etc.)
+
+## Procurement & RFQ Process
+
+1. Submit requirement details: steel grade, diameter (mm), cut length (mm), quantity (pieces or tonnage), delivery location, and urgency.
+2. The Shah family confirms yard inventory and provides an ex-yard or delivered quotation within 2 hours.
+3. Materials cut to ±1.0mm tolerance and dispatched with test certificates upon request.
+
+## Contact & Yard Desk
+
+${businessConfig.contacts
+  .map((c) => `- ${c.name} (${c.role}): ${c.phone} | WhatsApp: +${c.whatsapp}`)
+  .join("\n")}
+- Email: ${businessConfig.email}
+- Yard Hours: ${businessConfig.hours}
+
+## Key Links
 
 - [Homepage](${SITE_URL}/)
-- [Product catalog](${SITE_URL}/catalog)
-- [Sitemap](${SITE_URL}/sitemap.xml)
+- [Product Catalog](${SITE_URL}/products)
+- [Steel Grade Reference](${SITE_URL}/steel-grades)
+- [Steel Weight Calculator](${SITE_URL}/tools/weight-calculator)
+- [Sitemap XML](${SITE_URL}/sitemap.xml)
 
-## FAQs
+## Frequently Asked Questions
 
 ${seoFaqs.map((faq) => `### ${faq.question}\n${faq.answer}`).join("\n\n")}
 `;

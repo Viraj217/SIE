@@ -49,11 +49,18 @@ export default function HeroSection() {
           <div className="mb-7 flex items-center gap-3 text-cyan-glow">
             <span className="h-px w-10 bg-cyan-glow/70" />
             <p className="font-mono text-[0.68rem] tracking-[0.28em] uppercase">
-              Iron and Steel Merchants · Hacksaw Cutting Specialist
+              Est. 1989 · Darukhana, Mazgaon, Mumbai
             </p>
           </div>
 
+          {/*
+            The h1 leads with what buyers actually search for. The slogan is kept
+            as the visually dominant line so the hero reads exactly as before.
+          */}
           <h1 className="hero-heading mb-6 max-w-[650px] font-display text-[clamp(2.9rem,12vw,6.8rem)] font-semibold leading-[0.91] tracking-[-0.045em] sm:mb-7 sm:text-[clamp(3.5rem,7vw,6.8rem)]">
+            <span className="mb-4 block font-mono text-[0.82rem] font-normal uppercase leading-[1.5] tracking-[0.16em] text-white/70 sm:mb-5 sm:text-[0.95rem]">
+              Iron &amp; Steel Merchants, Shaft Stockists and Hacksaw Cutting Specialists in Mumbai
+            </span>
             Forged for strength, <span className="hero-heading-accent">cut to precision.</span>
           </h1>
 

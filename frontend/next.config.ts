@@ -15,17 +15,22 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/products.html",
-        destination: "/catalog",
+        destination: "/products",
         permanent: true,
       },
       {
         source: "/contactus.html",
-        destination: "/#contact",
+        destination: "/contact",
         permanent: true,
       },
       {
         source: "/enquiry.html",
-        destination: "/#contact",
+        destination: "/contact",
+        permanent: true,
+      },
+      {
+        source: "/catalog",
+        destination: "/products",
         permanent: true,
       },
     ];
