@@ -9,6 +9,7 @@ import ActionAnalytics from "@/components/ActionAnalytics";
 import { SITE_URL, businessInfo } from "@/lib/seo";
 import { CANONICAL_PRODUCTS } from "@/lib/config";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -133,6 +134,7 @@ export default function RootLayout({
         <Analytics />
         <ActionAnalytics />
         <SpeedInsights />
+        <VercelAnalytics />
       </body>
     </html>
   );
