@@ -67,8 +67,8 @@ export default function Navigation() {
           <span className={`font-display font-bold text-[1.15rem] sm:text-[1.25rem] tracking-[0.08em] transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate' : 'text-white'}`}>
             SHAH INDUSTRIAL ENTERPRISE
           </span>
-          <span className={`font-mono text-[0.58rem] sm:text-[0.6rem] tracking-[0.25em] uppercase transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate/60' : 'text-white/40'}`}>
-            Est. 1989 · Mazgaon, Mumbai
+          <span className={`font-mono text-[0.58rem] sm:text-[0.6rem] tracking-[0.25em] uppercase transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate/60' : 'text-white/60'}`}>
+            Est. 1961 · Mazgaon, Mumbai
           </span>
         </Link>
 
@@ -109,7 +109,7 @@ export default function Navigation() {
 
         {/* Mobile Toggle */}
         <button
-          className="relative z-50 flex w-9 flex-col items-end gap-1.5 p-1 md:hidden"
+          className="relative z-50 flex h-12 w-12 flex-col items-end justify-center gap-1.5 md:hidden"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
@@ -122,6 +122,7 @@ export default function Navigation() {
         {/* Mobile Overlay */}
         <div
           id="mobile-menu"
+          inert={!isMenuOpen ? true : undefined}
           className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-7 bg-slate/98 px-8 backdrop-blur-2xl transition-all duration-500 md:hidden ${
             isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
           }`}

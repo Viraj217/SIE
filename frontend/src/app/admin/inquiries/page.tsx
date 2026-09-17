@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../layout';
+import { useAuth } from '../AdminClientLayout';
 
 export type InquiryStatus =
   // Legacy
@@ -239,7 +239,7 @@ export default function InquiriesPage() {
       case 'LOST':
         return 'text-rose-400 bg-rose-500/10 border-rose-500/30';
       case 'DORMANT':
-        return 'text-white/40 bg-white/5 border-white/10';
+        return 'text-white/60 bg-white/5 border-white/10';
       case 'PENDING':
         return 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30';
       case 'REVIEWED':
@@ -311,7 +311,7 @@ export default function InquiriesPage() {
                           </div>
                         ) : null}
                         <div className="font-semibold text-white">{item.name}</div>
-                        <div className="text-white/40 text-[0.75rem] font-mono mt-0.5">{item.company}</div>
+                        <div className="text-white/60 text-[0.75rem] font-mono mt-0.5">{item.company}</div>
                       </td>
                       <td className="px-6 py-4">
                         <span className="font-mono text-[0.65rem] text-white/50 bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06]">
@@ -363,14 +363,14 @@ export default function InquiriesPage() {
                 {/* Buyer / Contact Information */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-white/[0.02] rounded border border-white/[0.04] font-mono text-xs text-white/80">
                   <div>
-                    <span className="text-[0.65rem] uppercase tracking-wider text-white/40 block mb-0.5">
+                    <span className="text-[0.65rem] uppercase tracking-wider text-white/60 block mb-0.5">
                       Contact Info
                     </span>
                     <span>{selectedInquiry.contactInfo}</span>
                   </div>
                   {selectedInquiry.city && (
                     <div>
-                      <span className="text-[0.65rem] uppercase tracking-wider text-white/40 block mb-0.5">
+                      <span className="text-[0.65rem] uppercase tracking-wider text-white/60 block mb-0.5">
                         City
                       </span>
                       <span>{selectedInquiry.city}</span>
@@ -378,7 +378,7 @@ export default function InquiriesPage() {
                   )}
                   {selectedInquiry.gstNumber && (
                     <div>
-                      <span className="text-[0.65rem] uppercase tracking-wider text-white/40 block mb-0.5">
+                      <span className="text-[0.65rem] uppercase tracking-wider text-white/60 block mb-0.5">
                         GSTIN
                       </span>
                       <span>{selectedInquiry.gstNumber}</span>
@@ -386,7 +386,7 @@ export default function InquiriesPage() {
                   )}
                   {selectedInquiry.deliveryLocation && (
                     <div>
-                      <span className="text-[0.65rem] uppercase tracking-wider text-white/40 block mb-0.5">
+                      <span className="text-[0.65rem] uppercase tracking-wider text-white/60 block mb-0.5">
                         Destination
                       </span>
                       <span>{selectedInquiry.deliveryLocation}</span>
@@ -394,7 +394,7 @@ export default function InquiriesPage() {
                   )}
                   {selectedInquiry.requiredDeliveryDate && (
                     <div>
-                      <span className="text-[0.65rem] uppercase tracking-wider text-white/40 block mb-0.5">
+                      <span className="text-[0.65rem] uppercase tracking-wider text-white/60 block mb-0.5">
                         Target Date
                       </span>
                       <span className="text-cyan-glow font-bold">
@@ -403,7 +403,7 @@ export default function InquiriesPage() {
                     </div>
                   )}
                   <div>
-                    <span className="text-[0.65rem] uppercase tracking-wider text-white/40 block mb-0.5">
+                    <span className="text-[0.65rem] uppercase tracking-wider text-white/60 block mb-0.5">
                       Intake Source
                     </span>
                     <span>{selectedInquiry.source}</span>
@@ -419,7 +419,7 @@ export default function InquiriesPage() {
                     <div className="overflow-x-auto rounded border border-white/[0.06] bg-white/[0.01]">
                       <table className="w-full text-left font-mono text-[0.72rem]">
                         <thead>
-                          <tr className="border-b border-white/[0.06] bg-white/[0.02] text-white/40 uppercase text-[0.62rem]">
+                          <tr className="border-b border-white/[0.06] bg-white/[0.02] text-white/60 uppercase text-[0.62rem]">
                             <th className="p-2.5">Material & Grade</th>
                             <th className="p-2.5">Dimensions (mm)</th>
                             <th className="p-2.5">Quantity</th>
@@ -432,7 +432,7 @@ export default function InquiriesPage() {
                             <tr key={it.id || idx}>
                               <td className="p-2.5 text-white font-semibold">
                                 <div>{it.materialGrade}</div>
-                                <div className="text-white/40 text-[0.65rem] font-normal">{it.productType}</div>
+                                <div className="text-white/60 text-[0.65rem] font-normal">{it.productType}</div>
                               </td>
                               <td className="p-2.5 text-white/70">
                                 {[

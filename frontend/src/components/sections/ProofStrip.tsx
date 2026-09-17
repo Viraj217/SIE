@@ -29,14 +29,20 @@ function Counter({ value, unit, label, delay }: { value: number; unit: string; l
       {/* Decorative top line */}
       <div className="w-8 h-[2px] bg-gradient-to-r from-transparent via-dawn-coral to-transparent mb-6 opacity-40 group-hover:opacity-100 group-hover:w-12 transition-all duration-500" />
       
-      <div className="flex items-baseline font-mono font-semibold leading-none mb-4">
-        <motion.span className="text-[clamp(2.5rem,4vw,3.8rem)] text-slate">{display}</motion.span>
-        {unit && <span className="text-[clamp(1.2rem,2vw,1.6rem)] text-dawn-coral ml-1.5">{unit}</span>}
-      </div>
+      {/* Screen reader only real value */}
+      <span className="sr-only">{value}{unit} {label}</span>
       
-      <span className="text-[0.7rem] text-steel uppercase tracking-[0.25em] font-mono">
-        {label}
-      </span>
+      {/* Visual animated portion */}
+      <div aria-hidden="true">
+        <div className="flex items-baseline font-mono font-semibold leading-none mb-4">
+          <motion.span className="text-[clamp(2.5rem,4vw,3.8rem)] text-slate">{display}</motion.span>
+          {unit && <span className="text-[clamp(1.2rem,2vw,1.6rem)] text-dawn-coral ml-1.5">{unit}</span>}
+        </div>
+        
+        <span className="text-[0.7rem] text-steel uppercase tracking-[0.25em] font-mono block">
+          {label}
+        </span>
+      </div>
     </motion.div>
   );
 }

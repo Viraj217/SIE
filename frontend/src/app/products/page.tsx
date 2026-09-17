@@ -165,7 +165,7 @@ export default function ProductsPage() {
                       <ul className="space-y-1.5 font-mono text-xs">
                         {product.specs.slice(0, 3).map((spec, i) => (
                           <li key={i} className="flex justify-between gap-2 text-slate/75">
-                            <span className="text-slate/50">{spec.label}:</span>
+                            <span className="text-slate/70">{spec.label}:</span>
                             <span className="font-medium text-right text-slate">{spec.value}</span>
                           </li>
                         ))}

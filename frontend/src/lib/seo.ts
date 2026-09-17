@@ -1,7 +1,6 @@
 import { businessConfig, CANONICAL_PRODUCTS, SEO_FAQS, CatalogProduct } from "./config";
 import type { SteelGrade } from "./grades";
-
-export const SITE_URL = "https://shahindustrialenterprise.com";
+export const SITE_URL = "https://www.shahindustrialenterprise.com";
 
 // Backward-compatible businessInfo mapping
 export const businessInfo = {

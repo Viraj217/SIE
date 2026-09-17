@@ -126,7 +126,7 @@ function ProductCard({ slug, title, tagline, specs, isFeatured = false, icon, ch
         <ul className="flex flex-col gap-0 mb-6">
           {specs.map((spec, i) => (
             <li key={i} className={`flex justify-between gap-4 py-3 text-[0.8rem] border-b last:border-b-0 sm:text-[0.85rem] ${isFeatured ? 'border-white/8' : 'border-steel/8'}`}>
-              <span className={`${isFeatured ? 'text-white/40' : 'text-slate/60'} font-mono`}>{spec.label}</span>
+              <span className={`${isFeatured ? 'text-white/60' : 'text-slate/60'} font-mono`}>{spec.label}</span>
               <span className="text-right font-mono font-medium tracking-tight">{spec.value}</span>
             </li>
           ))}
@@ -555,6 +555,7 @@ export default function ProductsSection() {
                 <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-steel/50" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <input
                   type="text"
+                  aria-label="Search material grade or diameter"
                   placeholder="Search grade, diam..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}

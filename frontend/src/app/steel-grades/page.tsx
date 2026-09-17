@@ -115,7 +115,7 @@ export default function SteelGradesPage() {
                     <span className="rounded bg-dawn-coral/10 px-2.5 py-1 font-mono text-[0.68rem] font-medium uppercase tracking-[0.16em] text-dawn-coral">
                       {grade.family}
                     </span>
-                    <span className="font-mono text-[0.68rem] text-slate/40">{grade.bsDesignation}</span>
+                    <span className="font-mono text-[0.68rem] text-slate/60">{grade.bsDesignation}</span>
                   </div>
 
                   <h2 className="mb-2 font-display text-2xl font-semibold transition-colors group-hover:text-dawn-coral">

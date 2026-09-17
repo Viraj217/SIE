@@ -49,7 +49,7 @@ export default function HeroSection() {
           <div className="mb-7 flex items-center gap-3 text-cyan-glow">
             <span className="h-px w-10 bg-cyan-glow/70" />
             <p className="font-mono text-[0.68rem] tracking-[0.28em] uppercase">
-              Est. 1989 · Darukhana, Mazgaon, Mumbai
+              Est. 1961 · Darukhana, Mazgaon, Mumbai
             </p>
           </div>
 
@@ -65,7 +65,7 @@ export default function HeroSection() {
           </h1>
 
           <p className="mb-8 max-w-[520px] text-[0.98rem] leading-[1.75] text-white/65 sm:mb-9 sm:text-[1.05rem] md:text-[1.12rem]">
-            Heavy steamer shafts, carbon steel, alloy steel round bars, M.S. rounds, EN8, EN9, EN19, EN24, EN31 and C45 materials supplied cut-to-size from Darukhana, Mazgaon since 1989.
+            Heavy steamer shafts, carbon steel, alloy steel round bars, M.S. rounds, EN8, EN9, EN19, EN24, EN31 and C45 materials supplied cut-to-size from Darukhana, Mazgaon since 1961.
           </p>
 
           <div className="mb-12 flex flex-wrap gap-4">
@@ -81,16 +81,16 @@ export default function HeroSection() {
 
           <div className="grid max-w-[520px] grid-cols-3 border-y border-white/10 py-5">
             <div className="border-r border-white/10 pr-4">
-              <p className="font-mono text-xl text-white">35<span className="text-dawn-coral">+</span></p>
-              <p className="mt-1 font-mono text-[0.58rem] tracking-[0.16em] text-white/40 uppercase">Years trading</p>
+              <p className="font-mono text-xl text-white">65<span className="text-dawn-coral">+</span></p>
+              <p className="mt-1 font-mono text-[0.58rem] tracking-[0.16em] text-white/60 uppercase">Years trading</p>
             </div>
             <div className="border-r border-white/10 px-4">
               <p className="font-mono text-xl text-white">18</p>
-              <p className="mt-1 font-mono text-[0.58rem] tracking-[0.16em] text-white/40 uppercase">States supplied</p>
+              <p className="mt-1 font-mono text-[0.58rem] tracking-[0.16em] text-white/60 uppercase">States supplied</p>
             </div>
             <div className="pl-4">
               <p className="font-mono text-xl text-white">±1<span className="text-cyan-glow">mm</span></p>
-              <p className="mt-1 font-mono text-[0.58rem] tracking-[0.16em] text-white/40 uppercase">Cut tolerance</p>
+              <p className="mt-1 font-mono text-[0.58rem] tracking-[0.16em] text-white/60 uppercase">Cut tolerance</p>
             </div>
           </div>
         </div>

@@ -53,7 +53,7 @@ export default function TrustSection() {
             ].map(([value, label]) => (
               <div key={label} className="rounded-lg border border-white/8 bg-white/[0.035] p-4">
                 <p className="font-display text-3xl text-cyan-glow">{value}</p>
-                <p className="mt-1 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-white/38">{label}</p>
+                <p className="mt-1 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-white/60">{label}</p>
               </div>
             ))}
           </div>

@@ -22,7 +22,7 @@ export default function SiteFooter() {
             <p className="font-display text-[1.05rem] font-bold tracking-[0.06em]">
               SHAH INDUSTRIAL ENTERPRISE
             </p>
-            <p className="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-white/40">
+            <p className="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-white/60">
               {businessConfig.establishedClaim}
             </p>
 
@@ -52,7 +52,7 @@ export default function SiteFooter() {
                   {businessConfig.email}
                 </a>
               </p>
-              <p className="pt-1 text-white/40">{businessConfig.hours}</p>
+              <p className="pt-1 text-white/60">{businessConfig.hours}</p>
             </div>
           </div>
 
@@ -111,7 +111,7 @@ export default function SiteFooter() {
               <li><Link href="/products" className="hover:text-white transition-colors">Product Catalogue</Link></li>
               <li><Link href="/steel-grades" className="hover:text-white transition-colors">Grade Reference</Link></li>
               <li><Link href="/tools/weight-calculator" className="hover:text-white transition-colors">Steel Weight Calculator</Link></li>
-              <li><Link href="/products" className="hover:text-white transition-colors">Printable Catalogue</Link></li>
+              <li><Link href="/products" className="hover:text-white transition-colors">View Products</Link></li>
               <li><Link href="/#industries" className="hover:text-white transition-colors">Industries Served</Link></li>
               <li><Link href="/#milestones" className="hover:text-white transition-colors">Our History</Link></li>
               <li><Link href="/#faq" className="hover:text-white transition-colors">FAQ</Link></li>
@@ -124,7 +124,7 @@ export default function SiteFooter() {
           <p className="font-mono text-[0.68rem] uppercase tracking-[0.15em] text-white/55">
             © {year} Shah Industrial Enterprise
           </p>
-          <p className="font-mono text-[0.63rem] tracking-wider text-white/40">
+          <p className="font-mono text-[0.63rem] tracking-wider text-white/60">
             Iron &amp; Steel Merchants · Darukhana, Mazgaon, Mumbai
           </p>
         </div>

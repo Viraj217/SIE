@@ -91,7 +91,7 @@ export default function TimelineSection() {
             LEGACY
           </span>
           <h2 className="section-title !text-white">Three Decades of Iron</h2>
-          <p className="section-desc !text-white/40 mx-auto">A journey measured not in profit margins, but in the tonnage of trust.</p>
+          <p className="section-desc !text-white/60 mx-auto">A journey measured not in profit margins, but in the tonnage of trust.</p>
         </motion.div>
 
         <div className="relative">

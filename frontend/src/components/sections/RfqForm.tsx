@@ -259,7 +259,7 @@ export default function RfqForm() {
             </p>
 
             <div className="inline-flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] rounded-md px-6 py-3.5 mb-8">
-              <span className="font-mono text-[0.7rem] text-white/40 uppercase tracking-[0.2em]">Official Reference:</span>
+              <span className="font-mono text-[0.7rem] text-white/60 uppercase tracking-[0.2em]">Official Reference:</span>
               <span className="font-mono text-cyan-glow tracking-wider font-bold text-base sm:text-lg">
                 {generatedRfqNumber}
               </span>
@@ -436,7 +436,7 @@ export default function RfqForm() {
                       className="p-4 rounded-lg bg-white/[0.02] border border-white/[0.06] relative group"
                     >
                       <div className="flex items-center justify-between border-b border-white/[0.06] pb-2 mb-3">
-                        <span className="font-mono text-[0.68rem] text-white/40 uppercase tracking-wider">
+                        <span className="font-mono text-[0.68rem] text-white/60 uppercase tracking-wider">
                           Line Item #{idx + 1}
                         </span>
                         {items.length > 1 && (
@@ -454,8 +454,9 @@ export default function RfqForm() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         {/* Product Category */}
                         <div>
-                          <label className={labelStyle}>Product Type *</label>
+                          <label htmlFor={`rfq-item-${idx}-productType`} className={labelStyle}>Product Type *</label>
                           <select
+                            id={`rfq-item-${idx}-productType`}
                             value={item.productType}
                             onChange={(e) => handleItemChange(idx, 'productType', e.target.value)}
                             className={inputStyle}
@@ -470,8 +471,9 @@ export default function RfqForm() {
 
                         {/* Grade */}
                         <div>
-                          <label className={labelStyle}>Material Grade *</label>
+                          <label htmlFor={`rfq-item-${idx}-materialGrade`} className={labelStyle}>Material Grade *</label>
                           <select
+                            id={`rfq-item-${idx}-materialGrade`}
                             value={item.materialGrade}
                             onChange={(e) => handleItemChange(idx, 'materialGrade', e.target.value)}
                             className={inputStyle}
@@ -486,8 +488,9 @@ export default function RfqForm() {
 
                         {/* Process Condition */}
                         <div>
-                          <label className={labelStyle}>Supply Condition</label>
+                          <label htmlFor={`rfq-item-${idx}-process`} className={labelStyle}>Supply Condition</label>
                           <select
+                            id={`rfq-item-${idx}-process`}
                             value={item.process}
                             onChange={(e) => handleItemChange(idx, 'process', e.target.value)}
                             className={inputStyle}
@@ -502,8 +505,9 @@ export default function RfqForm() {
 
                         {/* Dimensions: OD */}
                         <div>
-                          <label className={labelStyle}>Outer Dia / Width (mm)</label>
+                          <label htmlFor={`rfq-item-${idx}-od`} className={labelStyle}>Outer Dia / Width (mm)</label>
                           <input
+                            id={`rfq-item-${idx}-od`}
                             type="number"
                             step="any"
                             min="0"
@@ -516,8 +520,9 @@ export default function RfqForm() {
 
                         {/* Dimensions: ID (optional) */}
                         <div>
-                          <label className={labelStyle}>Inner Dia / Bore (mm)</label>
+                          <label htmlFor={`rfq-item-${idx}-idDimension`} className={labelStyle}>Inner Dia / Bore (mm)</label>
                           <input
+                            id={`rfq-item-${idx}-idDimension`}
                             type="number"
                             step="any"
                             min="0"
@@ -530,8 +535,9 @@ export default function RfqForm() {
 
                         {/* Dimensions: Length */}
                         <div>
-                          <label className={labelStyle}>Cut Length (mm)</label>
+                          <label htmlFor={`rfq-item-${idx}-length`} className={labelStyle}>Cut Length (mm)</label>
                           <input
+                            id={`rfq-item-${idx}-length`}
                             type="number"
                             step="any"
                             min="0"
@@ -544,8 +550,9 @@ export default function RfqForm() {
 
                         {/* Quantity */}
                         <div>
-                          <label className={labelStyle}>Quantity *</label>
+                          <label htmlFor={`rfq-item-${idx}-quantity`} className={labelStyle}>Quantity *</label>
                           <input
+                            id={`rfq-item-${idx}-quantity`}
                             type="number"
                             step="any"
                             min="0.001"
@@ -559,8 +566,9 @@ export default function RfqForm() {
 
                         {/* Unit */}
                         <div>
-                          <label className={labelStyle}>Quantity Unit *</label>
+                          <label htmlFor={`rfq-item-${idx}-quantityUnit`} className={labelStyle}>Quantity Unit *</label>
                           <select
+                            id={`rfq-item-${idx}-quantityUnit`}
                             value={item.quantityUnit}
                             onChange={(e) => handleItemChange(idx, 'quantityUnit', e.target.value)}
                             className={inputStyle}
@@ -575,8 +583,9 @@ export default function RfqForm() {
 
                         {/* Item Remarks */}
                         <div>
-                          <label className={labelStyle}>Item Tolerances / Note</label>
+                          <label htmlFor={`rfq-item-${idx}-remarks`} className={labelStyle}>Item Tolerances / Note</label>
                           <input
+                            id={`rfq-item-${idx}-remarks`}
                             type="text"
                             value={item.remarks}
                             onChange={(e) => handleItemChange(idx, 'remarks', e.target.value)}

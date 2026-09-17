@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '../layout';
+import { useAuth } from '../AdminClientLayout';
 
 interface Sector {
   id: string;
@@ -253,7 +253,7 @@ export default function IndustriesPage() {
             <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Name</label>
+                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Name</label>
                   <input
                     type="text"
                     value={name}
@@ -264,7 +264,7 @@ export default function IndustriesPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Slug</label>
+                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Slug</label>
                   <input
                     type="text"
                     value={slug}
@@ -278,7 +278,7 @@ export default function IndustriesPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Icon Name (Lucide)</label>
+                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Icon Name (Lucide)</label>
                   <select
                     value={iconName}
                     onChange={(e) => setIconName(e.target.value)}
@@ -293,7 +293,7 @@ export default function IndustriesPage() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Display Order</label>
+                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Display Order</label>
                   <input
                     type="number"
                     value={displayOrder}
@@ -305,7 +305,7 @@ export default function IndustriesPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Description</label>
+                <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Description</label>
                 <textarea
                   rows={4}
                   value={description}

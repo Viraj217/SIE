@@ -2,9 +2,11 @@
 
 import { buildGeneralWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
+import { usePathname } from 'next/navigation';
 
 export default function MobileStickyBar() {
   const whatsAppUrl = buildGeneralWhatsAppUrl();
+  const pathname = usePathname();
 
   const handleScrollToQuote = () => {
     trackEvent('rfq_start', { source_page: 'mobile_sticky_bar' });
@@ -15,6 +17,10 @@ export default function MobileStickyBar() {
       window.location.href = '/contact';
     }
   };
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 block border-t border-white/10 bg-slate/95 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] backdrop-blur-lg md:hidden">

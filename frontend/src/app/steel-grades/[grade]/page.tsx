@@ -192,7 +192,7 @@ export default async function GradeDetailPage({ params }: Props) {
                   </table>
                 </div>
 
-                <p className="mt-3 font-mono text-[0.7rem] leading-relaxed text-slate/50">
+                <p className="mt-3 font-mono text-[0.7rem] leading-relaxed text-slate/70">
                   Reference ranges vary by standard revision and exact designation. Confirm the
                   purchase specification and use the Mill Test Certificate for the supplied heat.
                 </p>
@@ -207,6 +207,13 @@ export default async function GradeDetailPage({ params }: Props) {
 
                 <div className="overflow-x-auto rounded-lg border border-steel/15 bg-white shadow-sm">
                   <table className="w-full text-left font-mono text-xs sm:text-sm">
+                    <caption className="sr-only">Mechanical properties for {grade.code}</caption>
+                    <thead className="border-b border-steel/15 bg-paper-warm text-slate/70">
+                      <tr>
+                        <th className="p-4 text-[0.7rem] uppercase tracking-wider">Property</th>
+                        <th className="p-4 text-[0.7rem] uppercase tracking-wider">Typical Value</th>
+                      </tr>
+                    </thead>
                     <tbody className="divide-y divide-steel/10">
                       {grade.mechanical.map((row) => (
                         <tr key={row.property}>
@@ -217,7 +224,7 @@ export default async function GradeDetailPage({ params }: Props) {
                     </tbody>
                   </table>
                 </div>
-                <p className="mt-3 font-mono text-[0.7rem] leading-relaxed text-slate/50">
+                <p className="mt-3 font-mono text-[0.7rem] leading-relaxed text-slate/70">
                   Mechanical properties depend on heat-treatment condition and section size. Confirm
                   the required values against the governing order specification before purchase.
                 </p>
@@ -298,7 +305,7 @@ export default async function GradeDetailPage({ params }: Props) {
                 </p>
 
                 <div className="mb-6 rounded border border-white/10 bg-white/[0.04] p-3 font-mono text-xs">
-                  <p className="mb-1 text-[0.65rem] uppercase tracking-wider text-white/40">
+                  <p className="mb-1 text-[0.65rem] uppercase tracking-wider text-white/60">
                     What to include:
                   </p>
                   <p className="text-white/80">• Grade &amp; required condition</p>

@@ -40,11 +40,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Shah Industrial Enterprise | Steamer Shafts, Forged Rounds & Iron Steel Merchants",
+    default: "Shah Industrial Enterprise | Steel Merchants Mumbai",
     template: "%s | Shah Industrial Enterprise",
   },
   description:
-    "Iron and steel merchants in Darukhana, Mazgaon, Mumbai supplying heavy steamer shafts, carbon steel, alloy steel round bars (EN8, EN9, EN19, EN24), forged rounds, seamless pipes, and custom hacksaw cutting since 1989.",
+    "Industrial steel merchants in Darukhana, Mumbai since 1961. Supplying steamer shafts, carbon & alloy steel bars, forged rounds, and hacksaw cutting.",
   keywords: [
     "steel supplier Mumbai",
     "iron merchant Mumbai",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Shah Industrial Enterprise — Forged for Strength, Cut to Precision",
     description:
-      "Custom-cut steel shafts, alloy bars, and heavy industrial raw materials from Mazgaon, Mumbai since 1989.",
+      "Industrial steel merchants in Darukhana, Mumbai since 1961. Supplying steamer shafts, carbon & alloy steel bars, forged rounds, and hacksaw cutting.",
     url: "/",
     siteName: "Shah Industrial Enterprise",
     locale: "en_IN",
@@ -103,7 +103,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Shah Industrial Enterprise",
-    description: "Steel and iron merchants in Mazgaon, Mumbai since 1989.",
+    description: "Industrial steel merchants in Mumbai since 1961.",
     images: ["/og-social.png"],
   },
   robots: {

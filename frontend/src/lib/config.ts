@@ -1,4 +1,4 @@
-export const SITE_URL = "https://shahindustrialenterprise.com";
+export const SITE_URL = "https://www.shahindustrialenterprise.com";
 
 export interface ContactPerson {
   name: string;
@@ -58,7 +58,7 @@ export const businessConfig: BusinessConfig = {
   annualTonnageClaim: "500+",
   expectedResponseTime: "Under 2 hours",
   description:
-    "Iron and steel merchants in Darukhana, Mazgaon, Mumbai supplying heavy steamer shafts, carbon steel, alloy steel round bars, forged rounds, MS rounds, heavy seamless pipes, and hacksaw cutting since 1989.",
+    "Iron and steel merchants in Darukhana, Mazgaon, Mumbai supplying heavy steamer shafts, carbon steel, alloy steel round bars, forged rounds, MS rounds, heavy seamless pipes, and hacksaw cutting since 1961.",
   address: {
     street: "Plot No. 156, 4th Lane",
     locality: "Darukhana, Mazgaon",

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from './layout';
+import { useAuth } from './AdminClientLayout';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -62,7 +62,7 @@ export default function LoginPage() {
             Legacy Dashboard
           </span>
           <h2 className="font-display text-white text-2xl font-bold">Admin Portal</h2>
-          <p className="text-white/40 text-xs mt-2 leading-relaxed">
+          <p className="text-white/60 text-xs mt-2 leading-relaxed">
             Enter your credentials to manage incoming inquiries and inventory catalog.
           </p>
         </div>

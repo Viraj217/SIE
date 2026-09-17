@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '../layout';
+import { useAuth } from '../AdminClientLayout';
 
 interface Spec {
   label: string;
@@ -266,7 +266,7 @@ export default function ProductsPage() {
                 </div>
 
                 <h3 className="font-display text-white text-xl font-semibold mb-2">{product.title}</h3>
-                <p className="text-white/40 text-xs mb-6 line-clamp-2 leading-relaxed">{product.tagline}</p>
+                <p className="text-white/60 text-xs mb-6 line-clamp-2 leading-relaxed">{product.tagline}</p>
 
                 <div className="space-y-1.5 border-t border-white/[0.04] pt-4 mb-6">
                   {product.specs?.slice(0, 3).map((spec, i) => (
@@ -287,7 +287,7 @@ export default function ProductsPage() {
                 </button>
                 <button
                   onClick={() => handleDelete(product.id)}
-                  className="px-3 py-2 bg-white/[0.03] hover:bg-dawn-coral/20 text-white/40 hover:text-dawn-coral text-[0.7rem] rounded transition-colors"
+                  className="px-3 py-2 bg-white/[0.03] hover:bg-dawn-coral/20 text-white/60 hover:text-dawn-coral text-[0.7rem] rounded transition-colors"
                 >
                   🗑
                 </button>
@@ -308,7 +308,7 @@ export default function ProductsPage() {
             <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Slug</label>
+                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Slug</label>
                   <input
                     type="text"
                     value={slug}
@@ -319,7 +319,7 @@ export default function ProductsPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Title</label>
+                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Title</label>
                   <input
                     type="text"
                     value={title}
@@ -332,7 +332,7 @@ export default function ProductsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Tagline</label>
+                <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Tagline</label>
                 <textarea
                   rows={2}
                   value={tagline}
@@ -345,7 +345,7 @@ export default function ProductsPage() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-1">
-                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Category</label>
+                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as 'RAW_MATERIAL' | 'ALLOY' | 'SERVICE')}
@@ -357,7 +357,7 @@ export default function ProductsPage() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/40 block">Display Order</label>
+                  <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Display Order</label>
                   <input
                     type="number"
                     value={displayOrder}

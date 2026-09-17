@@ -5,10 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { businessConfig } from '@/lib/config';
 import { buildGeneralWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
+import { usePathname } from 'next/navigation';
 
 export default function FloatingActions() {
   const [activeMenu, setActiveMenu] = useState<'whatsapp' | 'call' | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -30,6 +32,10 @@ export default function FloatingActions() {
       window.location.href = '/contact';
     }
   };
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <aside

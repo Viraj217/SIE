@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import SiteFooter from '@/components/SiteFooter';
 import { CANONICAL_PRODUCTS, businessConfig } from '@/lib/config';
-import { generateProductJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo';
+import { generateProductJsonLd } from '@/lib/seo';
 import { buildProductWhatsAppUrl } from '@/lib/whatsapp';
 import { matchGradeLabel } from '@/lib/grades';
 
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `/products/${product.slug}`,
     },
     openGraph: {
-      title: `${product.title} | Shah Industrial Enterprise Mumbai`,
+      title: `${product.title} | Shah Industrial Enterprise`,
       description: product.tagline,
       url: `/products/${product.slug}`,
       type: 'website',
@@ -62,12 +62,6 @@ export default async function ProductDetailPage({ params }: Props) {
   }
 
   const productJsonLd = generateProductJsonLd(product);
-  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
-    { name: 'Home', url: '/' },
-    { name: 'Products', url: '/products' },
-    { name: product.title, url: `/products/${product.slug}` },
-  ]);
-
   const relatedProducts = CANONICAL_PRODUCTS.filter((p) => p.slug !== product.slug).slice(0, 3);
 
   const defaultGrade = product.availableGrades?.[0] || 'Standard';
@@ -83,10 +77,6 @@ export default async function ProductDetailPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <Navigation />
@@ -147,7 +137,7 @@ export default async function ProductDetailPage({ params }: Props) {
             <div className="rounded-xl border border-white/10 bg-white/[0.04] p-6 sm:p-8 backdrop-blur-sm">
               <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-glow">Technical Snapshot</span>
-                <span className="font-mono text-[0.68rem] text-white/40">SIE–{product.displayOrder.toString().padStart(2, '0')}</span>
+                <span className="font-mono text-[0.68rem] text-white/60">SIE–{product.displayOrder.toString().padStart(2, '0')}</span>
               </div>
 
               <dl className="space-y-4 font-mono text-sm">
@@ -274,8 +264,8 @@ export default async function ProductDetailPage({ params }: Props) {
                           </span>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 my-3 font-mono text-xs text-slate/70">
-                          <div><span className="text-slate/40">Carbon:</span> {grade.carbonContent}</div>
-                          <div><span className="text-slate/40">Tensile Strength:</span> {grade.tensileStrength}</div>
+                          <div><span className="text-slate/60">Carbon:</span> {grade.carbonContent}</div>
+                          <div><span className="text-slate/60">Tensile Strength:</span> {grade.tensileStrength}</div>
                         </div>
                         <p className="text-xs text-slate/60 leading-relaxed">{grade.recommendedUse}</p>
                       </div>
@@ -317,7 +307,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
                 <div className="space-y-3 mb-6 font-mono text-xs">
                   <div className="rounded border border-white/10 bg-white/[0.04] p-3">
-                    <p className="text-white/40 uppercase text-[0.65rem] tracking-wider mb-1">What to include:</p>
+                    <p className="text-white/60 uppercase text-[0.65rem] tracking-wider mb-1">What to include:</p>
                     <p className="text-white/80">• Grade & required condition</p>
                     <p className="text-white/80">• Diameter & cut length in mm</p>
                     <p className="text-white/80">• Total quantity (pieces / kg)</p>

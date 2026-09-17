@@ -422,7 +422,7 @@ export default function SteelWeightCalculatorPage() {
               <div className="rounded-2xl bg-slate p-6 sm:p-8 text-white shadow-xl noise-overlay">
                 <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
                   <span className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-glow">Calculation Results</span>
-                  <span className="font-mono text-xs text-white/40">{shapeTitleMap[shape]}</span>
+                  <span className="font-mono text-xs text-white/60">{shapeTitleMap[shape]}</span>
                 </div>
 
                 <div className="space-y-6">
@@ -441,11 +441,11 @@ export default function SteelWeightCalculatorPage() {
 
                   <div className="grid grid-cols-2 gap-4 rounded-lg border border-white/10 bg-white/[0.04] p-4 font-mono text-xs">
                     <div>
-                      <p className="text-white/40 uppercase text-[0.65rem]">Weight Per Piece</p>
+                      <p className="text-white/60 uppercase text-[0.65rem]">Weight Per Piece</p>
                       <p className="text-white font-semibold text-sm mt-0.5">{result.singleWeightKg} kg</p>
                     </div>
                     <div>
-                      <p className="text-white/40 uppercase text-[0.65rem]">Total Volume</p>
+                      <p className="text-white/60 uppercase text-[0.65rem]">Total Volume</p>
                       <p className="text-white font-semibold text-sm mt-0.5">{result.volumeCm3.toLocaleString()} cm³</p>
                     </div>
                   </div>
