@@ -7,7 +7,9 @@ export default function HeroSection() {
 
   useEffect(() => {
     const scene = sceneRef.current;
-    if (!scene || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    if (!scene || reduceMotion || !finePointer) return;
 
     let frame = 0;
     let targetX = 0;

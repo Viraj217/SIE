@@ -233,7 +233,7 @@ export default function RfqForm() {
   };
 
   const inputStyle =
-    'w-full bg-white/[0.04] border border-white/[0.08] focus:border-cyan-glow/40 focus:bg-white/[0.06] rounded-md px-3.5 py-2.5 text-white text-xs font-mono placeholder:text-white/25 focus:outline-none transition-colors';
+    'min-h-11 w-full rounded-md border border-white/[0.08] bg-white/[0.04] px-3.5 py-2.5 font-mono text-base text-white placeholder:text-white/25 transition-colors focus:border-cyan-glow/40 focus:bg-white/[0.06] focus:outline-none sm:min-h-0 sm:text-xs';
 
   const labelStyle = 'text-[0.68rem] font-mono uppercase tracking-[0.16em] text-cyan-glow/80 block mb-1';
 
@@ -289,7 +289,7 @@ export default function RfqForm() {
           </motion.div>
         ) : (
           <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+            <div className="mb-6 flex flex-col gap-3 border-b border-white/10 pb-4 min-[420px]:flex-row min-[420px]:items-center min-[420px]:justify-between">
               <div>
                 <h3 className="font-display text-xl sm:text-2xl text-white">Request for Quotation (RFQ)</h3>
                 <p className="text-white/50 text-xs mt-1">Multi-item steel procurement · Mazgaon Stockyard</p>
@@ -414,8 +414,8 @@ export default function RfqForm() {
 
               {/* SECTION: Line Items */}
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-mono text-xs uppercase tracking-[0.15em] text-white/60 flex items-center gap-2">
+                <div className="mb-3 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:items-center min-[420px]:justify-between">
+                  <h4 className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.12em] text-white/60 sm:tracking-[0.15em]">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-glow"></span>
                     2. Required Material Specifications ({items.length} {items.length === 1 ? 'Item' : 'Items'})
                   </h4>
@@ -423,7 +423,7 @@ export default function RfqForm() {
                     type="button"
                     onClick={addItem}
                     disabled={items.length >= 20}
-                    className="inline-flex items-center gap-1 font-mono text-[0.68rem] uppercase tracking-wider text-cyan-glow border border-cyan-glow/30 hover:bg-cyan-glow/10 px-2.5 py-1 rounded transition-colors"
+                    className="inline-flex min-h-11 items-center justify-center gap-1 self-start rounded border border-cyan-glow/30 px-3 font-mono text-[0.68rem] uppercase tracking-wider text-cyan-glow transition-colors hover:bg-cyan-glow/10"
                   >
                     + Add Line Item
                   </button>

@@ -26,6 +26,10 @@
     overflow-x: hidden;
   }
 
+  section[id] {
+    scroll-margin-top: 88px;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-display font-semibold leading-tight;
   }
@@ -229,6 +233,18 @@
 }
 
 @media (max-width: 640px) {
+  nav[aria-label="Breadcrumb"] {
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  nav[aria-label="Breadcrumb"] > * {
+    flex: 0 0 auto;
+  }
+
   .hero-svg {
     min-height: 0;
   }
@@ -250,6 +266,15 @@
 
   .section-desc {
     font-size: 0.98rem;
+  }
+
+  .hero-heading {
+    font-size: clamp(2.65rem, 11vw, 3.4rem);
+  }
+
+  .hero-heading > span:first-child {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
   }
 }
 

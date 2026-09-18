@@ -596,18 +596,22 @@ export default function ProductsSection() {
           variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
           className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8"
         >
-          {filteredProducts.map((product) => (
-            <ProductCard
+          {filteredProducts.map((product, index) => (
+            <div
               key={product.slug}
-              slug={product.slug}
-              title={product.title}
-              tagline={product.tagline}
-              isFeatured={product.isFeatured}
-              icon={product.icon}
-              specs={product.specs}
+              className={!searchQuery && activeFilter === 'ALL' && index >= 4 ? 'hidden md:block' : undefined}
             >
-              {product.illustration}
-            </ProductCard>
+              <ProductCard
+                slug={product.slug}
+                title={product.title}
+                tagline={product.tagline}
+                isFeatured={product.isFeatured}
+                icon={product.icon}
+                specs={product.specs}
+              >
+                {product.illustration}
+              </ProductCard>
+            </div>
           ))}
           {filteredProducts.length === 0 && (
             <div className="col-span-full rounded-lg border border-steel/10 bg-white/45 p-8 text-center">
@@ -623,6 +627,16 @@ export default function ProductsSection() {
             </div>
           )}
         </motion.div>
+        {!searchQuery && activeFilter === 'ALL' && filteredProducts.length > 4 && (
+          <div className="mt-8 text-center md:hidden">
+            <Link
+              href="/products"
+              className="inline-flex min-h-11 items-center justify-center rounded-md border border-steel/20 bg-white px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-slate transition-colors hover:border-cyan-glow hover:bg-paper-warm"
+            >
+              View all {filteredProducts.length} materials
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

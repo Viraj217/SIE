@@ -18,12 +18,12 @@ export default function MobileStickyBar() {
     }
   };
 
-  if (pathname?.startsWith('/admin')) {
+  if (pathname?.startsWith('/admin') || pathname === '/contact') {
     return null;
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 block border-t border-white/10 bg-slate/95 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] backdrop-blur-lg md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-40 block border-t border-white/10 bg-slate/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] backdrop-blur-lg md:hidden">
       <div className="mx-auto flex max-w-[500px] items-center gap-3">
         <a
           href={whatsAppUrl}

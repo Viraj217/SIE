@@ -55,6 +55,7 @@ export default function Navigation() {
   ];
 
   return (
+    <>
     <header
       className={`fixed top-0 left-0 w-full h-[72px] z-50 transition-all duration-500 ease-out ${
         isScrolled || !isHome
@@ -63,11 +64,11 @@ export default function Navigation() {
       }`}
     >
       <nav className="max-w-[1300px] mx-auto h-full flex justify-between items-center px-5 sm:px-8 md:px-12">
-        <Link href="/" className="relative z-50 flex min-w-0 flex-col gap-0.5 group">
-          <span className={`font-display font-bold text-[1.15rem] sm:text-[1.25rem] tracking-[0.08em] transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate' : 'text-white'}`}>
+        <Link href="/" className="relative z-50 flex min-w-0 max-w-[calc(100%-4rem)] flex-col gap-0.5 group">
+          <span className={`font-display font-bold text-[1.05rem] sm:text-[1.25rem] tracking-[0.06em] sm:tracking-[0.08em] transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate' : 'text-white'}`}>
             SHAH INDUSTRIAL ENTERPRISE
           </span>
-          <span className={`font-mono text-[0.58rem] sm:text-[0.6rem] tracking-[0.25em] uppercase transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate/60' : 'text-white/60'}`}>
+          <span className={`truncate font-mono text-[0.55rem] sm:text-[0.6rem] tracking-[0.16em] sm:tracking-[0.25em] uppercase transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate/60' : 'text-white/60'}`}>
             Est. 1961 · Mazgaon, Mumbai
           </span>
         </Link>
@@ -119,33 +120,36 @@ export default function Navigation() {
           <span className={`block h-[1.5px] transition-all duration-300 ${isScrolled || !isHome ? 'bg-slate' : 'bg-white'} ${isMenuOpen ? 'w-7 -rotate-45 -translate-y-[2px]' : 'w-5'}`} />
         </button>
 
-        {/* Mobile Overlay */}
-        <div
-          id="mobile-menu"
-          inert={!isMenuOpen ? true : undefined}
-          className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-7 bg-slate/98 px-8 backdrop-blur-2xl transition-all duration-500 md:hidden ${
-            isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
-          }`}
-        >
-          {navLinks.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              onClick={() => setIsMenuOpen(false)}
-              className="font-display text-white text-2xl tracking-wider hover:text-cyan-glow transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
-          <Link
-            href="/contact"
-            onClick={() => setIsMenuOpen(false)}
-            className="mt-4 w-full max-w-[280px] text-center rounded bg-dawn-coral py-3.5 font-mono text-xs font-bold uppercase tracking-wider text-slate-900"
-          >
-            Get Quote
-          </Link>
-        </div>
       </nav>
     </header>
+    <div
+      id="mobile-menu"
+      inert={!isMenuOpen ? true : undefined}
+      aria-hidden={!isMenuOpen}
+      className={`fixed inset-0 z-[45] flex min-h-[100dvh] flex-col items-center overflow-y-auto bg-slate/98 px-8 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-[calc(6rem+env(safe-area-inset-top))] backdrop-blur-2xl transition-opacity duration-300 md:hidden ${
+        isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+      }`}
+    >
+      <div className="flex w-full max-w-[280px] flex-col items-center gap-2">
+        {navLinks.map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            onClick={() => setIsMenuOpen(false)}
+            className="w-full rounded-md px-4 py-2.5 text-center font-display text-xl tracking-wider text-white transition-colors hover:bg-white/5 hover:text-cyan-glow"
+          >
+            {item.label}
+          </Link>
+        ))}
+        <Link
+          href="/contact"
+          onClick={() => setIsMenuOpen(false)}
+          className="mt-4 w-full rounded bg-dawn-coral py-3.5 text-center font-mono text-xs font-bold uppercase tracking-wider text-slate-900"
+        >
+          Get Quote
+        </Link>
+      </div>
+    </div>
+    </>
   );
 }

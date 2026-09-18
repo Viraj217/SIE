@@ -29,7 +29,7 @@ export default function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative overflow-hidden rounded-xl bg-slate p-6 text-white ring-1 ring-white/5 sm:p-8 md:p-10 shadow-2xl"
+            className="relative overflow-hidden rounded-xl bg-slate p-4 text-white ring-1 ring-white/5 min-[380px]:p-5 sm:p-8 md:p-10 shadow-2xl"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-cyan-glow/5 to-transparent pointer-events-none" />
             <RfqForm />

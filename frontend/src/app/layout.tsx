@@ -126,7 +126,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${fraunces.variable} ${ibmPlexMono.variable} antialiased pb-[72px] md:pb-0`}
+        className={`${inter.variable} ${fraunces.variable} ${ibmPlexMono.variable} antialiased pb-[calc(76px+env(safe-area-inset-bottom))] md:pb-0`}
       >
         {children}
         <FloatingActions />
