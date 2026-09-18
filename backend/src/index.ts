@@ -19,6 +19,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'https://shah-industrial-frontend.vercel.app',
   'https://shahindustrialenterprise.vercel.app',
+  'https://www.shahindustrialenterprise.com',
+  'https://shahindustrialenterprise.com'
 ];
 
 if (frontendUrl) {
