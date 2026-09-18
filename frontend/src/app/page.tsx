@@ -4,7 +4,6 @@ import ProofStrip from "@/components/sections/ProofStrip";
 import OperatingPromise from "@/components/sections/OperatingPromise";
 import ProductsSection from "@/components/sections/ProductsSection";
 import IndustriesSection from "@/components/sections/IndustriesSection";
-import TrustSection from "@/components/sections/TrustSection";
 import TimelineSection from "@/components/sections/TimelineSection";
 import FaqSection from "@/components/sections/FaqSection";
 import ContactSection from "@/components/sections/ContactSection";
@@ -26,7 +25,6 @@ export default function Home() {
       <OperatingPromise />
       <ProductsSection />
       <IndustriesSection />
-      <TrustSection />
       <TimelineSection />
       <ContactSection />
       <FaqSection />
