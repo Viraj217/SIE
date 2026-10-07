@@ -196,7 +196,7 @@ async function main() {
   // ── Timeline Milestones ───────────────────────────────────────────────
   const milestonesToSeed = [
     {
-      year: '1989',
+      year: '2023',
       title: 'The Foundation',
       description: 'Shah Industrial Enterprise opens its doors in Darukhana, Mazgaon — supplying raw mild steel to local fabrication units across Mumbai.',
       displayOrder: 0,

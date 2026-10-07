@@ -10,7 +10,7 @@ interface Milestone {
 }
 
 const STATIC_MILESTONES: Milestone[] = [
-  { year: '1989', title: 'The Foundation', description: 'Shah Industrial Enterprise opens its doors in Darukhana, Mazgaon — supplying raw mild steel to local fabrication units across Mumbai.' },
+  { year: '2023', title: 'The Foundation', description: 'Shah Industrial Enterprise opens its doors in Darukhana, Mazgaon — supplying raw mild steel to local fabrication units across Mumbai.' },
   { year: '2002', title: 'Heavy Machinery Expansion', description: 'Expanded inventory to include specialized carbon steel and alloy rods for the booming sugar mill and marine sectors, reaching 8 states.' },
   { year: '2015', title: 'Precision Processing', description: 'Introduced automated, high-tolerance hacksaw cutting — allowing clients to receive exact-dimension stock ready for CNC machining.' },
   { year: 'TODAY', title: 'Trusted Backbone', description: 'A second-generation legacy, recognized across 18 states for uncompromising material quality and delivery reliability.' },

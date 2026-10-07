@@ -69,7 +69,7 @@ export default function Navigation() {
             SHAH INDUSTRIAL ENTERPRISE
           </span>
           <span className={`truncate font-mono text-[0.55rem] sm:text-[0.6rem] tracking-[0.16em] sm:tracking-[0.25em] uppercase transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate/60' : 'text-white/60'}`}>
-            Est. 1961 · Mazgaon, Mumbai
+            Est. 2023 · Mazgaon, Mumbai
           </span>
         </Link>
 

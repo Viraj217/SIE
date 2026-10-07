@@ -2,13 +2,13 @@
 
 ## 1. The motive — why this site exists
 
-Shah Industrial Enterprise has spent 35 years as a steel and iron merchant in Darukhana, Mazgaon — supplying the raw shafts, rods, and custom-cut components that heavy machinery, sugar mills, and manufacturing lines in India physically stand on. The business has never needed to look premium, because the relationships were built in person, over decades, in an industrial neighborhood where reputation traveled by word of mouth.
+Shah Industrial Enterprise has spent 3 years as a steel and iron merchant in Darukhana, Mazgaon — supplying the raw shafts, rods, and custom-cut components that heavy machinery, sugar mills, and manufacturing lines in India physically stand on. The business has never needed to look premium, because the relationships were built in person, over decades, in an industrial neighborhood where reputation traveled by word of mouth.
 
 The website's job is to translate that earned trust into a first impression for someone who has *never* met the Shah family — an engineering partner, a factory procurement manager, a new industrial client — researching the company for the first time, on a screen, in thirty seconds, before they ever pick up the phone.
 
 **The core message the site must land:** *We are the silent, sturdy backbone of your operations.* Not a catalog. Not a directory listing. A company that treats raw steel with the same precision language a modern tech company uses for its product.
 
-**The tone to strike:** premium without pretending to be something else. This is not a startup. It is not "disrupting" the steel trade. It is a 35-year institution presenting itself with the visual confidence it has always had internally but never had to display externally — until now, because its next generation of clients research vendors online before they ever call.
+**The tone to strike:** premium without pretending to be something else. This is not a startup. It is not "disrupting" the steel trade. It is a 3-year institution presenting itself with the visual confidence it has always had internally but never had to display externally — until now, because its next generation of clients research vendors online before they ever call.
 
 **The single visual idea the whole site hangs on:** the raw material itself — a forged steel shaft — treated as the subject of a technical, almost reverent illustration. Not stock photography of a warehouse. Not a hero banner of a smiling worker in a hard hat. The steel, drawn like a blueprint, given the same visual weight a jewelry brand gives a diamond or a watch brand gives a movement. That reframes "we sell rods" into "we are precision, at industrial scale" — which is the actual truth of the business, just never staged before.
 
@@ -28,7 +28,7 @@ The website's job is to translate that earned trust into a first impression for 
 **The discipline that makes this work:** the atmospheric gradient and the coral/cyan palette belong to the hero *only*. Every section after it returns to quiet paper-white with slate text and thin hairline borders. One loud moment, then restraint. Sites that stay "premium-loud" everywhere read as trying too hard; sites that go quiet immediately after a strong opening read as confident.
 
 **Typography** — three roles, not two:
-- A serif display face with real editorial weight (Fraunces or an equivalent variable serif) for headlines — gives the heritage/institutional feeling the "35 years" story needs, instead of a generic sans that could belong to any SaaS product.
+- A serif display face with real editorial weight (Fraunces or an equivalent variable serif) for headlines — gives the heritage/institutional feeling the "3 years" story needs, instead of a generic sans that could belong to any SaaS product.
 - A clean grotesk sans (Inter or similar) for body copy and navigation — stays out of the way.
 - A monospace face (IBM Plex Mono or similar) reserved specifically for numbers, specs, and telemetry-style data (tonnage, years, dimensions) — this is what makes the site feel like it's showing you real engineering data rather than marketing copy.
 
@@ -51,7 +51,7 @@ The site is a single continuous scroll — one story, six beats. Each section's 
 
 **04 — Industries: powering India's backbone.** A recognition beat, not a persuasion beat. Sugar processing, hydraulic presses, heavy manufacturing — named plainly so the visiting procurement manager sees their own industry immediately and feels "this vendor already understands my world."
 
-**05 — About: chronicle of milestones.** The emotional turn of the page. A vertical timeline from 1989 in Mazgaon to today, paired with real photography of the people — the Shah family, the physical yard in Darukhana. Capability was proven in sections 2–4; this section makes the trust personal. This is deliberately the first section where warm, human photography (not illustration) should appear — it's the contrast that makes it land.
+**05 — About: chronicle of milestones.** The emotional turn of the page. A vertical timeline from 2023 in Mazgaon to today, paired with real photography of the people — the Shah family, the physical yard in Darukhana. Capability was proven in sections 2–4; this section makes the trust personal. This is deliberately the first section where warm, human photography (not illustration) should appear — it's the contrast that makes it land.
 
 **06 — Contact: forging new alliances.** Closes the story by inviting the visitor in, not just collecting a lead. Direct named contacts to the Shah family, not a faceless "submit inquiry" form. The tone should feel like being handed a business card by someone who's been doing this for three decades, not filling out a support ticket.
 

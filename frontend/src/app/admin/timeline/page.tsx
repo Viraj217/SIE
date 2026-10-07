@@ -255,7 +255,7 @@ export default function TimelinePage() {
                     onChange={(e) => setYear(e.target.value)}
                     required
                     className="w-full bg-white/[0.04] border border-white/[0.08] rounded px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-cyan-glow/40"
-                    placeholder="e.g. 1989 or TODAY"
+                    placeholder="e.g. 2023 or TODAY"
                   />
                 </div>
                 <div className="space-y-1">

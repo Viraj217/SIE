@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Steel Materials & Shafting Catalog — Shafts, Forged Rounds & EN Grades',
     description:
-      'Heavy steamer shafts, carbon steel rounds, alloy bars, and custom hacksaw cutting in Mazgaon, Mumbai since 1989.',
+      'Heavy steamer shafts, carbon steel rounds, alloy bars, and custom hacksaw cutting in Mazgaon, Mumbai since 2023.',
     url: '/products',
     type: 'website',
     images: [{ url: '/og-social.png', width: 1731, height: 909, alt: 'Shah Industrial Enterprise — Industrial Steel and Shafting, Darukhana, Mumbai' }],

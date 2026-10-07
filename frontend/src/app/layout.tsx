@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     template: "%s | Shah Industrial Enterprise",
   },
   description:
-    "Industrial steel merchants in Darukhana, Mumbai since 1961. Supplying steamer shafts, carbon & alloy steel bars, forged rounds, and hacksaw cutting.",
+    "Industrial steel merchants in Darukhana, Mumbai since 2023. Supplying steamer shafts, carbon & alloy steel bars, forged rounds, and hacksaw cutting.",
   keywords: [
     "steel supplier Mumbai",
     "iron merchant Mumbai",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Shah Industrial Enterprise — Forged for Strength, Cut to Precision",
     description:
-      "Industrial steel merchants in Darukhana, Mumbai since 1961. Supplying steamer shafts, carbon & alloy steel bars, forged rounds, and hacksaw cutting.",
+      "Industrial steel merchants in Darukhana, Mumbai since 2023. Supplying steamer shafts, carbon & alloy steel bars, forged rounds, and hacksaw cutting.",
     url: "/",
     siteName: "Shah Industrial Enterprise",
     locale: "en_IN",
@@ -103,7 +103,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Shah Industrial Enterprise",
-    description: "Industrial steel merchants in Mumbai since 1961.",
+    description: "Industrial steel merchants in Mumbai since 2023.",
     images: ["/og-social.png"],
   },
   robots: {

@@ -61,7 +61,6 @@ export default function ContactSection() {
                       </div>
                       <div>
                         <h4 className="font-display font-bold text-slate text-base">{contact.name}</h4>
-                        <p className="font-mono text-[0.7rem] text-steel/70">{contact.role}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -86,23 +85,30 @@ export default function ContactSection() {
                 ))}
               </div>
 
-              {/* Yard Address */}
-              <div className="mt-8 rounded-xl border border-steel/10 bg-white p-5 space-y-4 shadow-sm">
-                <div>
-                  <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-steel mb-1">
+              {/* Operating Stockyard Location Map */}
+              <div className="mt-8 rounded-xl border border-steel/10 bg-white p-4 sm:p-5 shadow-sm">
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-steel">
                     Operating Stockyard Location
-                  </p>
-                  <p className="font-mono text-xs text-slate/80 leading-relaxed">
-                    Plot No. 156, 4th Lane, Darukhana, Mazgaon, Mumbai — 400010
                   </p>
                   <a
                     href="https://maps.google.com/?q=Plot+No.+156+4th+Lane+Darukhana+Mazgaon+Mumbai+400010"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 font-mono text-[0.7rem] text-dawn-coral hover:underline mt-1.5"
+                    className="inline-flex items-center gap-1 font-mono text-[0.7rem] text-dawn-coral hover:underline"
                   >
-                    View on Google Maps ↗
+                    Open in Maps ↗
                   </a>
+                </div>
+                <div className="relative h-56 sm:h-64 w-full overflow-hidden rounded-lg border border-steel/15 bg-slate/5 shadow-inner">
+                  <iframe
+                    title="Operating Stockyard Location — Darukhana, Mazgaon, Mumbai"
+                    src="https://maps.google.com/maps?q=Plot+No.+156,+4th+Lane,+Darukhana,+Mazgaon,+Mumbai+400010&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    className="h-full w-full border-0"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  />
                 </div>
               </div>
             </div>

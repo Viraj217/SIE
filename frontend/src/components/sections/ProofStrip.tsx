@@ -55,7 +55,7 @@ export default function ProofStrip() {
       
       <div className="mx-auto max-w-[1100px] px-5 py-4 sm:px-8 sm:py-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-steel/10">
-          <Counter value={35} unit="+" label="Years of Presence" delay={0} />
+          <Counter value={new Date().getFullYear() - 2023} unit="+" label="Years of Presence" delay={0} />
           <Counter value={500} unit="T/yr" label="Steel Handled" delay={150} />
           <Counter value={18} unit="" label="States Supplied" delay={300} />
           <Counter value={4} unit="" label="Core Sectors" delay={450} />

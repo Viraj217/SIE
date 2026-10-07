@@ -253,13 +253,13 @@ export default function RfqForm() {
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            <h3 className="font-display text-2xl sm:text-3xl mb-2 text-white">RFQ Registered Successfully</h3>
+            <h3 className="font-display text-2xl sm:text-3xl mb-2 text-white">Enquiry Submitted Successfully</h3>
             <p className="text-white/60 text-xs sm:text-sm mb-6 max-w-md mx-auto leading-relaxed">
-              Your formal Request for Quotation has been logged into our procurement queue. Our technical sales desk will review tolerances, stock availability, and prepare your quote.
+              Your material enquiry has been received. Our team will review your requirements, check stock availability, and get back to you with a quote shortly.
             </p>
 
             <div className="inline-flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] rounded-md px-6 py-3.5 mb-8">
-              <span className="font-mono text-[0.7rem] text-white/60 uppercase tracking-[0.2em]">Official Reference:</span>
+              <span className="font-mono text-[0.7rem] text-white/60 uppercase tracking-[0.2em]">Enquiry Reference:</span>
               <span className="font-mono text-cyan-glow tracking-wider font-bold text-base sm:text-lg">
                 {generatedRfqNumber}
               </span>
@@ -270,7 +270,7 @@ export default function RfqForm() {
                 href={buildRfqWhatsAppUrl({
                   name: `Ref ${generatedRfqNumber}`,
                   company: '',
-                  material: `RFQ Reference: ${generatedRfqNumber}`,
+                  material: `Enquiry Reference: ${generatedRfqNumber}`,
                   quantity: '',
                 })}
                 target="_blank"
@@ -283,7 +283,7 @@ export default function RfqForm() {
                 onClick={() => setStatus('idle')}
                 className="font-mono text-xs text-white/50 hover:text-white transition-colors underline underline-offset-4"
               >
-                Submit another RFQ
+                Submit another enquiry
               </button>
             </div>
           </motion.div>
@@ -291,11 +291,11 @@ export default function RfqForm() {
           <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div className="mb-6 flex flex-col gap-3 border-b border-white/10 pb-4 min-[420px]:flex-row min-[420px]:items-center min-[420px]:justify-between">
               <div>
-                <h3 className="font-display text-xl sm:text-2xl text-white">Request for Quotation (RFQ)</h3>
-                <p className="text-white/50 text-xs mt-1">Multi-item steel procurement · Mazgaon Stockyard</p>
+                <h3 className="font-display text-xl sm:text-2xl text-white">Request a Quote</h3>
+                <p className="text-white/50 text-xs mt-1">Let us know your material requirements</p>
               </div>
               <span className="font-mono text-[0.65rem] uppercase tracking-wider text-cyan-glow bg-cyan-glow/10 border border-cyan-glow/20 px-2.5 py-1 rounded">
-                B2B Procurement
+                Direct Supply
               </span>
             </div>
 
@@ -312,13 +312,13 @@ export default function RfqForm() {
               <div>
                 <h4 className="font-mono text-xs uppercase tracking-[0.15em] text-white/60 mb-3 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-glow"></span>
-                  1. Buyer & Organization Details
+                  1. Contact Details
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label htmlFor="rfq-contactPerson" className={labelStyle}>
-                      Contact Person *
+                      Name *
                     </label>
                     <input
                       id="rfq-contactPerson"
@@ -334,7 +334,7 @@ export default function RfqForm() {
 
                   <div>
                     <label htmlFor="rfq-companyName" className={labelStyle}>
-                      Company Name *
+                      Company Name (Optional)
                     </label>
                     <input
                       id="rfq-companyName"
@@ -342,7 +342,7 @@ export default function RfqForm() {
                       name="companyName"
                       value={buyerInfo.companyName}
                       onChange={handleBuyerChange}
-                      required
+
                       placeholder="e.g. Precision Heavy Eng. Pvt Ltd"
                       className={inputStyle}
                     />
@@ -350,7 +350,7 @@ export default function RfqForm() {
 
                   <div>
                     <label htmlFor="rfq-email" className={labelStyle}>
-                      Official Email *
+                      Email Address *
                     </label>
                     <input
                       id="rfq-email"
@@ -382,7 +382,7 @@ export default function RfqForm() {
 
                   <div>
                     <label htmlFor="rfq-city" className={labelStyle}>
-                      City / Region
+                      City
                     </label>
                     <input
                       id="rfq-city"
@@ -417,7 +417,7 @@ export default function RfqForm() {
                 <div className="mb-3 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:items-center min-[420px]:justify-between">
                   <h4 className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.12em] text-white/60 sm:tracking-[0.15em]">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-glow"></span>
-                    2. Required Material Specifications ({items.length} {items.length === 1 ? 'Item' : 'Items'})
+                    2. Material Requirements ({items.length} {items.length === 1 ? 'Item' : 'Items'})
                   </h4>
                   <button
                     type="button"
@@ -425,7 +425,7 @@ export default function RfqForm() {
                     disabled={items.length >= 20}
                     className="inline-flex min-h-11 items-center justify-center gap-1 self-start rounded border border-cyan-glow/30 px-3 font-mono text-[0.68rem] uppercase tracking-wider text-cyan-glow transition-colors hover:bg-cyan-glow/10"
                   >
-                    + Add Line Item
+                    + Add Another Item
                   </button>
                 </div>
 
@@ -437,7 +437,7 @@ export default function RfqForm() {
                     >
                       <div className="flex items-center justify-between border-b border-white/[0.06] pb-2 mb-3">
                         <span className="font-mono text-[0.68rem] text-white/60 uppercase tracking-wider">
-                          Line Item #{idx + 1}
+                          Item #{idx + 1}
                         </span>
                         {items.length > 1 && (
                           <button
@@ -603,13 +603,13 @@ export default function RfqForm() {
               <div>
                 <h4 className="font-mono text-xs uppercase tracking-[0.15em] text-white/60 mb-3 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-glow"></span>
-                  3. Logistics & Delivery Schedule
+                  3. Delivery Preferences
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label htmlFor="rfq-deliveryLocation" className={labelStyle}>
-                      Delivery Location / Destination
+                      Delivery Location
                     </label>
                     <input
                       id="rfq-deliveryLocation"
@@ -624,7 +624,7 @@ export default function RfqForm() {
 
                   <div>
                     <label htmlFor="rfq-requiredDeliveryDate" className={labelStyle}>
-                      Required Delivery Date (Target)
+                      When do you need it?
                     </label>
                     <input
                       id="rfq-requiredDeliveryDate"
@@ -639,7 +639,7 @@ export default function RfqForm() {
 
                 <div className="mt-3.5">
                   <label htmlFor="rfq-message" className={labelStyle}>
-                    Commercial Terms / Additional Specifications
+                    Additional Notes or Specifications
                   </label>
                   <textarea
                     id="rfq-message"
@@ -660,12 +660,12 @@ export default function RfqForm() {
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                     </svg>
-                    Have fabrication drawings or detailed spec sheets? Send directly:
+                    Have drawings or spec sheets? Send them directly:
                   </span>
                   <span className="flex items-center gap-2">
                     <a
                       href={buildGeneralWhatsAppUrl(
-                        `Hello Shah Industrial Enterprise,\n\nI am sending drawings and specification sheets for our RFQ.`
+                        `Hello Shah Industrial Enterprise,\n\nI am sending drawings and specification sheets for our enquiry.`
                       )}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -675,7 +675,7 @@ export default function RfqForm() {
                     </a>
                     <a
                       href={`mailto:${businessConfig.email}?subject=${encodeURIComponent(
-                        'Drawings & Specifications for Material RFQ'
+                        'Drawings & Specifications for Material Enquiry'
                       )}`}
                       className="rounded bg-white/[0.06] px-3 py-1.5 font-mono text-[0.68rem] uppercase tracking-wider text-white/70 transition-colors hover:bg-white/15 hover:text-white"
                     >
@@ -737,7 +737,7 @@ export default function RfqForm() {
                   disabled={status === 'submitting'}
                   className="w-full py-3.5 bg-dawn-coral text-slate-900 font-bold font-mono uppercase tracking-[0.14em] text-xs rounded-md shadow-md hover:bg-[#f09770] transition-colors disabled:opacity-50"
                 >
-                  {status === 'submitting' ? 'Submitting Official RFQ...' : 'Submit Official RFQ →'}
+                  {status === 'submitting' ? 'Submitting Enquiry...' : 'Submit Enquiry →'}
                 </button>
 
                 <button
@@ -748,7 +748,7 @@ export default function RfqForm() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
                   </svg>
-                  Instant WhatsApp RFQ
+                  Instant WhatsApp Enquiry
                 </button>
               </div>
             </form>

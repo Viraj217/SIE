@@ -4,9 +4,9 @@ This is the single verification list for claims currently present in the website
 
 ## 1. Resolve these contradictions first
 
-- [ ] **Establishment year:** `1961` is configured in `businessConfig` and the footer, while the hero, navigation, metadata, company description, and timeline say `1989`. Confirm one legal/operating start year and whether “established” is the correct wording.
+- [ ] **Establishment year:** `2023` is configured in `businessConfig` and the footer, while the hero, navigation, metadata, company description, and timeline say `2023`. Confirm one legal/operating start year and whether “established” is the correct wording.
 - [ ] **Years in trade:** the configured claim is `65+`, while other source material says `35+`. Confirm the approved current claim or remove years-in-trade figures.
-- [ ] **Company history:** confirm the 1989, 2002, 2015 and “Today” milestones and their descriptions, including “second generation,” expansion into eight states by 2002, and the introduction of automated/high-tolerance cutting in 2015.
+- [ ] **Company history:** confirm the 2023, 2002, 2015 and “Today” milestones and their descriptions, including “second generation,” expansion into eight states by 2002, and the introduction of automated/high-tolerance cutting in 2015.
 - [ ] **Grade cross-reference conflict:** EN8 is mapped to `DIN C45` in product data but to `C40 / 1.0511` on the EN8 reference page. Confirm the intended purchase-standard cross-reference; do not present both as exact equivalents.
 - [ ] **Business role:** confirm whether Shah Industrial Enterprise is a merchant, stockist, supplier, importer, cut-to-size processor, or manufacturer. The site must not imply manufacture or machining of finished shafts unless that is true.
 
