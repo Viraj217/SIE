@@ -25,7 +25,7 @@ export default function Home() {
       <OperatingPromise />
       <ProductsSection />
       <IndustriesSection />
-      <TimelineSection />
+      {/* <TimelineSection /> */}
       <ContactSection />
       <FaqSection />
 

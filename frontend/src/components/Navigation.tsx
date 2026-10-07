@@ -50,7 +50,7 @@ export default function Navigation() {
     { label: 'Process', href: isHome ? '#process' : '/#process' },
     { label: 'Sectors', href: isHome ? '#industries' : '/#industries' },
     { label: 'Calculator', href: '/tools/weight-calculator' },
-    { label: 'Legacy', href: isHome ? '#milestones' : '/#milestones' },
+    // { label: 'Legacy', href: isHome ? '#milestones' : '/#milestones' },
     { label: 'FAQ', href: isHome ? '#faq' : '/#faq' },
   ];
 
