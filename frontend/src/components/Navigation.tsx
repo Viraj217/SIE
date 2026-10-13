@@ -50,7 +50,7 @@ export default function Navigation() {
     { label: 'Process', href: isHome ? '#process' : '/#process' },
     { label: 'Sectors', href: isHome ? '#industries' : '/#industries' },
     { label: 'Calculator', href: '/tools/weight-calculator' },
-    // { label: 'Legacy', href: isHome ? '#milestones' : '/#milestones' },
+    { label: 'Legacy', href: isHome ? '#milestones' : '/#milestones' },
     { label: 'FAQ', href: isHome ? '#faq' : '/#faq' },
   ];
 
@@ -69,7 +69,7 @@ export default function Navigation() {
             SHAH INDUSTRIAL ENTERPRISE
           </span>
           <span className={`truncate font-mono text-[0.55rem] sm:text-[0.6rem] tracking-[0.16em] sm:tracking-[0.25em] uppercase transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate/60' : 'text-white/60'}`}>
-            Est. 2023 · Mazgaon, Mumbai
+            Est. 1961 · Mazgaon, Mumbai
           </span>
         </Link>
 
