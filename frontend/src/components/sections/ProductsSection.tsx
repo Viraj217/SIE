@@ -1,11 +1,11 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { CANONICAL_PRODUCTS } from '@/lib/config';
 import { STEEL_GRADES } from '@/lib/grades';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { trackEvent } from '@/lib/analytics';
 
 type ProductCategory = 'RAW_MATERIAL' | 'ALLOY' | 'SERVICE';
@@ -77,22 +77,6 @@ function ProductCard({ slug, title, tagline, specs, isFeatured = false, icon, ch
   // STATIC_PRODUCTS is maintained separately from the catalogue, so a slug here
   // can drift. Only link out when the detail page actually exists.
   const hasDetailPage = CANONICAL_PRODUCTS.some((p) => p.slug === slug);
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const mouseXSpring = useSpring(x, { stiffness: 200, damping: 25 });
-  const mouseYSpring = useSpring(y, { stiffness: 200, damping: 25 });
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
-  const glowOpacity = useTransform(mouseXSpring, [-0.5, 0, 0.5], [0.2, 0, 0.2]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    x.set((e.clientX - rect.left) / rect.width - 0.5);
-    y.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-  const handleMouseLeave = () => { x.set(0); y.set(0); };
 
   const handleRequest = () => {
     trackEvent('rfq_start', { source_page: 'homepage_product_card', product_title: title });
@@ -102,33 +86,19 @@ function ProductCard({ slug, title, tagline, specs, isFeatured = false, icon, ch
 
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       initial={false}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
       variants={{
         hidden: { opacity: 0, y: 60, scale: 0.95 },
         visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } }
       }}
-    className={`relative flex flex-col cursor-default overflow-hidden rounded-lg p-6 group sm:p-8 lg:p-10 ${
+      whileHover={{ y: -6, transition: { duration: 0.25, ease: "easeOut" } }}
+      className={`relative flex flex-col cursor-default overflow-hidden rounded-lg p-6 group sm:p-8 lg:p-10 transition-all duration-300 ${
         isFeatured
-          ? "bg-slate text-white ring-1 ring-cyan-glow/20"
-          : "bg-white text-slate ring-1 ring-steel/10 shadow-[0_4px_40px_rgba(22,35,43,0.06)]"
+          ? "bg-slate text-white ring-1 ring-cyan-glow/20 hover:ring-cyan-glow/40 hover:shadow-[0_20px_45px_rgba(22,35,43,0.35)]"
+          : "bg-white text-slate ring-1 ring-steel/10 shadow-[0_4px_40px_rgba(22,35,43,0.06)] hover:ring-steel/25 hover:shadow-[0_20px_45px_rgba(22,35,43,0.12)]"
       }`}
     >
-      {/* Hover glow overlay */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none rounded-lg"
-        style={{
-          opacity: glowOpacity,
-          background: isFeatured
-            ? 'radial-gradient(600px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(143,216,212,0.1), transparent 50%)'
-            : 'radial-gradient(600px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(232,132,92,0.06), transparent 50%)'
-        }}
-      />
-
-      <div style={{ transform: "translateZ(30px)" }}>
+      <div>
         {isFeatured ? (
           <span className="inline-flex items-center gap-2 font-mono text-[0.65rem] text-cyan-glow border border-cyan-glow/30 px-3 py-1.5 rounded-sm mb-6 uppercase tracking-wider bg-cyan-glow/5">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-glow animate-pulse" />
@@ -157,11 +127,11 @@ function ProductCard({ slug, title, tagline, specs, isFeatured = false, icon, ch
       </div>
 
       {/* Illustration */}
-      <div className="mb-8 opacity-70 group-hover:opacity-100 transition-opacity duration-500" style={{ transform: "translateZ(40px)" }}>
+      <div className="mb-8 opacity-75 group-hover:opacity-100 transition-opacity duration-300">
         {children}
       </div>
 
-      <div className="mt-auto" style={{ transform: "translateZ(20px)" }}>
+      <div className="mt-auto">
         <ul className="flex flex-col gap-0 mb-6">
           {specs.map((spec, i) => (
             <li key={i} className={`flex justify-between gap-4 py-3 text-[0.8rem] border-b last:border-b-0 sm:text-[0.85rem] ${isFeatured ? 'border-white/8' : 'border-steel/8'}`}>
@@ -337,9 +307,9 @@ const STATIC_PRODUCTS: Product[] = [
     ),
     illustration: (
       <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
-        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
-        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
-        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-steel/30" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/10 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-steel/40" />
         <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">ALLOY STEEL ROUND BARS</text>
       </svg>
     )
@@ -391,9 +361,9 @@ const STATIC_PRODUCTS: Product[] = [
     ),
     illustration: (
       <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
-        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
-        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
-        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-steel/30" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/10 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-steel/40" />
         <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">ROLLER SHAFTS</text>
       </svg>
     )
@@ -418,9 +388,9 @@ const STATIC_PRODUCTS: Product[] = [
     ),
     illustration: (
       <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
-        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
-        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
-        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-steel/30" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/10 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-steel/40" />
         <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">HYDRAULIC SHAFTS</text>
       </svg>
     )
@@ -445,9 +415,9 @@ const STATIC_PRODUCTS: Product[] = [
     ),
     illustration: (
       <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
-        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
-        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
-        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-steel/30" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/10 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-steel/40" />
         <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">IRON & STEEL PLATES</text>
       </svg>
     )
@@ -472,9 +442,9 @@ const STATIC_PRODUCTS: Product[] = [
     ),
     illustration: (
       <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
-        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
-        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
-        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-steel/30" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/10 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-steel/40" />
         <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">IRON & STEEL PIPES & TUBES</text>
       </svg>
     )
@@ -499,9 +469,9 @@ const STATIC_PRODUCTS: Product[] = [
     ),
     illustration: (
       <svg width="240" height="120" viewBox="0 0 240 120" fill="none">
-        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-white/20" />
-        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/20 stroke-steel/40" />
-        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-white/30" />
+        <path d="M40,60 Q120,40 200,60" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" className="text-steel/30" />
+        <rect x="60" y="45" width="120" height="30" rx="4" className="fill-steel/10 stroke-steel/40" />
+        <line x1="60" y1="60" x2="180" y2="60" stroke="currentColor" className="text-steel/40" />
         <text x="120" y="81" textAnchor="middle" fill="rgba(60,92,107,0.4)" fontSize="8" fontFamily="monospace">IRON & STEEL BARS</text>
       </svg>
     )
@@ -574,7 +544,7 @@ export default function ProductsSection() {
   }, []);
 
   return (
-    <section id="products" className="relative z-20 bg-paper py-12 noise-overlay sm:py-16 lg:py-20" style={{ perspective: "1200px" }}>
+    <section id="products" className="relative z-20 bg-paper py-12 noise-overlay sm:py-16 lg:py-20">
       <div className="relative z-10 mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12">
         <motion.div
           initial={false}

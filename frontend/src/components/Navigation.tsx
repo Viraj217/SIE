@@ -47,11 +47,11 @@ export default function Navigation() {
   const navLinks = [
     { label: 'Products', href: '/products' },
     { label: 'Grades', href: '/steel-grades' },
-    { label: 'Process', href: isHome ? '#process' : '/#process' },
-    { label: 'Sectors', href: isHome ? '#industries' : '/#industries' },
+    { label: 'Process', href: '/#process' },
+    { label: 'Sectors', href: '/#industries' },
     { label: 'Calculator', href: '/tools/weight-calculator' },
-    { label: 'Legacy', href: isHome ? '#milestones' : '/#milestones' },
-    { label: 'FAQ', href: isHome ? '#faq' : '/#faq' },
+    { label: 'Legacy', href: '/#milestones' },
+    { label: 'FAQ', href: '/#faq' },
   ];
 
   return (
@@ -76,7 +76,7 @@ export default function Navigation() {
         {/* Desktop Nav */}
         <ul className="hidden md:flex items-center gap-7 lg:gap-8">
           {navLinks.map((item) => {
-            const isActive = isHome && activeSection === item.href.slice(1);
+            const isActive = isHome && activeSection === item.href.replace(/^\/?#/, '');
             return (
               <li key={item.label}>
                 <Link

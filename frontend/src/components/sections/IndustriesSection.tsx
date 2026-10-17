@@ -8,6 +8,33 @@ interface Sector {
   description: string;
 }
 
+const ADDITIONAL_APPLICATIONS = [
+  {
+    title: "Hydraulic Press Manufacturers",
+    material: "High-tensile tie-rod shafts, heavy cylinder base rounds, and alloy columns in EN19 and EN24.",
+  },
+  {
+    title: "Plastic Dies & Moulds",
+    material: "Pre-hardened alloy rounds, forged C45 blocks, and precision-sawn tooling plates.",
+  },
+  {
+    title: "Textile Machinery",
+    material: "Straightened carbon steel shafts, ground spindles, and low-vibration rotating bar stock.",
+  },
+  {
+    title: "Paper & Pulp Machinery",
+    material: "Heavy-duty calender roller shafts and wear-resistant alloy cylinder stock for continuous operation.",
+  },
+  {
+    title: "Forging & Casting Plants",
+    material: "Heavy bloom cut-pieces, Class 4 forged rounds, and heat-resistant die block material.",
+  },
+  {
+    title: "Plate Bending & Heavy Fabrication",
+    material: "Structural steel plates (IS 2062), heavy-wall seamless tubes, and high-tensile profile bars.",
+  },
+];
+
 const STATIC_SECTORS: Sector[] = [
   {
     name: "Sugar Mills & Processing",
@@ -94,6 +121,40 @@ export default function IndustriesSection() {
               isLast={i === sectors.length - 1}
             />
           ))}
+        </div>
+
+        {/* Additional Industrial Applications & OEMs Supplied */}
+        <div className="mt-16 border-t border-steel/15 pt-12 sm:mt-20 sm:pt-16">
+          <div className="mb-8">
+            <span className="section-tag">APPLICATIONS &amp; OEM SUPPLY</span>
+            <h3 className="font-display text-2xl font-semibold text-slate sm:text-3xl">
+              Additional Industrial Applications &amp; OEMs Supplied
+            </h3>
+            <p className="mt-2 text-sm text-steel/80 max-w-[620px]">
+              Shah Industrial Enterprise supplies specialized shafting, alloy bars, and cut-to-size blanks directly to machine builders, tooling shops, and plant equipment fabricators nationwide.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {ADDITIONAL_APPLICATIONS.map((app) => (
+              <div
+                key={app.title}
+                className="flex flex-col justify-between rounded-lg border border-steel/15 bg-white/70 p-5 shadow-[0_2px_12px_rgba(22,35,43,0.03)] transition-colors hover:border-steel/30 hover:bg-white"
+              >
+                <div>
+                  <div className="mb-2 flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-cyan-glow" />
+                    <h4 className="font-display font-semibold text-slate text-base">
+                      {app.title}
+                    </h4>
+                  </div>
+                  <p className="text-[0.82rem] leading-relaxed text-slate/70">
+                    {app.material}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

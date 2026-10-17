@@ -48,6 +48,11 @@ export default function SiteFooter() {
                 </a>
               </p>
               <p>
+                <a href="tel:+919324797660" className="hover:text-cyan-glow transition-colors">
+                  +91 93247 97660
+                </a>
+              </p>
+              <p>
                 <a href={`mailto:${businessConfig.email}`} className="hover:text-cyan-glow transition-colors">
                   {businessConfig.email}
                 </a>

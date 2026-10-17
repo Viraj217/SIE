@@ -61,7 +61,7 @@ export default function ProofStrip() {
           <Counter value={65} unit="+" label="Years of Presence" delay={0} />{" "}
           <Counter value={500} unit="T/yr" label="Steel Handled" delay={150} />{" "}
           <Counter value={18} unit="" label="States Supplied" delay={300} />{" "}
-          <Counter value={4} unit="" label="Core Sectors" delay={450} />
+          <Counter value={10} unit="+" label="Sectors Supplied" delay={450} />
         </div>
       </div>
 

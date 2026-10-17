@@ -49,33 +49,20 @@ export const metadata: Metadata = {
   description:
     "Steel stockist & iron merchant at Darukhana, Mazgaon, Mumbai since 1961. Supplying heavy steamer shafts, EN8, EN24 (AISI 4340) alloy round bars, forged rounds & custom hacksaw cutting. Dispatch from Mazgaon yard. Call +91 98200 23666.",
   keywords: [
-    // Primary commercial intent
     "steel stockist Mumbai",
     "steel merchant Darukhana",
     "iron and steel merchant Mumbai",
     "steel supplier Mazgaon",
-    // Products
     "heavy steamer shafts Mumbai",
-    "steamer shaft stockist",
-    "forged rounds Mumbai",
-    "hacksaw cutting steel Mumbai",
+    "forged steel round bars Mumbai",
+    "custom hacksaw cutting Mumbai",
     "cut to size steel Mumbai",
-    // Grade-level commercial searches
     "EN8 steel supplier Mumbai",
     "EN9 round bar Mumbai",
     "EN19 AISI 4140 steel Mumbai",
     "EN24 AISI 4340 steel Mumbai",
     "EN31 bearing steel Mumbai",
-    "C45 steel supplier Mumbai",
-    // General
-    "mild steel shaft supplier",
-    "carbon steel rods Darukhana",
-    "alloy steel round bars Mumbai",
-    "IS 2062 steel Mumbai",
-    "Darukhana steel market",
-    "Mazgaon Mumbai steel",
-    ...CANONICAL_PRODUCTS.map((p) => p.title),
-    ...businessInfo.industries,
+    "C45 carbon steel Mumbai",
   ],
   applicationName: businessInfo.name,
   authors: [{ name: businessInfo.name, url: SITE_URL }],
@@ -97,8 +84,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/og-social.png",
-        width: 1731,
-        height: 909,
+        width: 1200,
+        height: 630,
         alt: "Shah Industrial Enterprise — Industrial Steel Stockist, Darukhana, Mumbai",
       },
     ],
