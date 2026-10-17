@@ -126,7 +126,7 @@ function ProductCard({ slug, title, tagline, specs, isFeatured = false, icon, ch
         <ul className="flex flex-col gap-0 mb-6">
           {specs.map((spec, i) => (
             <li key={i} className={`flex justify-between gap-4 py-3 text-[0.8rem] border-b last:border-b-0 sm:text-[0.85rem] ${isFeatured ? 'border-white/8' : 'border-steel/8'}`}>
-              <span className={`${isFeatured ? 'text-white/60' : 'text-slate/60'} font-mono`}>{spec.label}</span>
+              <span className={`${isFeatured ? 'text-white/60' : 'text-slate/60'} font-mono`}>{spec.label}:{" "}</span>
               <span className="text-right font-mono font-medium tracking-tight">{spec.value}</span>
             </li>
           ))}

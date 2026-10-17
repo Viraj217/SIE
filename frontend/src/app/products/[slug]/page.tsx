@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import SiteFooter from '@/components/SiteFooter';
 import SchemaMarkup from '@/components/SchemaMarkup';
-import { CANONICAL_PRODUCTS, businessConfig } from '@/lib/config';
+import { CANONICAL_PRODUCTS, businessConfig, SITE_URL } from '@/lib/config';
 import { generateProductJsonLd } from '@/lib/seo';
 import { buildProductWhatsAppUrl } from '@/lib/whatsapp';
 import { matchGradeLabel } from '@/lib/grades';
@@ -60,12 +60,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: {
-      canonical: `/products/${product.slug}`,
+      canonical: `${SITE_URL}/products/${product.slug}`,
     },
     openGraph: {
       title: `${product.title} | Steel Stockist, Mumbai — Shah Industrial Enterprise`,
       description: `${product.tagline} Stock available at Darukhana yard, Mazgaon, Mumbai. Cut-to-size & fast dispatch.`,
-      url: `/products/${product.slug}`,
+      url: `${SITE_URL}/products/${product.slug}`,
       type: 'website',
       images: [{ url: '/og-social.png', width: 1731, height: 909, alt: `${product.title} — Steel Stockist, Darukhana, Mumbai` }],
     },
@@ -96,12 +96,9 @@ export default async function ProductDetailPage({ params }: Props) {
   const productJsonLd = generateProductJsonLd(product);
   const relatedProducts = CANONICAL_PRODUCTS.filter((p) => p.slug !== product.slug).slice(0, 3);
 
-  const defaultGrade = product.availableGrades?.[0] || 'Standard';
-  const defaultDia = product.diameterRange?.split(' ')[0] || 'Standard';
   const whatsAppUrl = buildProductWhatsAppUrl({
     productTitle: product.title,
-    grade: defaultGrade,
-    diameter: defaultDia,
+    availableGrades: product.availableGrades,
   });
 
   return (
@@ -173,20 +170,20 @@ export default async function ProductDetailPage({ params }: Props) {
               <dl className="space-y-4 font-mono text-sm">
                 {product.specs.map((spec, i) => (
                   <div key={i} className="flex justify-between gap-4 border-b border-white/5 pb-2">
-                    <dt className="text-white/45 text-xs">{spec.label}</dt>
+                    <dt className="text-white/45 text-xs">{spec.label}:{" "}</dt>
                     <dd className="text-right text-white font-medium text-xs sm:text-sm">{spec.value}</dd>
                   </div>
                 ))}
                 {product.cutToSizeAvailable && (
                   <div className="flex justify-between gap-4 border-b border-white/5 pb-2">
-                    <dt className="text-white/45 text-xs">Custom Cutting</dt>
+                    <dt className="text-white/45 text-xs">Custom Cutting:{" "}</dt>
                     <dd className="text-right text-cyan-glow font-medium text-xs">Available (±1.0mm)</dd>
                   </div>
                 )}
               </dl>
 
               <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
-                <span>Supply Desk:</span>
+                <span>Supply Desk:{" "}</span>
                 <span className="text-white/80">Darukhana, Mazgaon Yard</span>
               </div>
             </div>

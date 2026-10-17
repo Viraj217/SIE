@@ -5,7 +5,7 @@ import Navigation from "@/components/Navigation";
 import SiteFooter from "@/components/SiteFooter";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { STEEL_GRADES, getGradeBySlug } from "@/lib/grades";
-import { CANONICAL_PRODUCTS, businessConfig } from "@/lib/config";
+import { CANONICAL_PRODUCTS, businessConfig, SITE_URL } from "@/lib/config";
 import { generateGradeJsonLd } from "@/lib/seo";
 import { buildProductWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -29,24 +29,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const din = grade.equivalents.find((e) => e.standard.startsWith("DIN"))?.designation;
   const is = grade.equivalents.find((e) => e.standard.startsWith("IS"))?.designation;
 
-  // Title pattern: "EN24 Steel (AISI 4340) Round Bar Stockist & Supplier in Mumbai"
-  const intlRef = [aisi, din].filter(Boolean).slice(0, 1).join(' / ');
-  const title = `${grade.code} Steel${intlRef ? ` (${intlRef})` : ""} — Round Bar & Shaft Stockist in Mumbai`;
+  const standardEquivs = [
+    grade.bsDesignation,
+    aisi ? `AISI ${aisi}` : undefined,
+    din ? `DIN ${din}` : undefined,
+  ]
+    .filter(Boolean)
+    .join(" / ");
 
-  // Description: stock availability + Darukhana dispatch + cut-to-size + phone CTA.
-  const equivalentStr = [aisi, din, is].filter(Boolean).join(' / ');
+  const title = `${grade.code} (${standardEquivs}) Steel Round Bar Stockist & Supplier in Mumbai`;
+
   const description =
-    `${grade.code}${equivalentStr ? ` (${equivalentStr})` : ''} steel round bar & shaft stock at Darukhana, Mazgaon, Mumbai. ` +
-    `Cut-to-size ±1mm. ${grade.summary.slice(0, 60).trimEnd()}… Enquire: +91 98200 23666.`;
+    `${grade.code} (${grade.bsDesignation}${aisi ? ` / AISI ${aisi}` : ""}) steel round bars & forged shaft stock. Stockist & supplier in Darukhana, Mazgaon, Mumbai. Cut-to-size available. Enquire: +91 98200 23666.`;
 
   return {
     title,
     description: description.slice(0, 160),
-    alternates: { canonical: `/steel-grades/${grade.slug}` },
+    alternates: { canonical: `${SITE_URL}/steel-grades/${grade.slug}` },
     openGraph: {
       title: `${grade.code} Steel${aisi ? ` (${aisi})` : ""} — Stockist & Supplier, Mumbai`,
       description: `${grade.summary} Stock at Darukhana yard, Mazgaon, Mumbai. Cut-to-size & fast dispatch.`,
-      url: `/steel-grades/${grade.slug}`,
+      url: `${SITE_URL}/steel-grades/${grade.slug}`,
       type: "website",
       images: [{ url: "/og-social.png", width: 1731, height: 909, alt: `${grade.code} Steel — Shah Industrial Enterprise, Darukhana, Mumbai` }],
     },
@@ -157,7 +160,7 @@ export default async function GradeDetailPage({ params }: Props) {
               <dl className="space-y-4 font-mono text-sm">
                 {grade.equivalents.map((eq) => (
                   <div key={eq.standard} className="flex justify-between gap-4 border-b border-white/5 pb-2">
-                    <dt className="text-xs text-white/45">{eq.standard}</dt>
+                    <dt className="text-xs text-white/45">{eq.standard}:{" "}</dt>
                     <dd className="text-right text-xs font-medium text-white sm:text-sm">{eq.designation}</dd>
                   </div>
                 ))}
@@ -169,7 +172,7 @@ export default async function GradeDetailPage({ params }: Props) {
               </p>
 
               <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4 font-mono text-xs text-white/50">
-                <span>Supply Desk:</span>
+                <span>Supply Desk:{" "}</span>
                 <span className="text-white/80">Darukhana, Mazgaon</span>
               </div>
             </div>

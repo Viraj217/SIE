@@ -1,8 +1,10 @@
-import { businessConfig } from "./config";
+import { businessConfig, CANONICAL_PRODUCTS } from "./config";
+import { STEEL_GRADES } from "./grades";
 
 export interface WhatsAppProductInquiry {
   productTitle: string;
   grade?: string;
+  availableGrades?: string[];
   diameter?: string;
   length?: string;
   quantity?: string;
@@ -12,7 +14,8 @@ export interface WhatsAppProductInquiry {
 }
 
 /**
- * Generate formatted WhatsApp URL for a specific product inquiry.
+ * Generate formatted WhatsApp URL for a specific product or grade inquiry.
+ * Leaves clean blank prompts for dimensions, quantity, and delivery location.
  */
 export function buildProductWhatsAppUrl(
   inquiry: WhatsAppProductInquiry,
@@ -24,14 +27,24 @@ export function buildProductWhatsAppUrl(
     `Hello Shah Industrial Team,`,
     `I am interested in requesting a price quotation:`,
     ``,
-    `*Product:* ${inquiry.productTitle}`,
+    `*Product / Material:* ${inquiry.productTitle}`,
   ];
 
-  if (inquiry.grade) lines.push(`*Grade:* ${inquiry.grade}`);
-  if (inquiry.diameter) lines.push(`*Diameter / Dimensions:* ${inquiry.diameter}`);
-  if (inquiry.length) lines.push(`*Cut Length:* ${inquiry.length}`);
-  if (inquiry.quantity) lines.push(`*Quantity:* ${inquiry.quantity}`);
-  if (inquiry.deliveryLocation) lines.push(`*Delivery Location:* ${inquiry.deliveryLocation}`);
+  if (inquiry.grade) {
+    lines.push(`*Required Grade:* ${inquiry.grade}`);
+  } else if (inquiry.availableGrades && inquiry.availableGrades.length > 0) {
+    lines.push(`*Required Grade:* (Available: ${inquiry.availableGrades.join(", ")})`);
+  } else {
+    lines.push(`*Required Grade:* `);
+  }
+
+  const dimVal = inquiry.diameter && inquiry.length
+    ? `${inquiry.diameter} x ${inquiry.length}`
+    : inquiry.diameter || "";
+  lines.push(`*Diameter (mm) x Cut Length (mm):* ${dimVal}`);
+  lines.push(`*Quantity (Nos / Kg):* ${inquiry.quantity || ""}`);
+  lines.push(`*Delivery Location:* ${inquiry.deliveryLocation || ""}`);
+
   if (inquiry.urgency) lines.push(`*Urgency:* ${inquiry.urgency}`);
   if (inquiry.additionalNotes) lines.push(`*Additional Requirements:* ${inquiry.additionalNotes}`);
 
@@ -99,21 +112,12 @@ export function buildRfqWhatsAppUrl(
 
 /**
  * Derive a human-readable page name from a Next.js pathname.
- *
- * Examples:
- *   "/"                                     → "Home"
- *   "/products"                             → "Products"
- *   "/products/heavy-steamer-shafts"        → "Heavy Steamer Shafts"
- *   "/steel-grades/en24"                    → "EN24 Steel Grade"
- *   "/tools/weight-calculator"              → "Steel Weight Calculator"
- *   "/contact"                              → "Contact"
  */
 export function derivePageName(pathname: string): string {
   if (!pathname || pathname === "/") return "Home";
 
   const segments = pathname.replace(/^\//, "").split("/");
 
-  // Known root-level pages
   const rootLabels: Record<string, string> = {
     products: "Products Catalogue",
     "steel-grades": "Steel Grades Reference",
@@ -124,25 +128,25 @@ export function derivePageName(pathname: string): string {
     return rootLabels[segments[0]];
   }
 
-  // Dynamic product slug  →  Title-case the slug words
   if (segments[0] === "products" && segments[1]) {
+    const product = CANONICAL_PRODUCTS.find((p) => p.slug === segments[1]);
+    if (product) return product.title;
     return segments[1]
       .split("-")
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(" ");
   }
 
-  // Steel grade slug  →  Uppercase the grade code, e.g. "en24" → "EN24 Steel Grade"
   if (segments[0] === "steel-grades" && segments[1]) {
+    const grade = STEEL_GRADES.find((g) => g.slug === segments[1]);
+    if (grade) return `${grade.code} Steel (${grade.bsDesignation})`;
     return `${segments[1].toUpperCase()} Steel Grade`;
   }
 
-  // Tools
   if (segments[0] === "tools" && segments[1] === "weight-calculator") {
     return "Steel Weight Calculator";
   }
 
-  // Fallback: title-case the last segment
   return segments[segments.length - 1]
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -150,36 +154,57 @@ export function derivePageName(pathname: string): string {
 }
 
 /**
- * Build a pre-filled WhatsApp message URL that includes the current page
- * context, so the team immediately knows which product/grade the buyer
- * is inquiring about.
- *
- * Message format (as specified):
- * "Hello Shah Industrial Team, I am inquiring from the [Page Name] page.
- *  Please share stock availability and pricing."
- *
- * Usage in Client Components (usePathname):
- * @example
- * const pathname = usePathname();
- * const url = buildContextualWhatsAppUrl(pathname);
- *
- * Usage in Server Components (headers-based):
- * @example
- * import { headers } from "next/headers";
- * const hdrs = await headers();
- * const pathname = hdrs.get("x-pathname") ?? "/";
- * const url = buildContextualWhatsAppUrl(pathname);
+ * Build a dynamic pre-filled WhatsApp message URL including current page
+ * context with prompt fields for buyers to fill in.
  */
 export function buildContextualWhatsAppUrl(
   pathname: string,
   phoneNumber: string = businessConfig.primaryWhatsAppNumber
 ): string {
-  const pageName = derivePageName(pathname);
-  const message =
-    `Hello Shah Industrial Team, I am inquiring from the ${pageName} page. ` +
-    `Please share stock availability and pricing.`;
+  if (pathname && pathname.startsWith("/products/")) {
+    const slug = pathname.replace("/products/", "").split("/")[0];
+    const product = CANONICAL_PRODUCTS.find((p) => p.slug === slug);
+    if (product) {
+      return buildProductWhatsAppUrl(
+        {
+          productTitle: product.title,
+          availableGrades: product.availableGrades,
+        },
+        phoneNumber
+      );
+    }
+  }
+
+  if (pathname && pathname.startsWith("/steel-grades/")) {
+    const slug = pathname.replace("/steel-grades/", "").split("/")[0];
+    const grade = STEEL_GRADES.find((g) => g.slug === slug);
+    if (grade) {
+      return buildProductWhatsAppUrl(
+        {
+          productTitle: `${grade.code} Steel (${grade.bsDesignation})`,
+          grade: grade.code,
+        },
+        phoneNumber
+      );
+    }
+  }
 
   const cleanNumber = phoneNumber.replace(/[^0-9]/g, "");
-  return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
-}
+  const pageName = derivePageName(pathname);
+  const lines = [
+    `*Inquiry for Shah Industrial Enterprise*`,
+    ``,
+    `Hello Shah Industrial Team,`,
+    `I am inquiring from the ${pageName} page of your website:`,
+    ``,
+    `*Product / Material:* `,
+    `*Required Grade:* `,
+    `*Diameter (mm) x Cut Length (mm):* `,
+    `*Quantity (Nos / Kg):* `,
+    `*Delivery Location:* `,
+    ``,
+    `Please share material availability and pricing.`,
+  ];
 
+  return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(lines.join("\n"))}`;
+}

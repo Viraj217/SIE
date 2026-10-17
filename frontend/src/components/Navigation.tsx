@@ -66,7 +66,7 @@ export default function Navigation() {
       <nav className="max-w-[1300px] mx-auto h-full flex justify-between items-center px-5 sm:px-8 md:px-12">
         <Link href="/" className="relative z-50 flex min-w-0 max-w-[calc(100%-4rem)] flex-col gap-0.5 group">
           <span className={`font-display font-bold text-[1.05rem] sm:text-[1.25rem] tracking-[0.06em] sm:tracking-[0.08em] transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate' : 'text-white'}`}>
-            SHAH INDUSTRIAL ENTERPRISE
+            SHAH INDUSTRIAL ENTERPRISE{" "}
           </span>
           <span className={`truncate font-mono text-[0.55rem] sm:text-[0.6rem] tracking-[0.16em] sm:tracking-[0.25em] uppercase transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate/60' : 'text-white/60'}`}>
             Est. 1961 · Mazgaon, Mumbai
@@ -130,25 +130,30 @@ export default function Navigation() {
         isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
       }`}
     >
-      <div className="flex w-full max-w-[280px] flex-col items-center gap-2">
-        {navLinks.map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            onClick={() => setIsMenuOpen(false)}
-            className="w-full rounded-md px-4 py-2.5 text-center font-display text-xl tracking-wider text-white transition-colors hover:bg-white/5 hover:text-cyan-glow"
-          >
-            {item.label}
-          </Link>
-        ))}
-        <Link
-          href="/contact"
-          onClick={() => setIsMenuOpen(false)}
-          className="mt-4 w-full rounded bg-dawn-coral py-3.5 text-center font-mono text-xs font-bold uppercase tracking-wider text-slate-900"
-        >
-          Get Quote
-        </Link>
-      </div>
+      <nav aria-label="Mobile Navigation" className="flex w-full max-w-[280px] flex-col items-center">
+        <ul className="flex w-full flex-col items-center gap-2">
+          {navLinks.map((item) => (
+            <li key={item.label} className="w-full text-center">
+              <Link
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                className="block w-full rounded-md px-4 py-2.5 text-center font-display text-xl tracking-wider text-white transition-colors hover:bg-white/5 hover:text-cyan-glow"
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+          <li className="w-full text-center pt-2">
+            <Link
+              href="/contact"
+              onClick={() => setIsMenuOpen(false)}
+              className="block w-full rounded bg-dawn-coral py-3.5 text-center font-mono text-xs font-bold uppercase tracking-wider text-slate-900"
+            >
+              Get Quote
+            </Link>
+          </li>
+        </ul>
+      </nav>
     </div>
     </>
   );

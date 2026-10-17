@@ -71,8 +71,8 @@ export const businessConfig: BusinessConfig = {
     fullFormatted: "Plot No. 156, 4th Lane, Darukhana, Mazgaon, Mumbai — 400010, Maharashtra, India",
   },
   coordinates: {
-    latitude: 18.968,
-    longitude: 72.845,
+    latitude: 18.9667,
+    longitude: 72.8489,
   },
   landlines: [],
   contacts: [

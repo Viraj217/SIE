@@ -3,16 +3,18 @@ import Navigation from '@/components/Navigation';
 import ContactSection from '@/components/sections/ContactSection';
 import SiteFooter from '@/components/SiteFooter';
 
+import { SITE_URL } from '@/lib/config';
+
 export const metadata: Metadata = {
-  title: 'Contact & Material Enquiry',
+  title: 'Contact Steel Stockist Mumbai | Shah Industrial Enterprise Darukhana',
   description:
-    'Send a material enquiry to Shah Industrial Enterprise with the required grade, dimensions, quantity, urgency, and delivery location, or contact the Darukhana desk directly.',
-  alternates: { canonical: '/contact' },
+    'Direct procurement desk for steel round bars, heavy steamer shafts & hacksaw cutting. Plot 156, 4th Lane, Darukhana, Mazgaon, Mumbai. Call +91 98200 23666.',
+  alternates: { canonical: `${SITE_URL}/contact` },
   openGraph: {
-    title: 'Contact & Material Enquiry | Shah Industrial Enterprise',
+    title: 'Contact Steel Stockist Mumbai | Shah Industrial Enterprise',
     description:
       'Request a steel material quotation or contact the Darukhana, Mumbai desk directly by phone, WhatsApp, or email.',
-    url: '/contact',
+    url: `${SITE_URL}/contact`,
     type: 'website',
     images: [{ url: '/og-social.png', width: 1731, height: 909, alt: 'Shah Industrial Enterprise — Industrial Steel and Shafting, Darukhana, Mumbai' }],
   },

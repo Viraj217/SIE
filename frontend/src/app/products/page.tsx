@@ -8,19 +8,19 @@ import { buildProductWhatsAppUrl } from '@/lib/whatsapp';
 import PrintCatalogButton from '@/components/PrintCatalogButton';
 
 export const metadata: Metadata = {
-  title: 'Steel Materials & Shafting Catalog — Shafts, Forged Rounds & EN Grades',
+  title: 'Steel Materials & Shafting Stockist Mumbai | Shah Industrial Enterprise',
   description:
-    'Explore heavy steamer shafts, forged rounds, carbon steel EN8/EN9, alloy steel EN19/EN24 bars, and custom hacksaw cutting services from Mazgaon, Mumbai.',
+    'Stockist & supplier of heavy steamer shafts, forged rounds, carbon steel EN8/EN9, alloy steel EN19/EN24 bars, and custom hacksaw cutting services in Darukhana, Mazgaon, Mumbai since 1961.',
   alternates: {
-    canonical: '/products',
+    canonical: `${SITE_URL}/products`,
   },
   openGraph: {
-    title: 'Steel Materials & Shafting Catalog — Shafts, Forged Rounds & EN Grades',
+    title: 'Steel Materials & Shafting Stockist Mumbai — Shah Industrial Enterprise',
     description:
-      'Heavy steamer shafts, carbon steel rounds, alloy bars, and custom hacksaw cutting in Mazgaon, Mumbai since 1989.',
-    url: '/products',
+      'Heavy steamer shafts, carbon steel rounds, alloy bars, and custom hacksaw cutting in Mazgaon, Mumbai since 1961.',
+    url: `${SITE_URL}/products`,
     type: 'website',
-    images: [{ url: '/og-social.png', width: 1731, height: 909, alt: 'Shah Industrial Enterprise — Industrial Steel and Shafting, Darukhana, Mumbai' }],
+    images: [{ url: '/og-social.png', width: 1731, height: 909, alt: 'Shah Industrial Enterprise — Industrial Steel and Shafting Stockist, Darukhana, Mumbai' }],
   },
 };
 
@@ -130,7 +130,7 @@ export default function ProductsPage() {
             {CANONICAL_PRODUCTS.map((product) => {
               const whatsAppUrl = buildProductWhatsAppUrl({
                 productTitle: product.title,
-                grade: product.availableGrades?.[0] || 'Standard Grade',
+                availableGrades: product.availableGrades,
               });
 
               return (
@@ -165,7 +165,7 @@ export default function ProductsPage() {
                       <ul className="space-y-1.5 font-mono text-xs">
                         {product.specs.slice(0, 3).map((spec, i) => (
                           <li key={i} className="flex justify-between gap-2 text-slate/75">
-                            <span className="text-slate/70">{spec.label}:</span>
+                            <span className="text-slate/70">{spec.label}:{" "}</span>
                             <span className="font-medium text-right text-slate">{spec.value}</span>
                           </li>
                         ))}

@@ -9,13 +9,13 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/aboutus.html",
-        destination: "/#milestones",
+        source: "/products.html",
+        destination: "/products",
         permanent: true,
       },
       {
-        source: "/products.html",
-        destination: "/products",
+        source: "/contact.html",
+        destination: "/contact",
         permanent: true,
       },
       {
@@ -23,22 +23,18 @@ const nextConfig: NextConfig = {
         destination: "/contact",
         permanent: true,
       },
-      // Legacy enquiry page — two rules to handle both clean URLs and
-      // any query-string variants (e.g. /enquiry.html?ref=brochure).
-      // The :path* wildcard absorbs trailing slashes; the has.type query
-      // match strips legacy params and redirects cleanly to /contact.
       {
-        // Rule 1: strip any query string — matches when query params ARE present.
-        // Next.js automatically appends query params to the destination unless
-        // we explicitly set them here. We redirect to /contact bare.
+        source: "/aboutus.html",
+        destination: "/#milestones",
+        permanent: true,
+      },
+      {
         source: "/enquiry.html",
-        has: [{ type: "query", key: "(.+)" }],
         destination: "/contact",
         permanent: true,
       },
       {
-        // Rule 2: bare /enquiry.html with no query string.
-        source: "/enquiry.html",
+        source: "/enquiry",
         destination: "/contact",
         permanent: true,
       },
@@ -52,4 +48,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-

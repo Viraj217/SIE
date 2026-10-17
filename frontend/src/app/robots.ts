@@ -6,10 +6,10 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/products/", "/steel-grades/", "/tools/", "/contact"],
+        allow: "/",
         disallow: ["/admin", "/api"],
       },
-      // Disallow known AI training crawlers per robots exclusion standard.
+      // Disallow AI scrapers to preserve crawl budget
       { userAgent: "GPTBot", disallow: ["/"] },
       { userAgent: "CCBot", disallow: ["/"] },
       { userAgent: "Google-Extended", disallow: ["/"] },

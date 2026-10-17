@@ -72,6 +72,7 @@ export default function ContactSection() {
                       >
                         Call
                       </a>
+                      {" "}
                       <a
                         href={`https://wa.me/${contact.whatsapp}`}
                         target="_blank"
@@ -108,8 +109,7 @@ export default function ContactSection() {
             </div>
 
             <div className="mt-8 pt-6 border-t border-steel/10 flex items-center justify-between text-xs font-mono text-slate/60">
-              <span>Working Hours: Mon–Sat, 9 AM – 7 PM</span>
-              <span>IST</span>
+              <span>Working Hours: Mon–Sat, 9 AM – 7 PM IST</span>
             </div>
           </motion.div>
         </div>

@@ -28,32 +28,35 @@ export const businessInfo = {
 export const seoFaqs = SEO_FAQS;
 
 /**
- * Generate LocalBusiness and Store structured data graph for Schema.org.
+ * Generate LocalBusiness and WholesaleStore structured data graph for Schema.org.
  */
 export function generateLocalBusinessSchema() {
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["LocalBusiness", "Store"],
+        "@type": ["LocalBusiness", "WholesaleStore"],
         "@id": `${SITE_URL}/#business`,
-        name: businessConfig.name,
-        legalName: businessConfig.legalName,
+        name: "Shah Industrial Enterprise",
+        legalName: "Shah Industrial Enterprise",
+        foundingDate: "1961",
         url: SITE_URL,
         description: businessConfig.description,
-        telephone: businessConfig.contacts[0].phone,
+        telephone: "+919820023666",
+        email: "shahindenterprise@rediffmail.com",
+        areaServed: "India",
         address: {
           "@type": "PostalAddress",
-          streetAddress: businessConfig.address.street,
-          addressLocality: businessConfig.address.locality,
-          addressRegion: businessConfig.address.region,
-          postalCode: businessConfig.address.postalCode,
-          addressCountry: businessConfig.address.countryCode,
+          streetAddress: "Plot No. 156, 4th Lane, Darukhana, Mazgaon",
+          addressLocality: "Mumbai",
+          addressRegion: "Maharashtra",
+          postalCode: "400010",
+          addressCountry: "IN",
         },
         geo: {
           "@type": "GeoCoordinates",
-          latitude: businessConfig.coordinates.latitude,
-          longitude: businessConfig.coordinates.longitude,
+          latitude: 18.9667,
+          longitude: 72.8489,
         },
         knowsAbout: [
           ...CANONICAL_PRODUCTS.map((p) => p.title),
@@ -86,7 +89,7 @@ export function generateLocalBusinessSchema() {
       {
         "@type": "WebSite",
         "@id": `${SITE_URL}/#website`,
-        name: businessConfig.name,
+        name: "Shah Industrial Enterprise",
         url: SITE_URL,
         publisher: { "@id": `${SITE_URL}/#business` },
       },
@@ -107,43 +110,31 @@ export function generateLocalBusinessSchema() {
 }
 
 /**
- * Generate Product and Offer Schema.org JSON-LD.
+ * Generate Product and Offer Schema.org JSON-LD with AggregateOffer and BreadcrumbList.
  */
 export function generateProductJsonLd(product: CatalogProduct) {
+  const url = `${SITE_URL}/products/${product.slug}`;
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": product.category === "SERVICE" ? "Service" : "Product",
-        "@id": `${SITE_URL}/products/${product.slug}#product`,
+        "@id": `${url}#product`,
         name: product.title,
         description: product.fullDescription || product.tagline,
-        url: `${SITE_URL}/products/${product.slug}`,
+        url,
         category: product.categoryLabel,
-        provider: {
-          "@type": "LocalBusiness",
-          name: businessConfig.name,
-          telephone: businessConfig.contacts[0].phone,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: businessConfig.address.street,
-            addressLocality: businessConfig.address.locality,
-            addressRegion: businessConfig.address.region,
-            postalCode: businessConfig.address.postalCode,
-            addressCountry: businessConfig.address.countryCode,
-          },
+        brand: {
+          "@type": "Brand",
+          name: "Shah Industrial Enterprise",
         },
         offers: {
-          "@type": "Offer",
+          "@type": "AggregateOffer",
           priceCurrency: "INR",
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            priceType: "Price on Enquiry",
-            description: "Custom cut lengths and bulk tonnage rates quoted on requirement.",
-          },
+          availability: "https://schema.org/InStock",
           seller: {
             "@type": "Organization",
-            name: businessConfig.name,
+            name: "Shah Industrial Enterprise",
           },
         },
       },
@@ -166,7 +157,7 @@ export function generateProductJsonLd(product: CatalogProduct) {
             "@type": "ListItem",
             position: 3,
             name: product.title,
-            item: `${SITE_URL}/products/${product.slug}`,
+            item: url,
           },
         ],
       },
@@ -192,10 +183,6 @@ export function generateBreadcrumbJsonLd(crumbs: Array<{ name: string; url: stri
 
 /**
  * Generate Product + BreadcrumbList JSON-LD for a steel grade landing page.
- *
- * Deliberately does NOT assert price, stock quantity or certification — only the
- * published standard designations the grade is identified by, and that quotations
- * are given on enquiry.
  */
 export function generateGradeJsonLd(grade: SteelGrade) {
   const url = `${SITE_URL}/steel-grades/${grade.slug}`;
@@ -212,7 +199,19 @@ export function generateGradeJsonLd(grade: SteelGrade) {
         url,
         category: grade.family,
         material: grade.code,
-        seller: { "@id": `${SITE_URL}/#business` },
+        brand: {
+          "@type": "Brand",
+          name: "Shah Industrial Enterprise",
+        },
+        offers: {
+          "@type": "AggregateOffer",
+          priceCurrency: "INR",
+          availability: "https://schema.org/InStock",
+          seller: {
+            "@type": "Organization",
+            name: "Shah Industrial Enterprise",
+          },
+        },
         additionalProperty: [
           ...grade.equivalents.map((eq) => ({
             "@type": "PropertyValue",
@@ -230,17 +229,6 @@ export function generateGradeJsonLd(grade: SteelGrade) {
             value: row.value,
           })),
         ],
-        offers: {
-          "@type": "Offer",
-          url,
-          priceCurrency: "INR",
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            priceType: "Price on Enquiry",
-            description: "Quoted per requirement — grade, diameter, cut length and quantity.",
-          },
-          seller: { "@id": `${SITE_URL}/#business` },
-        },
       },
       {
         "@type": "BreadcrumbList",

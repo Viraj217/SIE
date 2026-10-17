@@ -6,15 +6,15 @@ import { STEEL_GRADES } from "@/lib/grades";
 import { SITE_URL, generateBreadcrumbJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Steel Grade Reference — EN8, EN9, EN19, EN24, EN31, C45",
+  title: "Steel Grades Stockist & Reference Mumbai — EN8, EN9, EN19, EN24, EN31, C45",
   description:
-    "Specifications, standard equivalents and applications for EN8, EN9, EN19 (4140), EN24 (4340), EN31 (52100) and C45 steel. Supplied as round bar and shaft stock, cut to size from Darukhana, Mumbai.",
-  alternates: { canonical: "/steel-grades" },
+    "Stockist & supplier of EN8, EN9, EN19 (AISI 4140), EN24 (AISI 4340), EN31 (52100) and C45 steel round bars & forged shafts in Darukhana, Mazgaon, Mumbai. Cut-to-size available.",
+  alternates: { canonical: `${SITE_URL}/steel-grades` },
   openGraph: {
-    title: "Steel Grade Reference — EN8, EN9, EN19, EN24, EN31, C45",
+    title: "Steel Grades Stockist & Reference Mumbai — EN8, EN9, EN19, EN24, EN31, C45",
     description:
-      "Chemistry, standard equivalents and applications for the EN series and C45 engineering steels, supplied cut-to-size from Mazgaon, Mumbai.",
-    url: "/steel-grades",
+      "Specifications, chemistry & stockist availability for EN8, EN9, EN19, EN24, EN31 and C45 steels at Darukhana, Mazgaon, Mumbai.",
+    url: `${SITE_URL}/steel-grades`,
     type: "website",
     images: [{ url: "/og-social.png", width: 1731, height: 909, alt: "Shah Industrial Enterprise — Industrial Steel and Shafting, Darukhana, Mumbai" }],
   },

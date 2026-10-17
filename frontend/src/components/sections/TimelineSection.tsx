@@ -10,7 +10,8 @@ interface Milestone {
 }
 
 const STATIC_MILESTONES: Milestone[] = [
-  { year: '1989', title: 'The Foundation', description: 'Shah Industrial Enterprise opens its doors in Darukhana, Mazgaon — supplying raw mild steel to local fabrication units across Mumbai.' },
+  { year: '1961', title: 'The Foundation', description: 'Shah Industrial Enterprise opens its doors in Darukhana, Mazgaon — supplying raw mild steel and shafting to local fabrication units across Mumbai.' },
+  { year: '1989', title: 'Heavy Shaft & Stockyard Expansion', description: 'Expanded Darukhana stockyard capacity to supply large-diameter forged rounds and heavy marine steamer shafts across Maharashtra and Western India.' },
   { year: '2002', title: 'Heavy Machinery Expansion', description: 'Expanded inventory to include specialized carbon steel and alloy rods for the booming sugar mill and marine sectors, reaching 8 states.' },
   { year: '2015', title: 'Precision Processing', description: 'Introduced automated, high-tolerance hacksaw cutting — allowing clients to receive exact-dimension stock ready for CNC machining.' },
   { year: 'TODAY', title: 'Trusted Backbone', description: 'A second-generation legacy, recognized across 18 states for uncompromising material quality and delivery reliability.' },
@@ -90,7 +91,7 @@ export default function TimelineSection() {
           <span className="section-tag justify-center !text-cyan-glow/60">
             LEGACY
           </span>
-          <h2 className="section-title !text-white">Three Decades of Iron</h2>
+          <h2 className="section-title !text-white">Over Six Decades of Iron</h2>
           <p className="section-desc !text-white/60 mx-auto">A journey measured not in profit margins, but in the tonnage of trust.</p>
         </motion.div>
 

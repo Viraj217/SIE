@@ -43,8 +43,8 @@ export default function SiteFooter() {
                 </p>
               ))}
               <p>
-                <a href={`tel:${primaryContact.phone}`} className="hover:text-cyan-glow transition-colors">
-                  {primaryContact.formattedPhone}
+                <a href="tel:+919820023666" className="hover:text-cyan-glow transition-colors">
+                  +91 98200 23666
                 </a>
               </p>
               <p>
@@ -87,7 +87,7 @@ export default function SiteFooter() {
                     href={`/steel-grades/${grade.slug}`}
                     className="font-mono text-[0.73rem] leading-snug text-white/55 hover:text-white transition-colors"
                   >
-                    {grade.code} <span className="text-white/30">/ {grade.bsDesignation}</span>
+                    {grade.code}{" "}<span className="text-white/30">/ {grade.bsDesignation}</span>
                   </Link>
                 </li>
               ))}

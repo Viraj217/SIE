@@ -83,7 +83,7 @@ export const metadata: Metadata = {
   publisher: businessInfo.name,
   category: "Industrial steel stockist and supplier",
   alternates: {
-    canonical: "/",
+    canonical: SITE_URL,
   },
   openGraph: {
     title:
