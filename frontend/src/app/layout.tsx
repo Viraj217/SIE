@@ -6,7 +6,8 @@ import FloatingActions from "@/components/FloatingActions";
 import MobileStickyBar from "@/components/MobileStickyBar";
 import Analytics from "@/components/Analytics";
 import ActionAnalytics from "@/components/ActionAnalytics";
-import { SITE_URL, businessInfo } from "@/lib/seo";
+import { LocalBusinessSchemaMarkup } from "@/components/SchemaMarkup";
+import { SITE_URL, businessInfo, generateLocalBusinessSchema } from "@/lib/seo";
 import { CANONICAL_PRODUCTS } from "@/lib/config";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
@@ -40,28 +41,39 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Shah Industrial Enterprise | Steel Merchants Mumbai",
-    template: "%s | Shah Industrial Enterprise",
+    // B2B commercial modifiers: Stockist, Mumbai, grade callouts drive procurement searches.
+    default:
+      "Shah Industrial Enterprise | Steel Stockist & Merchant, Darukhana Mumbai",
+    template: "%s | Shah Industrial Enterprise — Steel Stockist Mumbai",
   },
   description:
-    "Industrial steel merchants in Darukhana, Mumbai since 1961. Supplying steamer shafts, carbon & alloy steel bars, forged rounds, and hacksaw cutting.",
+    "Steel stockist & iron merchant at Darukhana, Mazgaon, Mumbai since 1961. Supplying heavy steamer shafts, EN8, EN24 (AISI 4340) alloy round bars, forged rounds & custom hacksaw cutting. Dispatch from Mazgaon yard. Call +91 98200 23666.",
   keywords: [
-    "steel supplier Mumbai",
-    "iron merchant Mumbai",
-    "iron and steel merchants Mumbai",
-    "heavy steamer shafts",
-    "steamer shaft supplier",
-    "forged rounds Mumbai",
-    "hacksaw cutting specialist",
+    // Primary commercial intent
+    "steel stockist Mumbai",
     "steel merchant Darukhana",
+    "iron and steel merchant Mumbai",
     "steel supplier Mazgaon",
-    "MS shafts",
-    "mild steel shaft supplier",
-    "carbon steel rods",
-    "EN8 EN19 EN24 bars",
-    "custom hacksaw cutting",
+    // Products
+    "heavy steamer shafts Mumbai",
+    "steamer shaft stockist",
+    "forged rounds Mumbai",
+    "hacksaw cutting steel Mumbai",
     "cut to size steel Mumbai",
-    "Darukhana Mazgaon steel",
+    // Grade-level commercial searches
+    "EN8 steel supplier Mumbai",
+    "EN9 round bar Mumbai",
+    "EN19 AISI 4140 steel Mumbai",
+    "EN24 AISI 4340 steel Mumbai",
+    "EN31 bearing steel Mumbai",
+    "C45 steel supplier Mumbai",
+    // General
+    "mild steel shaft supplier",
+    "carbon steel rods Darukhana",
+    "alloy steel round bars Mumbai",
+    "IS 2062 steel Mumbai",
+    "Darukhana steel market",
+    "Mazgaon Mumbai steel",
     ...CANONICAL_PRODUCTS.map((p) => p.title),
     ...businessInfo.industries,
   ],
@@ -69,14 +81,15 @@ export const metadata: Metadata = {
   authors: [{ name: businessInfo.name, url: SITE_URL }],
   creator: businessInfo.name,
   publisher: businessInfo.name,
-  category: "Industrial steel supplier",
+  category: "Industrial steel stockist and supplier",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Shah Industrial Enterprise — Forged for Strength, Cut to Precision",
+    title:
+      "Shah Industrial Enterprise — Steel Stockist & Merchant, Darukhana Mumbai",
     description:
-      "Industrial steel merchants in Darukhana, Mumbai since 1961. Supplying steamer shafts, carbon & alloy steel bars, forged rounds, and hacksaw cutting.",
+      "Steel stockist & iron merchant at Darukhana, Mazgaon, Mumbai since 1961. EN8, EN24 (AISI 4340) alloy bars, heavy steamer shafts, forged rounds & hacksaw cutting. Fast dispatch from the Mazgaon yard.",
     url: "/",
     siteName: "Shah Industrial Enterprise",
     locale: "en_IN",
@@ -86,7 +99,7 @@ export const metadata: Metadata = {
         url: "/og-social.png",
         width: 1731,
         height: 909,
-        alt: "Shah Industrial Enterprise — Industrial Steel and Shafting, Darukhana, Mumbai",
+        alt: "Shah Industrial Enterprise — Industrial Steel Stockist, Darukhana, Mumbai",
       },
     ],
   },
@@ -102,8 +115,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shah Industrial Enterprise",
-    description: "Industrial steel merchants in Mumbai since 1961.",
+    title: "Shah Industrial Enterprise — Steel Stockist, Mumbai",
+    description:
+      "Steel stockist & iron merchant at Darukhana, Mazgaon, Mumbai since 1961. EN8, EN24, alloy bars, forged rounds, hacksaw cutting.",
     images: ["/og-social.png"],
   },
   robots: {
@@ -123,11 +137,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Generated once at build time; XSS-safe via safeJsonLd in SchemaMarkup.
+  const localBusinessSchema = generateLocalBusinessSchema();
+
   return (
     <html lang="en">
       <body
         className={`${inter.variable} ${fraunces.variable} ${ibmPlexMono.variable} antialiased pb-[calc(76px+env(safe-area-inset-bottom))] md:pb-0`}
       >
+        {/*
+         * LocalBusiness JSON-LD is injected at the root layout level so
+         * every page on the site carries the business entity schema.
+         * Individual pages (homepage, products, grades) may add their own
+         * additional Product / BreadcrumbList schemas on top.
+         */}
+        <LocalBusinessSchemaMarkup schema={localBusinessSchema} />
         {children}
         <FloatingActions />
         <MobileStickyBar />

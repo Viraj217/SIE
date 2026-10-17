@@ -1,12 +1,15 @@
 'use client';
 
-import { buildGeneralWhatsAppUrl } from '@/lib/whatsapp';
+import { buildContextualWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
 import { usePathname } from 'next/navigation';
 
 export default function MobileStickyBar() {
-  const whatsAppUrl = buildGeneralWhatsAppUrl();
   const pathname = usePathname();
+  // Generates: "Hello Shah Industrial Team, I am inquiring from the [Page Name] page.
+  //             Please share stock availability and pricing."
+  const whatsAppUrl = buildContextualWhatsAppUrl(pathname ?? '/');
+
 
   const handleScrollToQuote = () => {
     trackEvent('rfq_start', { source_page: 'mobile_sticky_bar' });

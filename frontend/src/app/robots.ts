@@ -6,11 +6,14 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/products/", "/steel-grades/", "/tools/"],
+        allow: ["/", "/products/", "/steel-grades/", "/tools/", "/contact"],
         disallow: ["/admin", "/api"],
       },
+      // Disallow known AI training crawlers per robots exclusion standard.
+      { userAgent: "GPTBot", disallow: ["/"] },
+      { userAgent: "CCBot", disallow: ["/"] },
+      { userAgent: "Google-Extended", disallow: ["/"] },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   };
 }

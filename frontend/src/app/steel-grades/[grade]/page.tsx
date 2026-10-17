@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import SiteFooter from "@/components/SiteFooter";
+import SchemaMarkup from "@/components/SchemaMarkup";
 import { STEEL_GRADES, getGradeBySlug } from "@/lib/grades";
 import { CANONICAL_PRODUCTS, businessConfig } from "@/lib/config";
 import { generateGradeJsonLd } from "@/lib/seo";
@@ -25,27 +26,44 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const aisi = grade.equivalents.find((e) => e.standard.startsWith("AISI"))?.designation;
+  const din = grade.equivalents.find((e) => e.standard.startsWith("DIN"))?.designation;
+  const is = grade.equivalents.find((e) => e.standard.startsWith("IS"))?.designation;
+
+  // Title pattern: "EN24 Steel (AISI 4340) Round Bar Stockist & Supplier in Mumbai"
+  const intlRef = [aisi, din].filter(Boolean).slice(0, 1).join(' / ');
+  const title = `${grade.code} Steel${intlRef ? ` (${intlRef})` : ""} — Round Bar & Shaft Stockist in Mumbai`;
+
+  // Description: stock availability + Darukhana dispatch + cut-to-size + phone CTA.
+  const equivalentStr = [aisi, din, is].filter(Boolean).join(' / ');
+  const description =
+    `${grade.code}${equivalentStr ? ` (${equivalentStr})` : ''} steel round bar & shaft stock at Darukhana, Mazgaon, Mumbai. ` +
+    `Cut-to-size ±1mm. ${grade.summary.slice(0, 60).trimEnd()}… Enquire: +91 98200 23666.`;
 
   return {
-    title: `${grade.code} Steel${aisi ? ` (${aisi})` : ""} — Round Bar & Shaft Supplier in Mumbai`,
-    description: `${grade.code} / ${grade.bsDesignation} reference chemistry, common cross-references and applications. Enquire about round bar and shaft supply from Darukhana, Mazgaon, Mumbai.`,
+    title,
+    description: description.slice(0, 160),
     alternates: { canonical: `/steel-grades/${grade.slug}` },
     openGraph: {
-      title: `${grade.code} Steel (${grade.bsDesignation}) — Supplier in Mumbai`,
-      description: grade.summary,
+      title: `${grade.code} Steel${aisi ? ` (${aisi})` : ""} — Stockist & Supplier, Mumbai`,
+      description: `${grade.summary} Stock at Darukhana yard, Mazgaon, Mumbai. Cut-to-size & fast dispatch.`,
       url: `/steel-grades/${grade.slug}`,
       type: "website",
-      images: [{ url: "/og-social.png", width: 1731, height: 909, alt: "Shah Industrial Enterprise — Industrial Steel and Shafting, Darukhana, Mumbai" }],
+      images: [{ url: "/og-social.png", width: 1731, height: 909, alt: `${grade.code} Steel — Shah Industrial Enterprise, Darukhana, Mumbai` }],
     },
     keywords: [
       `${grade.code} steel`,
       `${grade.code} round bar`,
+      `${grade.code} stockist Mumbai`,
       `${grade.code} supplier Mumbai`,
+      `${grade.code} supplier Darukhana`,
       `${grade.code} material`,
       grade.bsDesignation,
+      // AISI / DIN / IS equivalents for cross-standard searches
       ...grade.equivalents.map((e) => e.designation),
-      "steel supplier Mumbai",
+      ...(aisi ? [`${aisi} steel Mumbai`, `${aisi} round bar supplier`] : []),
+      "steel stockist Mumbai",
       "Darukhana steel stockist",
+      "cut to size steel Mumbai",
     ],
   };
 }
@@ -74,10 +92,8 @@ export default async function GradeDetailPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-paper text-slate">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(gradeJsonLd) }}
-      />
+      {/* Product + BreadcrumbList JSON-LD via XSS-safe SchemaMarkup */}
+      <SchemaMarkup schema={gradeJsonLd} testId="grade-page-schema" />
       <Navigation />
 
       {/* Hero */}

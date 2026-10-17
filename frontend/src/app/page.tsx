@@ -8,17 +8,15 @@ import TimelineSection from "@/components/sections/TimelineSection";
 import FaqSection from "@/components/sections/FaqSection";
 import ContactSection from "@/components/sections/ContactSection";
 import SiteFooter from '@/components/SiteFooter';
-import { generateLocalBusinessSchema } from "@/lib/seo";
 
 export default function Home() {
-  const structuredData = generateLocalBusinessSchema();
-
   return (
     <main className="min-h-screen bg-paper text-slate">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      {/*
+       * LocalBusiness + WebSite + FAQPage JSON-LD is now injected globally
+       * by the root layout via <LocalBusinessSchemaMarkup />.
+       * No duplicate schema needed here.
+       */}
       <Navigation />
       <HeroSection />
       <ProofStrip />
@@ -33,3 +31,4 @@ export default function Home() {
     </main>
   );
 }
+

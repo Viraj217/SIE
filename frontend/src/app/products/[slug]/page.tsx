@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import SiteFooter from '@/components/SiteFooter';
+import SchemaMarkup from '@/components/SchemaMarkup';
 import { CANONICAL_PRODUCTS, businessConfig } from '@/lib/config';
 import { generateProductJsonLd } from '@/lib/seo';
 import { buildProductWhatsAppUrl } from '@/lib/whatsapp';
@@ -28,25 +29,56 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  // Build an AISI/international grade callout for the title where grades exist.
+  const gradeCallout = product.gradeDetails
+    ?.map((g) => g.standardEquivalent)
+    .filter(Boolean)
+    .slice(0, 2)
+    .join(', ');
+
+  // Title: "[Product] Stockist & Supplier, Mumbai | Shah Industrial Enterprise"
+  const titleSuffix = product.category === 'SERVICE'
+    ? `Service in Mumbai`
+    : `Stockist & Supplier in Mumbai${gradeCallout ? ` (${gradeCallout})` : ''}`;
+
+  const title = `${product.shortTitle ?? product.title} ${titleSuffix}`;
+
+  // Description: emphasise stock, cut-to-length, and Darukhana dispatch.
+  const cutNote = product.cutToSizeAvailable
+    ? ` Cut-to-length service available (±1mm tolerance).`
+    : '';
+  const testingNote = product.testingAvailable?.length
+    ? ` MTC & test certificates on request.`
+    : '';
+  const gradesNote = product.availableGrades?.length
+    ? ` Grades: ${product.availableGrades.slice(0, 4).join(', ')}.`
+    : '';
+  const description =
+    `${product.fullDescription.slice(0, 110).trimEnd()}…${gradesNote}${cutNote}${testingNote} Dispatched from Darukhana, Mazgaon, Mumbai. Enquire: +91 98200 23666.`.slice(0, 160);
+
   return {
-    title: product.title,
-    description: product.fullDescription.slice(0, 160),
+    title,
+    description,
     alternates: {
       canonical: `/products/${product.slug}`,
     },
     openGraph: {
-      title: `${product.title} | Shah Industrial Enterprise`,
-      description: product.tagline,
+      title: `${product.title} | Steel Stockist, Mumbai — Shah Industrial Enterprise`,
+      description: `${product.tagline} Stock available at Darukhana yard, Mazgaon, Mumbai. Cut-to-size & fast dispatch.`,
       url: `/products/${product.slug}`,
       type: 'website',
-      images: [{ url: '/og-social.png', width: 1731, height: 909, alt: 'Shah Industrial Enterprise — Industrial Steel and Shafting, Darukhana, Mumbai' }],
+      images: [{ url: '/og-social.png', width: 1731, height: 909, alt: `${product.title} — Steel Stockist, Darukhana, Mumbai` }],
     },
     keywords: [
       product.title,
       product.shortTitle || product.title,
       ...(product.availableGrades || []),
-      'steel supplier Mumbai',
-      'cut to size steel',
+      // Grade international equivalents for long-tail searches
+      ...(product.gradeDetails?.map((g) => g.standardEquivalent) ?? []),
+      `${product.shortTitle ?? product.title} stockist Mumbai`,
+      `${product.shortTitle ?? product.title} supplier Darukhana`,
+      'steel stockist Mumbai',
+      'cut to size steel Mumbai',
       'Darukhana steel stockist',
       'Mazgaon Mumbai steel merchant',
     ],
@@ -74,10 +106,8 @@ export default async function ProductDetailPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-paper text-slate">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
-      />
+      {/* Product + BreadcrumbList JSON-LD via XSS-safe SchemaMarkup */}
+      <SchemaMarkup schema={productJsonLd} testId="product-page-schema" />
 
       <Navigation />
 

@@ -3,9 +3,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { businessConfig } from '@/lib/config';
-import { buildGeneralWhatsAppUrl } from '@/lib/whatsapp';
+import { buildContextualWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
 import { usePathname } from 'next/navigation';
+
 
 export default function FloatingActions() {
   const [activeMenu, setActiveMenu] = useState<'whatsapp' | 'call' | null>(null);
@@ -58,10 +59,7 @@ export default function FloatingActions() {
             {businessConfig.contacts.map((contact) => {
               const href =
                 activeMenu === 'whatsapp'
-                  ? buildGeneralWhatsAppUrl(
-                      `Hello ${contact.name},\n\nI would like to inquire about steel materials and price quotations from Shah Industrial Enterprise.`,
-                      contact.whatsapp
-                    )
+                  ? buildContextualWhatsAppUrl(pathname ?? '/', contact.whatsapp)
                   : `tel:${contact.phone}`;
 
               return (

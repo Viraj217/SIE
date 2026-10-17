@@ -94,3 +94,92 @@ export function buildRfqWhatsAppUrl(
   const cleanNumber = phoneNumber.replace(/[^0-9]/g, "");
   return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
+
+// ─── Page-context-aware WhatsApp URL ─────────────────────────────────────────
+
+/**
+ * Derive a human-readable page name from a Next.js pathname.
+ *
+ * Examples:
+ *   "/"                                     → "Home"
+ *   "/products"                             → "Products"
+ *   "/products/heavy-steamer-shafts"        → "Heavy Steamer Shafts"
+ *   "/steel-grades/en24"                    → "EN24 Steel Grade"
+ *   "/tools/weight-calculator"              → "Steel Weight Calculator"
+ *   "/contact"                              → "Contact"
+ */
+export function derivePageName(pathname: string): string {
+  if (!pathname || pathname === "/") return "Home";
+
+  const segments = pathname.replace(/^\//, "").split("/");
+
+  // Known root-level pages
+  const rootLabels: Record<string, string> = {
+    products: "Products Catalogue",
+    "steel-grades": "Steel Grades Reference",
+    contact: "Contact",
+  };
+
+  if (segments.length === 1 && rootLabels[segments[0]]) {
+    return rootLabels[segments[0]];
+  }
+
+  // Dynamic product slug  →  Title-case the slug words
+  if (segments[0] === "products" && segments[1]) {
+    return segments[1]
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+  }
+
+  // Steel grade slug  →  Uppercase the grade code, e.g. "en24" → "EN24 Steel Grade"
+  if (segments[0] === "steel-grades" && segments[1]) {
+    return `${segments[1].toUpperCase()} Steel Grade`;
+  }
+
+  // Tools
+  if (segments[0] === "tools" && segments[1] === "weight-calculator") {
+    return "Steel Weight Calculator";
+  }
+
+  // Fallback: title-case the last segment
+  return segments[segments.length - 1]
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+/**
+ * Build a pre-filled WhatsApp message URL that includes the current page
+ * context, so the team immediately knows which product/grade the buyer
+ * is inquiring about.
+ *
+ * Message format (as specified):
+ * "Hello Shah Industrial Team, I am inquiring from the [Page Name] page.
+ *  Please share stock availability and pricing."
+ *
+ * Usage in Client Components (usePathname):
+ * @example
+ * const pathname = usePathname();
+ * const url = buildContextualWhatsAppUrl(pathname);
+ *
+ * Usage in Server Components (headers-based):
+ * @example
+ * import { headers } from "next/headers";
+ * const hdrs = await headers();
+ * const pathname = hdrs.get("x-pathname") ?? "/";
+ * const url = buildContextualWhatsAppUrl(pathname);
+ */
+export function buildContextualWhatsAppUrl(
+  pathname: string,
+  phoneNumber: string = businessConfig.primaryWhatsAppNumber
+): string {
+  const pageName = derivePageName(pathname);
+  const message =
+    `Hello Shah Industrial Team, I am inquiring from the ${pageName} page. ` +
+    `Please share stock availability and pricing.`;
+
+  const cleanNumber = phoneNumber.replace(/[^0-9]/g, "");
+  return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
+}
+
