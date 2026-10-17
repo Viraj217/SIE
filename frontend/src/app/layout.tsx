@@ -9,8 +9,8 @@ import ActionAnalytics from "@/components/ActionAnalytics";
 import { LocalBusinessSchemaMarkup } from "@/components/SchemaMarkup";
 import { SITE_URL, businessInfo, generateLocalBusinessSchema } from "@/lib/seo";
 import { CANONICAL_PRODUCTS } from "@/lib/config";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
+import { Suspense } from "react";
+import VercelObservability from "@/components/VercelObservability";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -156,9 +156,10 @@ export default function RootLayout({
         <FloatingActions />
         <MobileStickyBar />
         <Analytics />
-        <ActionAnalytics />
-        <SpeedInsights />
-        <VercelAnalytics />
+        <Suspense fallback={null}>
+          <ActionAnalytics />
+        </Suspense>
+        <VercelObservability />
       </body>
     </html>
   );

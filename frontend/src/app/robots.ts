@@ -9,10 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/admin", "/api"],
       },
-      // Disallow AI scrapers to preserve crawl budget
-      { userAgent: "GPTBot", disallow: ["/"] },
-      { userAgent: "CCBot", disallow: ["/"] },
-      { userAgent: "Google-Extended", disallow: ["/"] },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

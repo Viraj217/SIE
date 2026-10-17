@@ -8,7 +8,7 @@ export default function FaqSection() {
     <section id="faq" className="relative z-20 bg-paper px-5 py-12 sm:px-8 sm:py-16 md:px-12 lg:py-20">
       <div className="mx-auto max-w-[1000px]">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7 }}
@@ -25,15 +25,18 @@ export default function FaqSection() {
           {seoFaqs.map((faq, index) => (
             <motion.details
               key={faq.question}
-              initial={{ opacity: 0, y: 18 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.55, delay: index * 0.05 }}
               className="group rounded-lg border border-steel/10 bg-white/70 p-5 shadow-[0_4px_28px_rgba(22,35,43,0.04)] open:bg-white"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-5 font-display text-xl text-slate">
-                {faq.question}
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate/5 font-mono text-sm text-steel transition-transform group-open:rotate-45">
+                {faq.question}{" "}
+                <span
+                  aria-hidden="true"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate/5 font-mono text-sm text-steel transition-transform group-open:rotate-45"
+                >
                   +
                 </span>
               </summary>

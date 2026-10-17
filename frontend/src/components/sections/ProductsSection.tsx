@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { CANONICAL_PRODUCTS } from '@/lib/config';
+import { STEEL_GRADES } from '@/lib/grades';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { trackEvent } from '@/lib/analytics';
 
@@ -33,6 +34,43 @@ interface ProductCardProps {
   isFeatured?: boolean;
   icon?: ReactNode;
   children?: ReactNode;
+}
+
+function renderSpecValue(label: string, value: string, isFeatured: boolean) {
+  if (label.toLowerCase() === 'grades') {
+    const tokens = value.split(',').map((t) => t.trim());
+    return (
+      <span className="text-right font-mono font-medium tracking-tight">
+        {tokens.map((token, idx) => {
+          const matchedGrade = STEEL_GRADES.find(
+            (g) =>
+              token.toUpperCase() === g.code.toUpperCase() ||
+              new RegExp(`\\b${g.code}\\b`, 'i').test(token)
+          );
+          return (
+            <span key={idx}>
+              {idx > 0 && ', '}
+              {matchedGrade ? (
+                <Link
+                  href={`/steel-grades/${matchedGrade.slug}`}
+                  className={`underline decoration-dotted underline-offset-2 transition-colors ${
+                    isFeatured
+                      ? 'text-cyan-glow hover:text-white'
+                      : 'text-slate hover:text-dawn-coral'
+                  }`}
+                >
+                  {token}
+                </Link>
+              ) : (
+                token
+              )}
+            </span>
+          );
+        })}
+      </span>
+    );
+  }
+  return <span className="text-right font-mono font-medium tracking-tight">{value}</span>;
 }
 
 function ProductCard({ slug, title, tagline, specs, isFeatured = false, icon, children }: ProductCardProps) {
@@ -67,6 +105,7 @@ function ProductCard({ slug, title, tagline, specs, isFeatured = false, icon, ch
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      initial={false}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
       variants={{
         hidden: { opacity: 0, y: 60, scale: 0.95 },
@@ -127,7 +166,7 @@ function ProductCard({ slug, title, tagline, specs, isFeatured = false, icon, ch
           {specs.map((spec, i) => (
             <li key={i} className={`flex justify-between gap-4 py-3 text-[0.8rem] border-b last:border-b-0 sm:text-[0.85rem] ${isFeatured ? 'border-white/8' : 'border-steel/8'}`}>
               <span className={`${isFeatured ? 'text-white/60' : 'text-slate/60'} font-mono`}>{spec.label}:{" "}</span>
-              <span className="text-right font-mono font-medium tracking-tight">{spec.value}</span>
+              {renderSpecValue(spec.label, spec.value, isFeatured)}
             </li>
           ))}
         </ul>
@@ -538,7 +577,7 @@ export default function ProductsSection() {
     <section id="products" className="relative z-20 bg-paper py-12 noise-overlay sm:py-16 lg:py-20" style={{ perspective: "1200px" }}>
       <div className="relative z-10 mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
@@ -589,18 +628,51 @@ export default function ProductsSection() {
           ))}
         </div>
 
+        {/* Steel Grade Quick-Reference Links for B2B procurement & crawlability */}
+        <div className="mb-8 rounded-lg border border-steel/15 bg-white/70 p-4 sm:p-5 backdrop-blur-sm">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-glow" />
+              <p className="font-mono text-[0.72rem] uppercase tracking-[0.14em] text-slate/80 font-medium">
+                Standard Engineering Steel Grades:
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+              {[
+                { slug: "en8", label: "EN8 (080M40)" },
+                { slug: "en9", label: "EN9 (070M55)" },
+                { slug: "en19", label: "EN19 (AISI 4140)" },
+                { slug: "en24", label: "EN24 (AISI 4340)" },
+                { slug: "en31", label: "EN31 (52100)" },
+                { slug: "c45", label: "C45 (1045)" },
+              ].map((grade) => (
+                <Link
+                  key={grade.slug}
+                  href={`/steel-grades/${grade.slug}`}
+                  className="inline-flex items-center rounded border border-steel/20 bg-paper-warm/80 px-2.5 py-1 font-mono text-[0.72rem] text-slate transition-all hover:border-cyan-glow hover:bg-white hover:text-slate font-medium"
+                >
+                  {grade.label}
+                </Link>
+              ))}
+              <Link
+                href="/steel-grades"
+                className="font-mono text-[0.72rem] text-dawn-coral hover:underline ml-1"
+              >
+                All grades →
+              </Link>
+            </div>
+          </div>
+        </div>
+
         <motion.div
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
           className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8"
         >
-          {filteredProducts.map((product, index) => (
-            <div
-              key={product.slug}
-              className={!searchQuery && activeFilter === 'ALL' && index >= 4 ? 'hidden md:block' : undefined}
-            >
+          {filteredProducts.map((product) => (
+            <div key={product.slug}>
               <ProductCard
                 slug={product.slug}
                 title={product.title}

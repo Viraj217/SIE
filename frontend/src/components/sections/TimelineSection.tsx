@@ -25,7 +25,7 @@ function TimelineNode({ year, title, desc, side, index }: { year: string; title:
       {/* Node dot */}
       <div className="absolute left-[7px] md:left-1/2 md:-translate-x-1/2 top-2 z-20">
         <motion.div
-          initial={{ scale: 0 }}
+          initial={false}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2, type: 'spring', stiffness: 300 }}
@@ -37,7 +37,7 @@ function TimelineNode({ year, title, desc, side, index }: { year: string; title:
 
       {/* Content */}
       <motion.div
-        initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
+        initial={false}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: index * 0.1 }}
@@ -82,7 +82,7 @@ export default function TimelineSection() {
 
       <div className="relative z-10 mx-auto max-w-[1000px] px-5 sm:px-8 md:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}

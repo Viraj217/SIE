@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 
 export default function HeroSection() {
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -67,7 +68,14 @@ export default function HeroSection() {
           </h1>
 
           <p className="mb-8 max-w-[520px] text-[0.98rem] leading-[1.75] text-white/65 sm:mb-9 sm:text-[1.05rem] md:text-[1.12rem]">
-            Heavy steamer shafts, carbon steel, alloy steel round bars, M.S. rounds, EN8, EN9, EN19, EN24, EN31 and C45 materials supplied cut-to-size from Darukhana, Mazgaon since 1961.
+            Heavy steamer shafts, carbon steel, alloy steel round bars, M.S. rounds,{" "}
+            <Link href="/steel-grades/en8" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-cyan-glow hover:decoration-cyan-glow">EN8</Link>,{" "}
+            <Link href="/steel-grades/en9" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-cyan-glow hover:decoration-cyan-glow">EN9</Link>,{" "}
+            <Link href="/steel-grades/en19" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-cyan-glow hover:decoration-cyan-glow">EN19</Link>,{" "}
+            <Link href="/steel-grades/en24" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-cyan-glow hover:decoration-cyan-glow">EN24</Link>,{" "}
+            <Link href="/steel-grades/en31" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-cyan-glow hover:decoration-cyan-glow">EN31</Link> and{" "}
+            <Link href="/steel-grades/c45" className="text-white underline decoration-white/30 underline-offset-2 transition-colors hover:text-cyan-glow hover:decoration-cyan-glow">C45</Link>{" "}
+            materials supplied cut-to-size from Darukhana, Mazgaon since 1961.
           </p>
 
           <div className="mb-12 flex flex-wrap gap-4">

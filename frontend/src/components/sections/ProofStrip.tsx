@@ -25,7 +25,7 @@ function Counter({ value, unit, label, delay }: { value: number; unit: string; l
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 25 }}
+      initial={false}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: delay / 1000 }}
@@ -40,8 +40,9 @@ function Counter({ value, unit, label, delay }: { value: number; unit: string; l
           {mounted ? <motion.span>{display}</motion.span> : value}
         </span>
         {unit && <span className="text-[clamp(1.2rem,2vw,1.6rem)] text-dawn-coral ml-1.5">{unit}</span>}
+        {" "}
       </div>
-      
+      {" "}
       <span className="text-[0.7rem] text-steel uppercase tracking-[0.25em] font-mono block">
         {label}
       </span>
@@ -57,9 +58,9 @@ export default function ProofStrip() {
       
       <div className="mx-auto max-w-[1100px] px-5 py-4 sm:px-8 sm:py-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-steel/10">
-          <Counter value={65} unit="+" label="Years of Presence" delay={0} />
-          <Counter value={500} unit="T/yr" label="Steel Handled" delay={150} />
-          <Counter value={18} unit="" label="States Supplied" delay={300} />
+          <Counter value={65} unit="+" label="Years of Presence" delay={0} />{" "}
+          <Counter value={500} unit="T/yr" label="Steel Handled" delay={150} />{" "}
+          <Counter value={18} unit="" label="States Supplied" delay={300} />{" "}
           <Counter value={4} unit="" label="Core Sectors" delay={450} />
         </div>
       </div>

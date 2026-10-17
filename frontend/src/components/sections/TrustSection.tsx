@@ -31,7 +31,7 @@ export default function TrustSection() {
 
       <div className="relative z-10 mx-auto grid max-w-[1200px] gap-12 px-5 sm:px-8 md:px-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.75 }}
@@ -63,7 +63,7 @@ export default function TrustSection() {
           {TRUST_ITEMS.map((item, index) => (
             <motion.div
               key={item.title}
-              initial={{ opacity: 0, x: 30 }}
+              initial={false}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.65, delay: index * 0.08 }}
@@ -76,7 +76,7 @@ export default function TrustSection() {
           ))}
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.65, delay: 0.25 }}

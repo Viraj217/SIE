@@ -111,7 +111,7 @@ export default function SiteFooter() {
               <li><Link href="/products" className="hover:text-white transition-colors">Product Catalogue</Link></li>
               <li><Link href="/steel-grades" className="hover:text-white transition-colors">Grade Reference</Link></li>
               <li><Link href="/tools/weight-calculator" className="hover:text-white transition-colors">Steel Weight Calculator</Link></li>
-              <li><Link href="/products" className="hover:text-white transition-colors">View Products</Link></li>
+              <li><Link href="/products/custom-hacksaw-cutting" className="hover:text-white transition-colors">Custom Hacksaw Cutting</Link></li>
               <li><Link href="/#industries" className="hover:text-white transition-colors">Industries Served</Link></li>
               <li><Link href="/#milestones" className="hover:text-white transition-colors">Our History</Link></li>
               <li><Link href="/#faq" className="hover:text-white transition-colors">FAQ</Link></li>

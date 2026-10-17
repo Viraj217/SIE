@@ -9,7 +9,7 @@ export default function ContactSection() {
     <section id="contact" className="relative z-20 bg-paper py-16 noise-overlay sm:py-20 lg:py-24">
       <div className="relative z-10 mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
@@ -25,7 +25,7 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.85fr] gap-12 lg:gap-16 items-start">
           {/* RFQ Form Card */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -37,7 +37,7 @@ export default function ContactSection() {
 
           {/* Right Column: Contact Details & Yard Information */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}

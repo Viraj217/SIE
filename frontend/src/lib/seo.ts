@@ -40,6 +40,8 @@ export function generateLocalBusinessSchema() {
         name: "Shah Industrial Enterprise",
         legalName: "Shah Industrial Enterprise",
         foundingDate: "1961",
+        image: `${SITE_URL}/og-social.png`,
+        priceRange: "₹₹₹",
         url: SITE_URL,
         description: businessConfig.description,
         telephone: "+919820023666",
@@ -69,6 +71,12 @@ export function generateLocalBusinessSchema() {
             name: product.title,
             description: product.tagline,
             url: `${SITE_URL}/products/${product.slug}`,
+            offers: {
+              "@type": "AggregateOffer",
+              priceCurrency: "INR",
+              availability: "https://schema.org/InStock",
+              url: `${SITE_URL}/products/${product.slug}`,
+            },
           },
         })),
         contactPoint: businessConfig.contacts.map((contact) => ({

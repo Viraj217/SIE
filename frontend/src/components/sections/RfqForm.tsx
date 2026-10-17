@@ -288,7 +288,7 @@ export default function RfqForm() {
             </div>
           </motion.div>
         ) : (
-          <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div key="form" initial={false} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div className="mb-6 flex flex-col gap-3 border-b border-white/10 pb-4 min-[420px]:flex-row min-[420px]:items-center min-[420px]:justify-between">
               <div>
                 <h3 className="font-display text-xl sm:text-2xl text-white">Request for Quotation (RFQ)</h3>
@@ -660,8 +660,9 @@ export default function RfqForm() {
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                     </svg>
-                    Have fabrication drawings or detailed spec sheets? Send directly:
+                    Have fabrication drawings or detailed spec sheets? Send directly:{" "}
                   </span>
+                  {" "}
                   <span className="flex items-center gap-2">
                     <a
                       href={buildGeneralWhatsAppUrl(
@@ -673,6 +674,7 @@ export default function RfqForm() {
                     >
                       WhatsApp PDF
                     </a>
+                    {" "}
                     <a
                       href={`mailto:${businessConfig.email}?subject=${encodeURIComponent(
                         'Drawings & Specifications for Material RFQ'
@@ -687,13 +689,13 @@ export default function RfqForm() {
 
               {/* Honeypot field (hidden from screen readers & visual buyers) */}
               <div aria-hidden="true" className="hidden">
-                <label htmlFor="rfq-website">Website</label>
                 <input
                   id="rfq-website"
                   name="website"
                   type="text"
                   tabIndex={-1}
                   autoComplete="off"
+                  aria-label="Leave blank"
                   value={honeypot}
                   onChange={(e) => setHoneypot(e.target.value)}
                 />
