@@ -6,7 +6,7 @@ import SiteFooter from '@/components/SiteFooter';
 import { SITE_URL } from '@/lib/config';
 
 export const metadata: Metadata = {
-  title: 'Contact Steel Stockist Mumbai | Shah Industrial Enterprise Darukhana',
+  title: 'Contact Steel Stockist Mumbai',
   description:
     'Direct procurement desk for steel round bars, heavy steamer shafts & hacksaw cutting. Plot 156, 4th Lane, Darukhana, Mazgaon, Mumbai. Call +91 98200 23666.',
   alternates: { canonical: `${SITE_URL}/contact` },

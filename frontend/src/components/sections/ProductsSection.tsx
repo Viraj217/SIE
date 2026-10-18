@@ -604,10 +604,10 @@ export default function ProductsSection() {
             <div className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-cyan-glow" />
               <p className="font-mono text-[0.72rem] uppercase tracking-[0.14em] text-slate/80 font-medium">
-                Standard Engineering Steel Grades:
+                Standard Engineering Steel Grades:{" "}
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <ul className="flex flex-wrap items-center gap-2 sm:gap-2.5 list-none p-0 m-0">
               {[
                 { slug: "en8", label: "EN8 (080M40)" },
                 { slug: "en9", label: "EN9 (070M55)" },
@@ -616,21 +616,26 @@ export default function ProductsSection() {
                 { slug: "en31", label: "EN31 (52100)" },
                 { slug: "c45", label: "C45 (1045)" },
               ].map((grade) => (
-                <Link
-                  key={grade.slug}
-                  href={`/steel-grades/${grade.slug}`}
-                  className="inline-flex items-center rounded border border-steel/20 bg-paper-warm/80 px-2.5 py-1 font-mono text-[0.72rem] text-slate transition-all hover:border-cyan-glow hover:bg-white hover:text-slate font-medium"
-                >
-                  {grade.label}
-                </Link>
+                <li key={grade.slug} className="inline-flex items-center">
+                  <Link
+                    href={`/steel-grades/${grade.slug}`}
+                    className="inline-flex items-center rounded border border-steel/20 bg-paper-warm/80 px-2.5 py-1 font-mono text-[0.72rem] text-slate transition-all hover:border-cyan-glow hover:bg-white hover:text-slate font-medium"
+                  >
+                    {grade.label}
+                  </Link>
+                  {" "}
+                </li>
               ))}
-              <Link
-                href="/steel-grades"
-                className="font-mono text-[0.72rem] text-dawn-coral hover:underline ml-1"
-              >
-                All grades →
-              </Link>
-            </div>
+              <li className="inline-flex items-center">
+                <Link
+                  href="/steel-grades"
+                  className="font-mono text-[0.72rem] text-dawn-coral hover:underline ml-1"
+                >
+                  All grades →
+                </Link>
+                {" "}
+              </li>
+            </ul>
           </div>
         </div>
 

@@ -7,12 +7,12 @@ import { SITE_URL } from "@/lib/config";
  * had no canonical of its own, while still being listed in the sitemap.
  */
 export const metadata: Metadata = {
-  title: "Steel Weight Calculator — Round Bar, Pipe, Flat & Hex | Mumbai Stockist",
+  title: "Steel Weight Calculator Mumbai",
   description:
     "Calculate theoretical steel weight in kg and metric tonnes for round bars, shafts, seamless pipes, and plates. Free tool by Shah Industrial Enterprise, Darukhana, Mumbai.",
   alternates: { canonical: `${SITE_URL}/tools/weight-calculator` },
   openGraph: {
-    title: "Steel Weight Calculator — Round Bar, Pipe, Flat & Hex",
+    title: "Steel Weight Calculator Mumbai | Shah Industrial Enterprise",
     description:
       "Calculate theoretical steel weight in kg and metric tonnes for round bars, shafts, pipes and profiles before raising an enquiry.",
     url: `${SITE_URL}/tools/weight-calculator`,

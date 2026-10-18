@@ -8,14 +8,14 @@ import { buildProductWhatsAppUrl } from '@/lib/whatsapp';
 import PrintCatalogButton from '@/components/PrintCatalogButton';
 
 export const metadata: Metadata = {
-  title: 'Steel Materials & Shafting Stockist Mumbai | Shah Industrial Enterprise',
+  title: 'Steel Materials Stockist Mumbai',
   description:
     'Stockist & supplier of heavy steamer shafts, forged rounds, carbon steel EN8/EN9, alloy steel EN19/EN24 bars, and custom hacksaw cutting services in Darukhana, Mazgaon, Mumbai since 1961.',
   alternates: {
     canonical: `${SITE_URL}/products`,
   },
   openGraph: {
-    title: 'Steel Materials & Shafting Stockist Mumbai — Shah Industrial Enterprise',
+    title: 'Steel Materials Stockist Mumbai | Shah Industrial Enterprise',
     description:
       'Heavy steamer shafts, carbon steel rounds, alloy bars, and custom hacksaw cutting in Mazgaon, Mumbai since 1961.',
     url: `${SITE_URL}/products`,

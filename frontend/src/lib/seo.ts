@@ -64,21 +64,6 @@ export function generateLocalBusinessSchema() {
           ...CANONICAL_PRODUCTS.map((p) => p.title),
           ...businessConfig.industries,
         ],
-        makesOffer: CANONICAL_PRODUCTS.map((product) => ({
-          "@type": "Offer",
-          itemOffered: {
-            "@type": product.category === "SERVICE" ? "Service" : "Product",
-            name: product.title,
-            description: product.tagline,
-            url: `${SITE_URL}/products/${product.slug}`,
-            offers: {
-              "@type": "AggregateOffer",
-              priceCurrency: "INR",
-              availability: "https://schema.org/InStock",
-              url: `${SITE_URL}/products/${product.slug}`,
-            },
-          },
-        })),
         contactPoint: businessConfig.contacts.map((contact) => ({
           "@type": "ContactPoint",
           name: contact.name,
@@ -118,7 +103,7 @@ export function generateLocalBusinessSchema() {
 }
 
 /**
- * Generate Product and Offer Schema.org JSON-LD with AggregateOffer and BreadcrumbList.
+ * Generate Product Schema.org JSON-LD with BreadcrumbList (offers omitted for B2B price-on-enquiry).
  */
 export function generateProductJsonLd(product: CatalogProduct) {
   const url = `${SITE_URL}/products/${product.slug}`;
@@ -135,15 +120,6 @@ export function generateProductJsonLd(product: CatalogProduct) {
         brand: {
           "@type": "Brand",
           name: "Shah Industrial Enterprise",
-        },
-        offers: {
-          "@type": "AggregateOffer",
-          priceCurrency: "INR",
-          availability: "https://schema.org/InStock",
-          seller: {
-            "@type": "Organization",
-            name: "Shah Industrial Enterprise",
-          },
         },
       },
       {
@@ -210,15 +186,6 @@ export function generateGradeJsonLd(grade: SteelGrade) {
         brand: {
           "@type": "Brand",
           name: "Shah Industrial Enterprise",
-        },
-        offers: {
-          "@type": "AggregateOffer",
-          priceCurrency: "INR",
-          availability: "https://schema.org/InStock",
-          seller: {
-            "@type": "Organization",
-            name: "Shah Industrial Enterprise",
-          },
         },
         additionalProperty: [
           ...grade.equivalents.map((eq) => ({

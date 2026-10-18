@@ -26,18 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const aisi = grade.equivalents.find((e) => e.standard.startsWith("AISI"))?.designation;
-  const din = grade.equivalents.find((e) => e.standard.startsWith("DIN"))?.designation;
-  const is = grade.equivalents.find((e) => e.standard.startsWith("IS"))?.designation;
-
-  const standardEquivs = [
-    grade.bsDesignation,
-    aisi ? `AISI ${aisi}` : undefined,
-    din ? `DIN ${din}` : undefined,
-  ]
-    .filter(Boolean)
-    .join(" / ");
-
-  const title = `${grade.code} (${standardEquivs}) Steel Round Bar Stockist & Supplier in Mumbai`;
+  const gradeLabel = aisi ? `${grade.code} (AISI ${aisi})` : grade.code;
+  const title = `${gradeLabel} Steel Stockist`;
 
   const description =
     `${grade.code} (${grade.bsDesignation}${aisi ? ` / AISI ${aisi}` : ""}) steel round bars & forged shaft stock. Stockist & supplier in Darukhana, Mazgaon, Mumbai. Cut-to-size available. Enquire: +91 98200 23666.`;
@@ -47,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: description.slice(0, 160),
     alternates: { canonical: `${SITE_URL}/steel-grades/${grade.slug}` },
     openGraph: {
-      title: `${grade.code} Steel${aisi ? ` (${aisi})` : ""} — Stockist & Supplier, Mumbai`,
+      title: `${title} | Shah Industrial Enterprise`,
       description: `${grade.summary} Stock at Darukhana yard, Mazgaon, Mumbai. Cut-to-size & fast dispatch.`,
       url: `${SITE_URL}/steel-grades/${grade.slug}`,
       type: "website",

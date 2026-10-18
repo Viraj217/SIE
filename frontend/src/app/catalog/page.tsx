@@ -8,7 +8,7 @@ import { CANONICAL_PRODUCTS } from "@/lib/config";
 import { buildProductWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Printable Steel Product Catalogue & Specifications",
+  title: "Steel Product Catalogue",
   description:
     "Browse Shah Industrial Enterprise steel materials and custom cutting services for heavy steamer shafts, forged rounds, EN series alloy rods, and seamless pipes in Mazgaon, Mumbai.",
   alternates: {

@@ -43,8 +43,8 @@ export const metadata: Metadata = {
   title: {
     // B2B commercial modifiers: Stockist, Mumbai, grade callouts drive procurement searches.
     default:
-      "Shah Industrial Enterprise | Steel Stockist & Merchant, Darukhana Mumbai",
-    template: "%s | Shah Industrial Enterprise — Steel Stockist Mumbai",
+      "Shah Industrial Enterprise | Steel Stockist, Darukhana Mumbai",
+    template: "%s | Shah Industrial Enterprise",
   },
   description:
     "Steel stockist & iron merchant at Darukhana, Mazgaon, Mumbai since 1961. Supplying heavy steamer shafts, EN8, EN24 (AISI 4340) alloy round bars, forged rounds & custom hacksaw cutting. Dispatch from Mazgaon yard. Call +91 98200 23666.",

@@ -36,10 +36,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .slice(0, 2)
     .join(', ');
 
-  // Title: "[Product] Stockist & Supplier, Mumbai | Shah Industrial Enterprise"
   const titleSuffix = product.category === 'SERVICE'
-    ? `Service in Mumbai`
-    : `Stockist & Supplier in Mumbai${gradeCallout ? ` (${gradeCallout})` : ''}`;
+    ? 'Service Mumbai'
+    : 'Stockist Mumbai';
 
   const title = `${product.shortTitle ?? product.title} ${titleSuffix}`;
 
@@ -63,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `${SITE_URL}/products/${product.slug}`,
     },
     openGraph: {
-      title: `${product.title} | Steel Stockist, Mumbai — Shah Industrial Enterprise`,
+      title: `${title} | Shah Industrial Enterprise`,
       description: `${product.tagline} Stock available at Darukhana yard, Mazgaon, Mumbai. Cut-to-size & fast dispatch.`,
       url: `${SITE_URL}/products/${product.slug}`,
       type: 'website',
