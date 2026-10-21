@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
@@ -64,13 +65,29 @@ export default function Navigation() {
       }`}
     >
       <nav className="max-w-[1300px] mx-auto h-full flex justify-between items-center px-5 sm:px-8 md:px-12">
-        <Link href="/" className="relative z-50 flex min-w-0 max-w-[calc(100%-4rem)] flex-col gap-0.5 group">
-          <span className={`font-display font-bold text-[1.05rem] sm:text-[1.25rem] tracking-[0.06em] sm:tracking-[0.08em] transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate' : 'text-white'}`}>
-            SHAH INDUSTRIAL ENTERPRISE{" "}
-          </span>
-          <span className={`truncate font-mono text-[0.55rem] sm:text-[0.6rem] tracking-[0.16em] sm:tracking-[0.25em] uppercase transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate/60' : 'text-white/60'}`}>
-            Est. 1961 · Mazgaon, Mumbai
-          </span>
+        <Link href="/" className="relative z-50 flex items-center gap-2.5 sm:gap-3.5 min-w-0 max-w-[calc(100%-3.5rem)] group">
+          <div className={`relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-full overflow-hidden flex items-center justify-center transition-all duration-500 ${
+            isScrolled || !isHome
+              ? "bg-transparent"
+              : "bg-white/95 shadow-[0_2px_12px_rgba(0,0,0,0.18)] ring-1 ring-white/30"
+          }`}>
+            <Image
+              src="/og-logo-transparent.png"
+              alt="Shah Industrial Enterprise Logo"
+              width={44}
+              height={44}
+              className="w-full h-full object-contain p-0.5 transition-transform duration-300 group-hover:scale-105"
+              priority
+            />
+          </div>
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className={`font-display font-bold text-[0.95rem] sm:text-[1.25rem] tracking-[0.05em] sm:tracking-[0.08em] transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate' : 'text-white'}`}>
+              SHAH INDUSTRIAL ENTERPRISE{" "}
+            </span>
+            <span className={`truncate font-mono text-[0.52rem] sm:text-[0.6rem] tracking-[0.16em] sm:tracking-[0.25em] uppercase transition-colors duration-500 ${isScrolled || !isHome ? 'text-slate/60' : 'text-white/60'}`}>
+              Est. 1961 · Mazgaon, Mumbai
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}

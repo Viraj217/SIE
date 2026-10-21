@@ -69,6 +69,16 @@ export const metadata: Metadata = {
   creator: businessInfo.name,
   publisher: businessInfo.name,
   category: "Industrial steel stockist and supplier",
+  icons: {
+    icon: [
+      { url: "/icon.png?v=3", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico?v=3", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-icon.png?v=3", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico?v=3",
+  },
   alternates: {
     canonical: SITE_URL,
   },
