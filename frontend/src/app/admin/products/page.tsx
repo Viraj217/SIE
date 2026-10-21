@@ -220,18 +220,18 @@ export default function ProductsPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-10">
         <div>
           <span className="font-mono text-[0.65rem] text-cyan-glow/70 tracking-[0.25em] uppercase block mb-1">
             Inventory & Catalog
           </span>
-          <h2 className="font-display text-white text-3xl font-bold">Manage Products</h2>
+          <h2 className="font-display text-white text-2xl sm:text-3xl font-bold">Manage Products</h2>
         </div>
         <button
           onClick={openAddModal}
-          className="px-5 py-2.5 bg-cyan-glow text-slate font-mono text-[0.75rem] font-semibold uppercase tracking-wider rounded hover:shadow-[0_0_20px_rgba(143,216,212,0.15)] transition-all duration-300"
+          className="w-full sm:w-auto px-5 py-3 sm:py-2.5 bg-cyan-glow text-slate font-mono text-[0.75rem] font-semibold uppercase tracking-wider rounded-lg hover:shadow-[0_0_20px_rgba(143,216,212,0.15)] active:scale-[0.99] transition-all duration-300 min-h-[44px] flex items-center justify-center gap-1.5"
         >
-          + Add Product
+          <span>+ Add Product</span>
         </button>
       </div>
 
@@ -244,11 +244,11 @@ export default function ProductsPage() {
           <p className="text-white/30 font-mono text-sm">No products found in the database.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white/[0.01] border border-white/[0.06] rounded-lg p-6 flex flex-col justify-between group hover:border-cyan-glow/20 transition-all duration-300"
+              className="bg-white/[0.01] border border-white/[0.06] rounded-xl p-5 sm:p-6 flex flex-col justify-between group hover:border-cyan-glow/20 transition-all duration-300 shadow-lg"
             >
               <div>
                 <div className="flex justify-between items-start mb-4">
@@ -281,13 +281,14 @@ export default function ProductsPage() {
               <div className="flex gap-2 border-t border-white/[0.04] pt-4">
                 <button
                   onClick={() => openEditModal(product)}
-                  className="flex-1 py-2 bg-white/[0.03] hover:bg-white/[0.08] text-white/70 text-[0.7rem] font-mono uppercase tracking-wider rounded transition-colors"
+                  className="flex-1 py-2.5 bg-white/[0.03] hover:bg-white/[0.08] text-white/70 text-[0.75rem] font-mono uppercase tracking-wider rounded-lg transition-colors min-h-[40px] flex items-center justify-center"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(product.id)}
-                  className="px-3 py-2 bg-white/[0.03] hover:bg-dawn-coral/20 text-white/60 hover:text-dawn-coral text-[0.7rem] rounded transition-colors"
+                  className="px-3.5 py-2.5 bg-white/[0.03] hover:bg-dawn-coral/20 text-white/60 hover:text-dawn-coral text-[0.75rem] rounded-lg transition-colors min-h-[40px] flex items-center justify-center"
+                  title="Delete product"
                 >
                   🗑
                 </button>
@@ -299,14 +300,24 @@ export default function ProductsPage() {
 
       {/* Edit/Add Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate/80 backdrop-blur-sm">
-          <div className="w-full max-w-[650px] max-h-[90vh] overflow-y-auto bg-slate ring-1 ring-white/[0.08] rounded-xl p-8 space-y-6">
-            <h3 className="font-display text-white text-xl font-bold">
-              {editingProduct ? 'Edit Product' : 'Add New Product'}
-            </h3>
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 bg-slate/85 backdrop-blur-sm">
+          <div className="w-full max-w-[650px] max-h-[92vh] sm:max-h-[90vh] overflow-y-auto bg-slate ring-1 ring-white/[0.08] rounded-t-2xl sm:rounded-2xl p-5 sm:p-8 space-y-5 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+              <h3 className="font-display text-white text-lg sm:text-xl font-bold">
+                {editingProduct ? 'Edit Product' : 'Add New Product'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(false)}
+                className="p-1.5 text-white/50 hover:text-white hover:bg-white/[0.06] rounded-lg transition-colors"
+                aria-label="Close dialog"
+              >
+                ✕
+              </button>
+            </div>
 
             <form onSubmit={handleSave} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-1">
                   <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Slug</label>
                   <input
@@ -314,7 +325,7 @@ export default function ProductsPage() {
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
                     required
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-cyan-glow/40"
+                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-base sm:text-xs font-mono focus:outline-none focus:border-cyan-glow/40 min-h-[42px]"
                     placeholder="e.g. mild-steel-shafts"
                   />
                 </div>
@@ -325,7 +336,7 @@ export default function ProductsPage() {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-cyan-glow/40"
+                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-base sm:text-xs font-mono focus:outline-none focus:border-cyan-glow/40 min-h-[42px]"
                     placeholder="e.g. Mild Steel Shafts"
                   />
                 </div>
@@ -338,18 +349,18 @@ export default function ProductsPage() {
                   value={tagline}
                   onChange={(e) => setTagline(e.target.value)}
                   required
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded px-3 py-2 text-white text-xs font-mono resize-none focus:outline-none focus:border-cyan-glow/40"
+                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 text-white text-base sm:text-xs font-mono resize-none focus:outline-none focus:border-cyan-glow/40"
                   placeholder="Brief descriptive tagline for the product card..."
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-1">
                   <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as 'RAW_MATERIAL' | 'ALLOY' | 'SERVICE')}
-                    className="w-full bg-white/[0.04] border border-white/[0.08] text-white text-xs font-mono rounded px-3 py-2 focus:outline-none focus:border-cyan-glow/40"
+                    className="w-full bg-white/[0.04] border border-white/[0.08] text-white text-base sm:text-xs font-mono rounded-lg px-3 py-2.5 focus:outline-none focus:border-cyan-glow/40 min-h-[42px]"
                   >
                     <option value="RAW_MATERIAL">RAW_MATERIAL</option>
                     <option value="ALLOY">ALLOY</option>
@@ -363,33 +374,34 @@ export default function ProductsPage() {
                     value={displayOrder}
                     onChange={(e) => setDisplayOrder(parseInt(e.target.value) || 0)}
                     required
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-cyan-glow/40"
+                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-base sm:text-xs font-mono focus:outline-none focus:border-cyan-glow/40 min-h-[42px]"
                   />
-                </div>
-                <div className="flex gap-4 items-center pt-5">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={isFeatured}
-                      onChange={(e) => setIsFeatured(e.target.checked)}
-                      className="rounded border-white/[0.08]"
-                    />
-                    <span className="text-[0.65rem] font-mono uppercase text-white/60">Featured</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={isActive}
-                      onChange={(e) => setIsActive(e.target.checked)}
-                      className="rounded border-white/[0.08]"
-                    />
-                    <span className="text-[0.65rem] font-mono uppercase text-white/60">Active</span>
-                  </label>
                 </div>
               </div>
 
+              <div className="flex flex-wrap gap-5 items-center py-1">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={isFeatured}
+                    onChange={(e) => setIsFeatured(e.target.checked)}
+                    className="w-4 h-4 rounded border-white/[0.08]"
+                  />
+                  <span className="text-[0.7rem] font-mono uppercase text-white/70">Featured Product</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={isActive}
+                    onChange={(e) => setIsActive(e.target.checked)}
+                    className="w-4 h-4 rounded border-white/[0.08]"
+                  />
+                  <span className="text-[0.7rem] font-mono uppercase text-white/70">Active Listing</span>
+                </label>
+              </div>
+
               {/* Specs Fields */}
-              <div className="space-y-3 pt-4 border-t border-white/[0.04]">
+              <div className="space-y-3 pt-3 border-t border-white/[0.04]">
                 <div className="flex justify-between items-center">
                   <span className="text-[0.65rem] font-mono uppercase tracking-wider text-cyan-glow/70">
                     Product Specifications
@@ -397,52 +409,53 @@ export default function ProductsPage() {
                   <button
                     type="button"
                     onClick={addSpecField}
-                    className="text-[0.65rem] font-mono text-cyan-glow hover:underline uppercase"
+                    className="text-[0.68rem] font-mono text-cyan-glow hover:underline uppercase py-1"
                   >
                     + Add Spec
                   </button>
                 </div>
 
-                <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                <div className="space-y-2.5 max-h-48 overflow-y-auto pr-1">
                   {specs.map((spec, index) => (
-                    <div key={index} className="flex gap-2 items-center">
+                    <div key={index} className="flex flex-col sm:flex-row gap-2 p-2.5 sm:p-0 bg-white/[0.02] sm:bg-transparent rounded-lg border sm:border-0 border-white/[0.06]">
                       <input
                         type="text"
                         value={spec.label}
                         onChange={(e) => handleSpecChange(index, 'label', e.target.value)}
                         placeholder="Label (e.g. Diameter)"
-                        className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded px-3 py-1.5 text-white text-xs font-mono focus:outline-none focus:border-cyan-glow/40"
+                        className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 text-white text-base sm:text-xs font-mono focus:outline-none focus:border-cyan-glow/40 min-h-[38px]"
                       />
                       <input
                         type="text"
                         value={spec.value}
                         onChange={(e) => handleSpecChange(index, 'value', e.target.value)}
                         placeholder="Value (e.g. Ø 12-250mm)"
-                        className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded px-3 py-1.5 text-white text-xs font-mono focus:outline-none focus:border-cyan-glow/40"
+                        className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 text-white text-base sm:text-xs font-mono focus:outline-none focus:border-cyan-glow/40 min-h-[38px]"
                       />
                       <button
                         type="button"
                         onClick={() => removeSpecField(index)}
-                        className="p-1.5 text-white/30 hover:text-dawn-coral"
+                        className="p-2 text-white/40 hover:text-dawn-coral self-end sm:self-center font-mono text-xs"
+                        title="Remove spec"
                       >
-                        ✕
+                        ✕ Remove
                       </button>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="flex gap-4 pt-4 border-t border-white/[0.06]">
+              <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-white/[0.06]">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 py-3 border border-white/[0.08] hover:bg-white/[0.03] text-white/60 font-mono text-xs uppercase tracking-wider rounded transition-all duration-200"
+                  className="w-full sm:flex-1 py-3 border border-white/[0.08] hover:bg-white/[0.03] text-white/60 font-mono text-xs uppercase tracking-wider rounded-lg transition-all duration-200 min-h-[44px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-cyan-glow text-slate font-mono text-xs uppercase tracking-wider font-semibold rounded hover:shadow-[0_0_20px_rgba(143,216,212,0.15)] transition-all duration-200"
+                  className="w-full sm:flex-1 py-3 bg-cyan-glow text-slate font-mono text-xs uppercase tracking-wider font-semibold rounded-lg hover:shadow-[0_0_20px_rgba(143,216,212,0.15)] active:scale-[0.99] transition-all duration-200 min-h-[44px]"
                 >
                   Save Changes
                 </button>

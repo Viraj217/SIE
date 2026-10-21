@@ -178,18 +178,18 @@ export default function TimelinePage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-10">
         <div>
           <span className="font-mono text-[0.65rem] text-cyan-glow/70 tracking-[0.25em] uppercase block mb-1">
             Legacy Log
           </span>
-          <h2 className="font-display text-white text-3xl font-bold">Timeline Milestones</h2>
+          <h2 className="font-display text-white text-2xl sm:text-3xl font-bold">Timeline Milestones</h2>
         </div>
         <button
           onClick={openAddModal}
-          className="px-5 py-2.5 bg-cyan-glow text-slate font-mono text-[0.75rem] font-semibold uppercase tracking-wider rounded hover:shadow-[0_0_20px_rgba(143,216,212,0.15)] transition-all duration-300"
+          className="w-full sm:w-auto px-5 py-3 sm:py-2.5 bg-cyan-glow text-slate font-mono text-[0.75rem] font-semibold uppercase tracking-wider rounded-lg hover:shadow-[0_0_20px_rgba(143,216,212,0.15)] active:scale-[0.99] transition-all duration-300 min-h-[44px] flex items-center justify-center gap-1.5"
         >
-          + Add Milestone
+          <span>+ Add Milestone</span>
         </button>
       </div>
 
@@ -206,28 +206,29 @@ export default function TimelinePage() {
           {milestones.map((milestone) => (
             <div
               key={milestone.id}
-              className="bg-white/[0.01] border border-white/[0.06] rounded-lg p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center"
+              className="bg-white/[0.01] border border-white/[0.06] rounded-xl p-5 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-between items-start sm:items-center shadow-lg"
             >
               <div className="flex items-start gap-4">
-                <span className="font-mono text-cyan-glow font-bold text-lg md:text-xl shrink-0 mt-1 min-w-[70px]">
+                <span className="font-mono text-cyan-glow font-bold text-lg sm:text-xl shrink-0 mt-0.5 min-w-[60px]">
                   {milestone.year}
                 </span>
                 <div>
-                  <h3 className="text-white font-display text-lg font-semibold mb-1">{milestone.title}</h3>
-                  <p className="text-white/50 text-xs leading-relaxed max-w-[500px]">{milestone.description}</p>
+                  <h3 className="text-white font-display text-base sm:text-lg font-semibold mb-1">{milestone.title}</h3>
+                  <p className="text-white/60 text-xs leading-relaxed max-w-[500px]">{milestone.description}</p>
                 </div>
               </div>
 
-              <div className="flex gap-3 w-full md:w-auto shrink-0 justify-end">
+              <div className="flex gap-2.5 w-full sm:w-auto shrink-0 justify-end pt-2 sm:pt-0 border-t sm:border-0 border-white/[0.04]">
                 <button
                   onClick={() => openEditModal(milestone)}
-                  className="px-4 py-2 border border-white/[0.08] hover:border-cyan-glow/30 hover:bg-cyan-glow/[0.04] text-white/60 hover:text-cyan-glow font-mono text-[0.7rem] uppercase tracking-wider rounded transition-all duration-200"
+                  className="flex-1 sm:flex-initial px-4 py-2 border border-white/[0.08] hover:border-cyan-glow/30 hover:bg-cyan-glow/[0.04] text-white/70 hover:text-cyan-glow font-mono text-[0.75rem] uppercase tracking-wider rounded-lg transition-all duration-200 min-h-[38px] flex items-center justify-center"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(milestone.id)}
-                  className="px-3 py-2 border border-white/[0.08] hover:border-dawn-coral/30 hover:bg-dawn-coral/[0.04] text-white/20 hover:text-dawn-coral rounded transition-all duration-200"
+                  className="px-3.5 py-2 border border-white/[0.08] hover:border-dawn-coral/30 hover:bg-dawn-coral/[0.04] text-white/30 hover:text-dawn-coral rounded-lg transition-all duration-200 min-h-[38px] flex items-center justify-center"
+                  title="Delete milestone"
                 >
                   🗑
                 </button>
@@ -239,14 +240,24 @@ export default function TimelinePage() {
 
       {/* Edit/Add Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate/80 backdrop-blur-sm">
-          <div className="w-full max-w-[500px] bg-slate ring-1 ring-white/[0.08] rounded-xl p-8 space-y-6">
-            <h3 className="font-display text-white text-xl font-bold">
-              {editingMilestone ? 'Edit Milestone' : 'Add New Milestone'}
-            </h3>
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-6 bg-slate/85 backdrop-blur-sm">
+          <div className="w-full max-w-[500px] max-h-[92vh] sm:max-h-[90vh] overflow-y-auto bg-slate ring-1 ring-white/[0.08] rounded-t-2xl sm:rounded-2xl p-5 sm:p-8 space-y-5 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+              <h3 className="font-display text-white text-lg sm:text-xl font-bold">
+                {editingMilestone ? 'Edit Milestone' : 'Add New Milestone'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(false)}
+                className="p-1.5 text-white/50 hover:text-white hover:bg-white/[0.06] rounded-lg transition-colors"
+                aria-label="Close dialog"
+              >
+                ✕
+              </button>
+            </div>
 
             <form onSubmit={handleSave} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-1">
                   <label className="text-[0.65rem] font-mono uppercase tracking-wider text-white/60 block">Year</label>
                   <input
@@ -254,7 +265,7 @@ export default function TimelinePage() {
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
                     required
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-cyan-glow/40"
+                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-base sm:text-xs font-mono focus:outline-none focus:border-cyan-glow/40 min-h-[42px]"
                     placeholder="e.g. 1989 or TODAY"
                   />
                 </div>
@@ -265,7 +276,7 @@ export default function TimelinePage() {
                     value={displayOrder}
                     onChange={(e) => setDisplayOrder(parseInt(e.target.value) || 0)}
                     required
-                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-cyan-glow/40"
+                    className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-base sm:text-xs font-mono focus:outline-none focus:border-cyan-glow/40 min-h-[42px]"
                   />
                 </div>
               </div>
@@ -277,7 +288,7 @@ export default function TimelinePage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded px-3 py-2 text-white text-xs font-mono focus:outline-none focus:border-cyan-glow/40"
+                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white text-base sm:text-xs font-mono focus:outline-none focus:border-cyan-glow/40 min-h-[42px]"
                   placeholder="e.g. The Foundation"
                 />
               </div>
@@ -289,22 +300,22 @@ export default function TimelinePage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
-                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded px-3 py-2 text-white text-xs font-mono resize-none focus:outline-none focus:border-cyan-glow/40"
+                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 text-white text-base sm:text-xs font-mono resize-none focus:outline-none focus:border-cyan-glow/40"
                   placeholder="Tell the history details..."
                 />
               </div>
 
-              <div className="flex gap-4 pt-4 border-t border-white/[0.06]">
+              <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-white/[0.06]">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 py-3 border border-white/[0.08] hover:bg-white/[0.03] text-white/60 font-mono text-xs uppercase tracking-wider rounded transition-all duration-200"
+                  className="w-full sm:flex-1 py-3 border border-white/[0.08] hover:bg-white/[0.03] text-white/60 font-mono text-xs uppercase tracking-wider rounded-lg transition-all duration-200 min-h-[44px]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-cyan-glow text-slate font-mono text-xs uppercase tracking-wider font-semibold rounded hover:shadow-[0_0_20px_rgba(143,216,212,0.15)] transition-all duration-200"
+                  className="w-full sm:flex-1 py-3 bg-cyan-glow text-slate font-mono text-xs uppercase tracking-wider font-semibold rounded-lg hover:shadow-[0_0_20px_rgba(143,216,212,0.15)] active:scale-[0.99] transition-all duration-200 min-h-[44px]"
                 >
                   Save Changes
                 </button>
