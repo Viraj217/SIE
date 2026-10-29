@@ -103,27 +103,78 @@ export function generateLocalBusinessSchema() {
 }
 
 /**
- * Generate Product Schema.org JSON-LD with BreadcrumbList (offers omitted for B2B price-on-enquiry).
+ * Generate Product (or Service) Schema.org JSON-LD with BreadcrumbList.
+ *
+ * Pricing / offers rationale
+ * ──────────────────────────
+ * Shah Industrial Enterprise is a B2B industrial-materials stockist whose prices
+ * are provided on enquiry. No fixed, publicly-published prices exist for any SKU.
+ *
+ * Google's Product rich-result specification requires either:
+ *   (a) a price inside an `offers` block, OR
+ *   (b) a `review` / `aggregateRating`
+ * to be eligible for the rich-result panel (carousel, pricing box, etc.).
+ *
+ * Because fabricating a price, an aggregateOffer with a min/max range, or
+ * a dummy priceSpecification would be factually incorrect and would violate
+ * Google's structured-data quality guidelines, we intentionally omit `offers`
+ * here. The schema remains useful for entity understanding and may support
+ * future rich features (e.g. merchant listing, knowledge panel) once real
+ * data is available.
+ *
+ * Availability / shipping / return-policy
+ * ────────────────────────────────────────
+ * Stock levels fluctuate and are confirmed only on enquiry. No fixed shipping
+ * rate, delivery SLA, or return-window policy is documented by the business.
+ * These properties are therefore omitted to avoid inaccurate claims.
+ *
+ * Image
+ * ─────
+ * No product-specific photography exists in the repository. The site-level OG
+ * image (`og-social.png`) is used as the product image — it is the closest
+ * real, crawlable, publicly-accessible image representing the business and its
+ * product range. This satisfies the Google "missing image" warning truthfully
+ * without fabricating product photography.
  */
 export function generateProductJsonLd(product: CatalogProduct) {
   const url = `${SITE_URL}/products/${product.slug}`;
+
+  // Build the core schema node. Service pages use schema.org/Service;
+  // all physical-material pages use schema.org/Product.
+  const schemaType = product.category === "SERVICE" ? "Service" : "Product";
+
+  const schemaNode: Record<string, unknown> = {
+    "@type": schemaType,
+    "@id": `${url}#product`,
+    name: product.title,
+    description: product.fullDescription || product.tagline,
+    url,
+    // Use the OG social image — the only real, crawlable product-range image.
+    // Addresses Google Search Console "missing image" warning.
+    image: `${SITE_URL}/og-social.png`,
+    category: product.categoryLabel,
+    // brand is omitted intentionally: these are multi-manufacturer industrial
+    // materials; Shah Industrial Enterprise is the stockist/merchant, not the
+    // brand/manufacturer. Assigning it as brand for every product would be
+    // inaccurate. If a product has a known manufacturer brand, add it here.
+  };
+
+  // additionalProperty: encode key technical specs as machine-readable properties
+  if (product.specs && product.specs.length > 0) {
+    schemaNode.additionalProperty = product.specs.map((spec) => ({
+      "@type": "PropertyValue",
+      name: spec.label,
+      value: spec.value,
+    }));
+  }
+
   return {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": product.category === "SERVICE" ? "Service" : "Product",
-        "@id": `${url}#product`,
-        name: product.title,
-        description: product.fullDescription || product.tagline,
-        url,
-        category: product.categoryLabel,
-        brand: {
-          "@type": "Brand",
-          name: "Shah Industrial Enterprise",
-        },
-      },
+      schemaNode,
       {
         "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",
@@ -167,6 +218,15 @@ export function generateBreadcrumbJsonLd(crumbs: Array<{ name: string; url: stri
 
 /**
  * Generate Product + BreadcrumbList JSON-LD for a steel grade landing page.
+ *
+ * Image: uses the site-level OG social image — the only real, crawlable
+ * image representing the business and its materials range.
+ *
+ * Offers / price: omitted — grades are enquiry-based; no public fixed price.
+ *
+ * Brand: omitted — EN8, EN24, etc. are open metallurgical standards, not
+ * trademarked brands. Shah Industrial Enterprise is the stockist/distributor,
+ * not the manufacturer or brand owner.
  */
 export function generateGradeJsonLd(grade: SteelGrade) {
   const url = `${SITE_URL}/steel-grades/${grade.slug}`;
@@ -181,12 +241,10 @@ export function generateGradeJsonLd(grade: SteelGrade) {
         alternateName: grade.equivalents.map((e) => e.designation),
         description: grade.summary,
         url,
+        // Addresses Google Search Console "missing image" warning.
+        image: `${SITE_URL}/og-social.png`,
         category: grade.family,
         material: grade.code,
-        brand: {
-          "@type": "Brand",
-          name: "Shah Industrial Enterprise",
-        },
         additionalProperty: [
           ...grade.equivalents.map((eq) => ({
             "@type": "PropertyValue",

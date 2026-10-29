@@ -4,6 +4,7 @@ import Navigation from '@/components/Navigation';
 import SiteFooter from '@/components/SiteFooter';
 import { CANONICAL_PRODUCTS, businessConfig } from '@/lib/config';
 import { SITE_URL, generateBreadcrumbJsonLd } from '@/lib/seo';
+import { safeJsonLd } from '@/components/SchemaMarkup';
 import { buildProductWhatsAppUrl } from '@/lib/whatsapp';
 import PrintCatalogButton from '@/components/PrintCatalogButton';
 
@@ -53,11 +54,11 @@ export default function ProductsPage() {
     <main className="min-h-screen bg-paper text-slate">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(collectionSchema) }}
       />
 
       <Navigation />
