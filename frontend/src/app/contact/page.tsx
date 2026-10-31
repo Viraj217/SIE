@@ -20,12 +20,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ContactPage() {
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ product?: string; grade?: string }> }) {
+  const { product, grade } = await searchParams;
   return (
     <main className="min-h-screen bg-paper text-slate">
       <Navigation />
       <div className="pt-16 sm:pt-20">
-        <ContactSection />
+        <ContactSection productSlug={typeof product === "string" ? product : undefined} gradeCode={typeof grade === "string" ? grade : undefined} />
       </div>
       <SiteFooter />
     </main>

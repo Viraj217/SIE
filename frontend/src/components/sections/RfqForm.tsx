@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { businessConfig, CANONICAL_PRODUCTS } from '@/lib/config';
 import { buildRfqWhatsAppUrl, buildGeneralWhatsAppUrl } from '@/lib/whatsapp';
 import { trackEvent } from '@/lib/analytics';
+import { buildItemRemarks, getDimensionLabels, getPrefill } from '@/lib/rfqDetails';
 
 export interface RfqLineItem {
   id: string;
@@ -17,6 +18,10 @@ export interface RfqLineItem {
   quantityUnit: string;
   process: string;
   remarks: string;
+  condition: string;
+  thickness: string;
+  width: string;
+  standard: string;
 }
 
 const DEFAULT_LINE_ITEM: Omit<RfqLineItem, 'id'> = {
@@ -29,6 +34,10 @@ const DEFAULT_LINE_ITEM: Omit<RfqLineItem, 'id'> = {
   quantityUnit: 'NOS',
   process: 'Cut Piece',
   remarks: '',
+  condition: '',
+  thickness: '',
+  width: '',
+  standard: '',
 };
 
 const COMMON_GRADES = [
@@ -52,7 +61,8 @@ const PROCESS_OPTIONS = ['Cut Piece', 'Rough Turned', 'Black Bar', 'Proof Machin
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-export default function RfqForm() {
+export default function RfqForm({ productSlug, gradeCode }: { productSlug?: string; gradeCode?: string }) {
+  const prefill = getPrefill(productSlug, gradeCode, CANONICAL_PRODUCTS, COMMON_GRADES.map(g => g.value));
   const hasStartedRfq = useRef(false);
 
   // Buyer Info
@@ -73,6 +83,7 @@ export default function RfqForm() {
     {
       id: 'item-1',
       ...DEFAULT_LINE_ITEM,
+      ...prefill,
     },
   ]);
 
@@ -120,24 +131,27 @@ export default function RfqForm() {
   };
 
   const handleWhatsAppInstantQuote = () => {
-    const primaryItem = items[0];
-    const dims = primaryItem
-      ? [
-          primaryItem.od ? `OD Ø${primaryItem.od}mm` : '',
-          primaryItem.length ? `L:${primaryItem.length}mm` : '',
-        ]
-          .filter(Boolean)
-          .join(' × ')
-      : '';
-
     const url = buildRfqWhatsAppUrl({
       name: buyerInfo.contactPerson,
       company: buyerInfo.companyName,
-      material: primaryItem
-        ? `${primaryItem.productType} (${primaryItem.materialGrade})`
-        : 'Industrial Steel Inquiry',
-      dimensions: dims,
-      quantity: primaryItem ? `${primaryItem.quantity} ${primaryItem.quantityUnit}` : '',
+      material: 'Industrial steel enquiry',
+      quantity: '',
+      items: items.map(item => ({
+        material: item.productType,
+        grade: item.materialGrade,
+        dimensions: [
+          item.od && `${getDimensionLabels(item.productType).primary}: ${item.od} mm`,
+          item.idDimension && `Bore: ${item.idDimension} mm`,
+          item.thickness && `Thickness: ${item.thickness} mm`,
+          item.width && `Width: ${item.width} mm`,
+          item.length && `Length: ${item.length} mm`,
+        ].filter(Boolean).join(', '),
+        quantity: `${item.quantity} ${item.quantityUnit}`.trim(),
+        process: item.process,
+        condition: item.condition,
+        standard: item.standard,
+        remarks: item.remarks,
+      })),
       deliveryLocation: buyerInfo.deliveryLocation,
       requirements: buyerInfo.message || undefined,
     });
@@ -173,7 +187,7 @@ export default function RfqForm() {
         quantity: parseFloat(item.quantity) || 1,
         quantityUnit: item.quantityUnit,
         process: item.process || undefined,
-        remarks: item.remarks.trim() || undefined,
+        remarks: buildItemRemarks(item) || undefined,
       })),
     };
 
@@ -488,7 +502,7 @@ export default function RfqForm() {
 
                         {/* Process Condition */}
                         <div>
-                          <label htmlFor={`rfq-item-${idx}-process`} className={labelStyle}>Supply Condition</label>
+                          <label htmlFor={`rfq-item-${idx}-process`} className={labelStyle}>Processing / Form</label>
                           <select
                             id={`rfq-item-${idx}-process`}
                             value={item.process}
@@ -503,9 +517,20 @@ export default function RfqForm() {
                           </select>
                         </div>
 
+                        <div>
+                          <label htmlFor={`rfq-item-${idx}-condition`} className={labelStyle}>Material Condition</label>
+                          <select id={`rfq-item-${idx}-condition`} value={item.condition} onChange={(e) => handleItemChange(idx, 'condition', e.target.value)} className={inputStyle}>
+                            <option value="" className="bg-slate text-white">Confirm with supplier</option>
+                            {['As rolled', 'Annealed', 'Normalised', 'Quenched and tempered', 'Other'].map(v => <option key={v} value={v} className="bg-slate text-white">{v}</option>)}
+                          </select>
+                        </div>
+                        <div>
+                          <label htmlFor={`rfq-item-${idx}-standard`} className={labelStyle}>Required Standard</label>
+                          <input id={`rfq-item-${idx}-standard`} value={item.standard} maxLength={80} onChange={(e) => handleItemChange(idx, 'standard', e.target.value)} placeholder="If applicable" className={inputStyle} />
+                        </div>
                         {/* Dimensions: OD */}
                         <div>
-                          <label htmlFor={`rfq-item-${idx}-od`} className={labelStyle}>Outer Dia / Width (mm)</label>
+                          <label htmlFor={`rfq-item-${idx}-od`} className={labelStyle}>{getDimensionLabels(item.productType).primary} (mm)</label>
                           <input
                             id={`rfq-item-${idx}-od`}
                             type="number"
@@ -520,7 +545,7 @@ export default function RfqForm() {
 
                         {/* Dimensions: ID (optional) */}
                         <div>
-                          <label htmlFor={`rfq-item-${idx}-idDimension`} className={labelStyle}>Inner Dia / Bore (mm)</label>
+                          <label htmlFor={`rfq-item-${idx}-idDimension`} className={labelStyle}>Inner Dia / Bore (mm, if hollow)</label>
                           <input
                             id={`rfq-item-${idx}-idDimension`}
                             type="number"
@@ -533,9 +558,13 @@ export default function RfqForm() {
                           />
                         </div>
 
+                        {getDimensionLabels(item.productType).plate && <>
+                          <div><label htmlFor={`rfq-item-${idx}-thickness`} className={labelStyle}>Thickness (mm)</label><input id={`rfq-item-${idx}-thickness`} type="number" step="any" min="0.001" value={item.thickness} onChange={(e) => handleItemChange(idx, 'thickness', e.target.value)} className={inputStyle} /></div>
+                          <div><label htmlFor={`rfq-item-${idx}-width`} className={labelStyle}>Width (mm)</label><input id={`rfq-item-${idx}-width`} type="number" step="any" min="0.001" value={item.width} onChange={(e) => handleItemChange(idx, 'width', e.target.value)} className={inputStyle} /></div>
+                        </>}
                         {/* Dimensions: Length */}
                         <div>
-                          <label htmlFor={`rfq-item-${idx}-length`} className={labelStyle}>Cut Length (mm)</label>
+                          <label htmlFor={`rfq-item-${idx}-length`} className={labelStyle}>Length (mm)</label>
                           <input
                             id={`rfq-item-${idx}-length`}
                             type="number"
@@ -588,6 +617,7 @@ export default function RfqForm() {
                             id={`rfq-item-${idx}-remarks`}
                             type="text"
                             value={item.remarks}
+                            maxLength={250}
                             onChange={(e) => handleItemChange(idx, 'remarks', e.target.value)}
                             placeholder="e.g. ±1mm tolerance, MTC needed"
                             className={inputStyle}

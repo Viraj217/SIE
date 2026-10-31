@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { businessConfig } from '@/lib/config';
 import RfqForm from './RfqForm';
 
-export default function ContactSection() {
+export default function ContactSection({ productSlug, gradeCode }: { productSlug?: string; gradeCode?: string }) {
   return (
     <section id="contact" className="relative z-20 bg-paper py-16 noise-overlay sm:py-20 lg:py-24">
       <div className="relative z-10 mx-auto max-w-[1200px] px-5 sm:px-8 md:px-12">
@@ -32,7 +32,7 @@ export default function ContactSection() {
             className="relative overflow-hidden rounded-xl bg-slate p-4 text-white ring-1 ring-white/5 min-[380px]:p-5 sm:p-8 md:p-10 shadow-2xl"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-cyan-glow/5 to-transparent pointer-events-none" />
-            <RfqForm />
+            <RfqForm productSlug={productSlug} gradeCode={gradeCode} />
           </motion.div>
 
           {/* Right Column: Contact Details & Yard Information */}

@@ -84,6 +84,7 @@ export function buildRfqWhatsAppUrl(
     deliveryLocation?: string;
     urgency?: string;
     requirements?: string;
+    items?: Array<{ material: string; grade: string; dimensions?: string; quantity: string; process?: string; condition?: string; standard?: string; remarks?: string }>;
   },
   phoneNumber: string = businessConfig.primaryWhatsAppNumber
 ): string {
@@ -95,8 +96,20 @@ export function buildRfqWhatsAppUrl(
     `*Material / Service:* ${formData.material || "Steel Raw Material"}`,
   ];
 
-  if (formData.dimensions) lines.push(`*Size / Grade:* ${formData.dimensions}`);
-  if (formData.quantity) lines.push(`*Quantity:* ${formData.quantity}`);
+  if (formData.items?.length) {
+    lines.push('', '*Material line items:*');
+    formData.items.forEach((item, index) => {
+      lines.push(`${index + 1}. ${item.material} | Grade: ${item.grade}`);
+      if (item.dimensions) lines.push(`   Dimensions: ${item.dimensions}`);
+      if (item.quantity) lines.push(`   Quantity: ${item.quantity}`);
+      if (item.process) lines.push(`   Processing / Form: ${item.process}`);
+      if (item.condition) lines.push(`   Material condition: ${item.condition}`);
+      if (item.standard) lines.push(`   Standard: ${item.standard}`);
+      if (item.remarks) lines.push(`   Notes: ${item.remarks}`);
+    });
+  }
+  if (!formData.items?.length && formData.dimensions) lines.push(`*Size / Grade:* ${formData.dimensions}`);
+  if (!formData.items?.length && formData.quantity) lines.push(`*Quantity:* ${formData.quantity}`);
   if (formData.deliveryLocation) lines.push(`*Delivery Location:* ${formData.deliveryLocation}`);
   if (formData.urgency) lines.push(`*Urgency:* ${formData.urgency}`);
   if (formData.requirements) lines.push(`*Details:* ${formData.requirements}`);
